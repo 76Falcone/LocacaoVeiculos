@@ -11,4 +11,18 @@ public class usuario {
     private String senhaUsuario;
     private String celularUsuario;
     
+    // Metodos contrutores
+    public usuario() {
+    }
+
+    public usuario(int idUsuario, String nomeUsuario, String cpfUsuario, String cnhUsuario, String emailUsuario, String senhaUsuario, String celularUsuario) {
+        this.idUsuario = idUsuario;
+        this.nomeUsuario = nomeUsuario;
+        this.cpfUsuario = cpfUsuario;
+        this.cnhUsuario = cnhUsuario;
+        this.emailUsuario = emailUsuario;
+        this.senhaUsuario = senhaUsuario;
+        this.celularUsuario = celularUsuario;
+    }
+    
 }
