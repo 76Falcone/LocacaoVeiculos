@@ -14,4 +14,9 @@ public class usuarioBuilder {
     private String emailUsuario;
     private String senhaUsuario;
     private String celularUsuario;
+    
+    // Construtor vazio
+    public usuarioBuilder() {
+    }
+    
 }
