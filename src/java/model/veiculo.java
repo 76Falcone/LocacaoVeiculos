@@ -29,4 +29,78 @@ public class veiculo {
         this.tipoCambio = tipoCambio;
     }
     
+    // Getters e Setters
+
+    public int getIdVeiculo() {
+        return idVeiculo;
+    }
+
+    public void setIdVeiculo(int idVeiculo) {
+        this.idVeiculo = idVeiculo;
+    }
+
+    public String getPlacaVeiculo() {
+        return placaVeiculo;
+    }
+
+    public void setPlacaVeiculo(String placaVeiculo) {
+        this.placaVeiculo = placaVeiculo;
+    }
+
+    public String getModeloVeiculo() {
+        return modeloVeiculo;
+    }
+
+    public void setModeloVeiculo(String modeloVeiculo) {
+        this.modeloVeiculo = modeloVeiculo;
+    }
+
+    public String getCorVeiculo() {
+        return corVeiculo;
+    }
+
+    public void setCorVeiculo(String corVeiculo) {
+        this.corVeiculo = corVeiculo;
+    }
+
+    public double getValorDiaria() {
+        return valorDiaria;
+    }
+
+    public void setValorDiaria(double valorDiaria) {
+        this.valorDiaria = valorDiaria;
+    }
+
+    public String getFuncionalidadeVeiculo() {
+        return funcionalidadeVeiculo;
+    }
+
+    public void setFuncionalidadeVeiculo(String funcionalidadeVeiculo) {
+        this.funcionalidadeVeiculo = funcionalidadeVeiculo;
+    }
+
+    public boolean isDisponibilidade() {
+        return disponibilidade;
+    }
+
+    public void setDisponibilidade(boolean disponibilidade) {
+        this.disponibilidade = disponibilidade;
+    }
+
+    public boolean isArCondicionadoVeiculo() {
+        return arCondicionadoVeiculo;
+    }
+
+    public void setArCondicionadoVeiculo(boolean arCondicionadoVeiculo) {
+        this.arCondicionadoVeiculo = arCondicionadoVeiculo;
+    }
+
+    public String getTipoCambio() {
+        return tipoCambio;
+    }
+
+    public void setTipoCambio(String tipoCambio) {
+        this.tipoCambio = tipoCambio;
+    }
+    
 }
