@@ -16,4 +16,8 @@ public class veiculoBuilder {
     private boolean disponibilidade;
     private boolean arCondicionadoVeiculo;
     private String tipoCambio;
+    
+    // Construtor vazio
+    public veiculoBuilder() {
+    }
 }
