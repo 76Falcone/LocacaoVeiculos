@@ -17,4 +17,8 @@ public class LocacaoBuilder {
     private double valorTotal;
     private LocalDate dataRetirada;
     private LocalDate dataEntrega;
+    
+    // Construtor Vazio
+    public LocacaoBuilder(){
+    }
 }
