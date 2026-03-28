@@ -17,5 +17,21 @@ public class Locacao {
     private double valorTotal;
     private LocalDate dataRetirada; 
     private LocalDate dataEntrega;
+
+    // Construtores
+    public Locacao() {
+    }
+
+    public Locacao(int idLocacao, Usuario usuario, Veiculo veiculo, int qtdDias, double seguroLocacao, double valorTotal, LocalDate dataRetirada, LocalDate dataEntrega) {
+        this.idLocacao = idLocacao;
+        this.usuario = usuario;
+        this.veiculo = veiculo;
+        this.qtdDias = qtdDias;
+        this.seguroLocacao = seguroLocacao;
+        this.valorTotal = valorTotal;
+        this.dataRetirada = dataRetirada;
+        this.dataEntrega = dataEntrega;
+    }
+    
     
 }
