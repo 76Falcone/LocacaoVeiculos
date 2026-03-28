@@ -1,8 +1,6 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package model;
+
+import java.time.LocalDate;
 
 /**
  *
@@ -10,4 +8,13 @@ package model;
  */
 public class LocacaoBuilder {
     
+    // Atributos
+    private int idLocacao;
+    private Usuario usuario;
+    private Veiculo veiculo;
+    private int qtdDias;
+    private double seguroLocacao;
+    private double valorTotal;
+    private LocalDate dataRetirada;
+    private LocalDate dataEntrega;
 }
