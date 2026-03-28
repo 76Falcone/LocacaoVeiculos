@@ -33,5 +33,70 @@ public class Locacao {
         this.dataEntrega = dataEntrega;
     }
     
+    // Getters e Setters
+
+    public int getIdLocacao() {
+        return idLocacao;
+    }
+
+    public void setIdLocacao(int idLocacao) {
+        this.idLocacao = idLocacao;
+    }
+
+    public Usuario getUsuario() {
+        return usuario;
+    }
+
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
+    }
+
+    public Veiculo getVeiculo() {
+        return veiculo;
+    }
+
+    public void setVeiculo(Veiculo veiculo) {
+        this.veiculo = veiculo;
+    }
+
+    public int getQtdDias() {
+        return qtdDias;
+    }
+
+    public void setQtdDias(int qtdDias) {
+        this.qtdDias = qtdDias;
+    }
+
+    public double getSeguroLocacao() {
+        return seguroLocacao;
+    }
+
+    public void setSeguroLocacao(double seguroLocacao) {
+        this.seguroLocacao = seguroLocacao;
+    }
+
+    public double getValorTotal() {
+        return valorTotal;
+    }
+
+    public void setValorTotal(double valorTotal) {
+        this.valorTotal = valorTotal;
+    }
+
+    public LocalDate getDataRetirada() {
+        return dataRetirada;
+    }
+
+    public void setDataRetirada(LocalDate dataRetirada) {
+        this.dataRetirada = dataRetirada;
+    }
+
+    public LocalDate getDataEntrega() {
+        return dataEntrega;
+    }
+
+    public void setDataEntrega(LocalDate dataEntrega) {
+        this.dataEntrega = dataEntrega;
+    }
     
 }
