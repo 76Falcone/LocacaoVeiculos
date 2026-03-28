@@ -4,7 +4,7 @@ package model;
  *
  * @author 76Falcone
  */
-public class veiculoBuilder {
+public class VeiculoBuilder {
         
     // Atributos
     private int idVeiculo;
@@ -18,6 +18,6 @@ public class veiculoBuilder {
     private String tipoCambio;
     
     // Construtor vazio
-    public veiculoBuilder() {
+    public VeiculoBuilder() {
     }
 }

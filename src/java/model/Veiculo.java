@@ -1,6 +1,6 @@
 package model;
 
-public class veiculo {
+public class Veiculo {
     
     // Atributos
     private int idVeiculo;
@@ -14,10 +14,10 @@ public class veiculo {
     private String tipoCambio;
     
     // Metodos contrutores
-    public veiculo() {
+    public Veiculo() {
     }
 
-    public veiculo(int idVeiculo, String placaVeiculo, String modeloVeiculo, String corVeiculo, double valorDiaria, String funcionalidadeVeiculo, boolean disponibilidade, boolean arCondicionadoVeiculo, String tipoCambio) {
+    public Veiculo(int idVeiculo, String placaVeiculo, String modeloVeiculo, String corVeiculo, double valorDiaria, String funcionalidadeVeiculo, boolean disponibilidade, boolean arCondicionadoVeiculo, String tipoCambio) {
         this.idVeiculo = idVeiculo;
         this.placaVeiculo = placaVeiculo;
         this.modeloVeiculo = modeloVeiculo;

@@ -1,6 +1,6 @@
 package model;
 
-public class usuario {
+public class Usuario {
     
     // Atributos
     private int idUsuario;
@@ -12,10 +12,10 @@ public class usuario {
     private String celularUsuario;
     
     // Metodos contrutores
-    public usuario() {
+    public Usuario() {
     }
 
-    public usuario(int idUsuario, String nomeUsuario, String cpfUsuario, String cnhUsuario, String emailUsuario, String senhaUsuario, String celularUsuario) {
+    public Usuario(int idUsuario, String nomeUsuario, String cpfUsuario, String cnhUsuario, String emailUsuario, String senhaUsuario, String celularUsuario) {
         this.idUsuario = idUsuario;
         this.nomeUsuario = nomeUsuario;
         this.cpfUsuario = cpfUsuario;
