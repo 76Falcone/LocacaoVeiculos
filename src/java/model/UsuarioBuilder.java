@@ -55,7 +55,9 @@ public class UsuarioBuilder {
         return this;
     }
     
+    // Metodo builder
     public Usuario build() {
-        return new Usuario (idUsuario, nomeUsuario, cpfUsuario, cnhUsuario, emailUsuario, senhaUsuario, celularUsuario);
+        return new Usuario (idUsuario, nomeUsuario, cpfUsuario, 
+                cnhUsuario, emailUsuario, senhaUsuario, celularUsuario);    
     }
 }
