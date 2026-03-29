@@ -4,6 +4,8 @@ package dao;
  *
  * @author 76Falcone
  */
-public class VeiculoDAO {
+public class VeiculoDAO implements IVeiculoDAO{
+  
+    // CadastrarVeiculo
     
 }
