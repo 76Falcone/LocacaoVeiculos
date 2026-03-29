@@ -57,4 +57,18 @@ public class LocacaoBuilder {
         this.dataEntrega = dataEntrega;
         return this;
     }
+    
+    // Metodo build com regras
+    public Locacao build() {
+        // Valor total | Regra: (Diária do Veículo * Quantidade de Dias) + Valor do Seguro
+        if (veiculo != null && qtdDias > 0) {
+            this.valorTotal = (veiculo.getValorDiaria() * qtdDias) + seguroLocacao;
+        }
+        // Data de entrega | Regra: DataEntrega = DataRetirada + QtdDias
+        if (this.dataEntrega == null && dataRetirada != null && qtdDias > 0) {
+            this.dataEntrega = dataRetirada.plusDays(qtdDias);
+        }
+        return new Locacao(idLocacao, usuario, veiculo, qtdDias, 
+            seguroLocacao, valorTotal, dataRetirada, dataEntrega);
+    }
 }
