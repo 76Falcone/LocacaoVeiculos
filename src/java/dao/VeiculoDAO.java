@@ -44,6 +44,7 @@ public class VeiculoDAO implements IVeiculoDAO{
         con.close();
     }
     
+    @Override
     public void atualizarVeiculo(Veiculo v)throws ClassNotFoundException, SQLException {
         Connection con = FabricaConexao.getConexao();
         PreparedStatement comando = con.prepareStatement("update veiculo set placaVeiculo = ?, modeloVeiculo = ?, corVeiculo = ?, valorDiaria = ?, funcionalidadeVeiculo = ?, disponibilidade = ?, arCondicionado = ?, tipoCambio = ? where id = ?");
@@ -57,6 +58,6 @@ public class VeiculoDAO implements IVeiculoDAO{
         comando.setString(8, v.getTipoCambio());
         comando.setInt(9, v.getIdVeiculo());
         comando.execute();
-        con.close();
+        con.close();    
     }
 }
