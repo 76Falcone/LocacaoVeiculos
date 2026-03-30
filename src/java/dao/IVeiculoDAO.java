@@ -1,5 +1,6 @@
 package dao;
 
+import java.sql.SQLException;
 import model.Veiculo;
 import java.util.List;
 
@@ -10,9 +11,9 @@ import java.util.List;
 public interface IVeiculoDAO {
     
     // Metodos para o VeiculoDAO
-    void cadastrarVeiculo(Veiculo v);
-    void deletarVeiculo(int id);
-    void atualizarVeiculo(Veiculo v);
-    Veiculo visualizarVeiculoByID(int id);
-    List<Veiculo> visualizarTodosVeiculos();
+    void cadastrarVeiculo(Veiculo v)throws ClassNotFoundException, SQLException;
+    void deletarVeiculo(int id)throws ClassNotFoundException, SQLException;
+    void atualizarVeiculo(Veiculo v)throws ClassNotFoundException, SQLException;
+    Veiculo visualizarVeiculoByID(int id)throws ClassNotFoundException, SQLException;
+    List<Veiculo> visualizarTodosVeiculos()throws ClassNotFoundException, SQLException;
 }
