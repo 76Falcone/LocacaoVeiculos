@@ -17,7 +17,8 @@ import java.util.List;
 public class VeiculoDAO implements IVeiculoDAO{
   
     // Cadastrar Veiculo
-    public void cadastroVeiculo(Veiculo v) throws ClassNotFoundException, SQLException{
+    @Override
+    public void cadastrarVeiculo(Veiculo v) throws ClassNotFoundException, SQLException{
         Connection con = FabricaConexao.getConexao();
         PreparedStatement comando = con.prepareStatement("insert into veiculo (placaVeiculo, modeloVeiculo, corVeiculo, valorDiaria, funcionalidadeVeiculo, disponibilidade, arCondicionado, tipoCambio) value (?, ?, ?, ?, ?, ?, ?, ?)");
         comando.setString(1, v.getPlacaVeiculo());
