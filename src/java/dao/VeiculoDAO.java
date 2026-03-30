@@ -32,4 +32,15 @@ public class VeiculoDAO implements IVeiculoDAO{
         comando.execute();
         con.close();
     }
+    
+        
+    // Deletar veiculo
+    @Override
+    public void deletarVeiculo (Veiculo v) throws ClassNotFoundException, SQLException{
+        Connection con = FabricaConexao.getConexao();
+        PreparedStatement comando = con.prepareStatement("delete from veiculo where id = ?");
+        comando.setInt(1, v.getIdVeiculo());
+        comando.execute();
+        con.close();
+    }
 }
