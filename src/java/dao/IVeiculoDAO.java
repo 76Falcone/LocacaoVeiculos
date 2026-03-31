@@ -14,6 +14,6 @@ public interface IVeiculoDAO {
     void cadastrarVeiculo(Veiculo v)throws ClassNotFoundException, SQLException;
     void deletarVeiculo(Veiculo v)throws ClassNotFoundException, SQLException;
     void atualizarVeiculo(Veiculo v)throws ClassNotFoundException, SQLException;
-    Veiculo visualizarVeiculoByID(int id)throws ClassNotFoundException, SQLException;
+    Veiculo visualizarVeiculoByID(Veiculo v)throws ClassNotFoundException, SQLException;
     List<Veiculo> visualizarTodosVeiculos()throws ClassNotFoundException, SQLException;
 }
