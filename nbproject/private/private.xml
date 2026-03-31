@@ -3,13 +3,8 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/Users/nicolasfalcone/Documents/LocacaoVeiculos/LocacaoVeiculos/src/java/model/VeiculoBuilder.java</file>
-            <file>file:/Users/nicolasfalcone/Documents/LocacaoVeiculos/LocacaoVeiculos/src/java/model/UsuarioBuilder.java</file>
-            <file>file:/Users/nicolasfalcone/Documents/LocacaoVeiculos/LocacaoVeiculos/src/java/model/Locacao.java</file>
-            <file>file:/Users/nicolasfalcone/Documents/LocacaoVeiculos/LocacaoVeiculos/src/java/model/LocacaoBuilder.java</file>
-            <file>file:/Users/nicolasfalcone/Documents/LocacaoVeiculos/LocacaoVeiculos/src/java/util/FabricaConexao.java</file>
-            <file>file:/Users/nicolasfalcone/Documents/LocacaoVeiculos/LocacaoVeiculos/src/java/util/ModeloConexao.java</file>
-            <file>file:/Users/nicolasfalcone/Documents/LocacaoVeiculos/LocacaoVeiculos/.idea/.gitignore</file>
+            <file>file:/Users/nicolasfalcone/Documents/LocacaoVeiculos/LocacaoVeiculos/src/java/dao/VeiculoDAO.java</file>
+            <file>file:/Users/nicolasfalcone/Documents/LocacaoVeiculos/LocacaoVeiculos/src/java/dao/IVeiculoDAO.java</file>
         </group>
     </open-files>
 </project-private>

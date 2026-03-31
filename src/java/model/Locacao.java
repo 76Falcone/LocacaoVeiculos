@@ -14,6 +14,7 @@ public class Locacao {
     private Veiculo veiculo;     
     private int qtdDias;
     private double seguroLocacao;
+    private String localRetirada;
     private double valorTotal;
     private LocalDate dataRetirada; 
     private LocalDate dataEntrega;
@@ -22,12 +23,13 @@ public class Locacao {
     public Locacao() {
     }
 
-    public Locacao(int idLocacao, Usuario usuario, Veiculo veiculo, int qtdDias, double seguroLocacao, double valorTotal, LocalDate dataRetirada, LocalDate dataEntrega) {
+    public Locacao(int idLocacao, Usuario usuario, Veiculo veiculo, int qtdDias, double seguroLocacao, String localRetirada, double valorTotal, LocalDate dataRetirada, LocalDate dataEntrega) {
         this.idLocacao = idLocacao;
         this.usuario = usuario;
         this.veiculo = veiculo;
         this.qtdDias = qtdDias;
         this.seguroLocacao = seguroLocacao;
+        this.localRetirada = localRetirada;
         this.valorTotal = valorTotal;
         this.dataRetirada = dataRetirada;
         this.dataEntrega = dataEntrega;
@@ -72,6 +74,14 @@ public class Locacao {
     }
 
     public void setSeguroLocacao(double seguroLocacao) {
+        this.seguroLocacao = seguroLocacao;
+    }
+    
+    public double getLocalRetirada() {
+        return seguroLocacao;
+    }
+
+    public void setLocalRetirada(double seguroLocacao) {
         this.seguroLocacao = seguroLocacao;
     }
 

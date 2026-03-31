@@ -14,6 +14,7 @@ public class LocacaoBuilder {
     private Veiculo veiculo;
     private int qtdDias;
     private double seguroLocacao;
+    private String localRetirada;
     private double valorTotal;
     private LocalDate dataRetirada;
     private LocalDate dataEntrega;
@@ -47,6 +48,11 @@ public class LocacaoBuilder {
         this.seguroLocacao = seguroLocacao;
         return this;
     }
+    
+    public LocacaoBuilder comLocalRetirada(String localRetirada) {
+        this.localRetirada = localRetirada;
+        return this;
+    }
 
     public LocacaoBuilder comDataRetirada(LocalDate dataRetirada) {
         this.dataRetirada = dataRetirada;
@@ -69,6 +75,6 @@ public class LocacaoBuilder {
             this.dataEntrega = dataRetirada.plusDays(qtdDias);
         }
         return new Locacao(idLocacao, usuario, veiculo, qtdDias, 
-            seguroLocacao, valorTotal, dataRetirada, dataEntrega);
+            seguroLocacao,localRetirada, valorTotal, dataRetirada, dataEntrega);
     }
 }
