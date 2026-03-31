@@ -44,6 +44,7 @@ public class VeiculoDAO implements IVeiculoDAO{
         con.close();
     }
     
+    // Atualizar veiculo
     @Override
     public void atualizarVeiculo(Veiculo v)throws ClassNotFoundException, SQLException {
         Connection con = FabricaConexao.getConexao();
@@ -59,5 +60,28 @@ public class VeiculoDAO implements IVeiculoDAO{
         comando.setInt(9, v.getIdVeiculo());
         comando.execute();
         con.close();    
+    }
+    
+   // Buscar por ID
+    @Override
+    public Veiculo visualizarVeiculoByID(Veiculo v)throws ClassNotFoundException, SQLException {
+        Connection con = FabricaConexao.getConexao();
+        PreparedStatement comando = con.prepareStatement("select * from veiculo where id = ?");
+        comando.setInt(1, v.getIdVeiculo());
+        ResultSet rs = comando.executeQuery();
+        Veiculo produtoVcl = new Veiculo();
+        if (rs.next()) {
+            produtoVcl.setIdVeiculo(rs.getInt("id"));
+            produtoVcl.setPlacaVeiculo(rs.getString("placa"));
+            produtoVcl.setModeloVeiculo(rs.getString("modelo"));
+            produtoVcl.setCorVeiculo(rs.getString("cor"));
+            produtoVcl.setValorDiaria(rs.getDouble("valorDiaria"));
+            produtoVcl.setFuncionalidadeVeiculo(rs.getString("funcionalidade"));
+            produtoVcl.setDisponibilidade(rs.getBoolean("disponibilidade"));
+            produtoVcl.setArCondicionadoVeiculo(rs.getBoolean("arCondicionado"));
+            produtoVcl.setTipoCambio(rs.getString("cambio"));
+        }
+        con.close();
+        return produtoVcl;
     }
 }
