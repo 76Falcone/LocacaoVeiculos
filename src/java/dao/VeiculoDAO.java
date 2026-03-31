@@ -84,4 +84,28 @@ public class VeiculoDAO implements IVeiculoDAO{
         con.close();
         return produtoVcl;
     }
+    
+    // Buscar todos
+    @Override
+    public List<Veiculo> visualizarTodosVeiculos()throws ClassNotFoundException, SQLException {
+        Connection con = FabricaConexao.getConexao();
+        PreparedStatement comando = con.prepareStatement("select * from veiculo");
+        ResultSet rs = comando.executeQuery();
+        
+        List<Veiculo> listaVeiculo = new ArrayList<Veiculo>();
+        while (rs.next()) {
+            Veiculo v = new Veiculo();
+
+            v.setIdVeiculo(rs.getInt("id"));
+            v.setPlacaVeiculo(rs.getString("placa"));
+            v.setModeloVeiculo(rs.getString("modelo"));
+            v.setCorVeiculo(rs.getString("cor"));
+            v.setValorDiaria(rs.getDouble("valorDiaria"));
+            v.setFuncionalidadeVeiculo(rs.getString("funcionalidade"));
+            v.setDisponibilidade(rs.getBoolean("disponibilidade"));
+            v.setArCondicionadoVeiculo(rs.getBoolean("arCondicionado"));
+            v.setTipoCambio(rs.getString("cambio"));            
+        }
+        return listaVeiculo;
+    }
 }
