@@ -13,7 +13,7 @@ package util;
  * 
     public static Connection getConexao() throws ClassNotFoundException, SQLException {
         String DRIVER = "com.mysql.cj.jdbc.Driver";
-        String URL = "jdbc:mysql://localhost:3306/ProjetoLocacao";
+        String URL = "URL";
         String USERNAME = "USER";
         String PASSWORD = "SENHA";
         
