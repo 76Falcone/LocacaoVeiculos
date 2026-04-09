@@ -1,0 +1,889 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Marcas | Novare — Aluguel de Carros</title>
+  <meta name="description" content="Conheça as principais marcas disponíveis na frota Novare: Volkswagen, Fiat, Chevrolet, Hyundai, Toyota e muito mais. Escolha sua marca favorita e alugue agora.">
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <style>
+    /* ─── MARCAS PAGE SPECIFIC ─── */
+    .page-hero {
+      background: linear-gradient(135deg, var(--purple-xdark) 0%, var(--purple-dark) 60%, var(--purple) 100%);
+      padding: 140px 5% 6rem;
+      position: relative;
+      overflow: hidden;
+    }
+    .page-hero::before {
+      content: '';
+      position: absolute;
+      top: -40%;
+      right: -10%;
+      width: 600px;
+      height: 600px;
+      background: radial-gradient(circle, rgba(139,79,224,0.35) 0%, transparent 60%);
+      pointer-events: none;
+    }
+    .page-hero::after {
+      content: '';
+      position: absolute;
+      bottom: -20%;
+      left: 10%;
+      width: 400px;
+      height: 400px;
+      background: radial-gradient(circle, rgba(255,255,255,0.05) 0%, transparent 60%);
+      pointer-events: none;
+    }
+    .page-hero-content {
+      position: relative;
+      z-index: 1;
+      max-width: 700px;
+    }
+    .page-hero .hero-badge {
+      background: rgba(255,255,255,0.1);
+      border-color: rgba(255,255,255,0.2);
+      color: rgba(255,255,255,0.85);
+      animation: fadeUp 0.5s ease both;
+    }
+    .page-hero .hero-badge-dot { background: rgba(255,255,255,0.7); }
+    .page-hero-title {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(2.4rem, 5vw, 4rem);
+      font-weight: 800;
+      color: var(--white);
+      line-height: 1.08;
+      letter-spacing: -2px;
+      margin-bottom: 1.2rem;
+      animation: fadeUp 0.55s 0.1s ease both;
+    }
+    .page-hero-title em {
+      font-style: normal;
+      color: #C4A6F7;
+    }
+    .page-hero-sub {
+      color: rgba(255,255,255,0.65);
+      font-size: 1rem;
+      font-weight: 300;
+      line-height: 1.75;
+      max-width: 480px;
+      animation: fadeUp 0.55s 0.2s ease both;
+    }
+
+    /* ─── SEARCH + FILTER BAR ─── */
+    .filter-bar {
+      background: var(--white);
+      border-bottom: 1px solid var(--border);
+      padding: 1.2rem 5%;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      flex-wrap: wrap;
+      position: sticky;
+      top: 68px;
+      z-index: 90;
+      box-shadow: 0 2px 16px rgba(0,0,0,0.04);
+    }
+    .filter-search {
+      flex: 1;
+      min-width: 200px;
+      position: relative;
+    }
+    .filter-search input {
+      width: 100%;
+      border: 1.5px solid var(--border);
+      border-radius: 10px;
+      padding: 0.6rem 1rem 0.6rem 2.5rem;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.9rem;
+      color: var(--text);
+      background: var(--off-white);
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    .filter-search input:focus { border-color: var(--purple); }
+    .filter-search::before {
+      content: '🔍';
+      position: absolute;
+      left: 0.75rem;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 0.85rem;
+      pointer-events: none;
+    }
+    .filter-chips {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+    }
+    .chip {
+      padding: 0.45rem 1rem;
+      border-radius: 100px;
+      border: 1.5px solid var(--border);
+      background: var(--white);
+      color: var(--muted);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.8rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s;
+      white-space: nowrap;
+    }
+    .chip:hover { border-color: var(--purple); color: var(--purple); }
+    .chip.active { background: var(--purple); border-color: var(--purple); color: var(--white); }
+
+    /* ─── BRANDS COUNT ─── */
+    .brands-count {
+      text-align: center;
+      padding: 3rem 5% 1.5rem;
+      color: var(--muted);
+      font-size: 0.88rem;
+    }
+    .brands-count strong { color: var(--purple); font-weight: 700; }
+
+    /* ─── BRANDS GRID ─── */
+    .brands-section {
+      padding: 1rem 5% 6rem;
+    }
+    .brands-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 1.5rem;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .brand-card {
+      background: var(--white);
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 2rem 1.5rem 1.5rem;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.3s;
+      position: relative;
+      overflow: hidden;
+    }
+    .brand-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+      background: var(--purple);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.3s;
+    }
+    .brand-card:hover {
+      box-shadow: 0 16px 48px rgba(106,38,205,0.12);
+      transform: translateY(-5px);
+      border-color: rgba(106,38,205,0.25);
+    }
+    .brand-card:hover::before { transform: scaleX(1); }
+    .brand-card[data-hidden="true"] { display: none; }
+
+    .brand-logo-wrap {
+      width: 88px;
+      height: 88px;
+      margin: 0 auto 1.2rem;
+      border-radius: 50%;
+      background: var(--purple-pale);
+      border: 2px solid var(--purple-mid);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2.8rem;
+      transition: all 0.3s;
+    }
+    .brand-card:hover .brand-logo-wrap {
+      background: var(--purple);
+      border-color: var(--purple);
+    }
+
+    .brand-name {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: 1.15rem;
+      color: var(--text);
+      margin-bottom: 0.3rem;
+      letter-spacing: -0.3px;
+    }
+    .brand-country {
+      color: var(--muted);
+      font-size: 0.75rem;
+      font-weight: 400;
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+    }
+    .brand-tag {
+      display: inline-block;
+      background: var(--light);
+      border: 1px solid var(--border);
+      color: var(--purple);
+      font-size: 0.68rem;
+      font-weight: 700;
+      padding: 3px 10px;
+      border-radius: 100px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 1.2rem;
+    }
+
+    .brand-stats {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.6rem;
+      margin-bottom: 1.3rem;
+    }
+    .brand-stat {
+      background: var(--off-white);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 0.6rem 0.5rem;
+    }
+    .brand-stat-val {
+      font-family: 'Syne', sans-serif;
+      font-weight: 700;
+      font-size: 1rem;
+      color: var(--text);
+      display: block;
+    }
+    .brand-stat-lbl {
+      font-size: 0.65rem;
+      color: var(--muted);
+      display: block;
+      margin-top: 1px;
+    }
+
+    .brand-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-top: 1rem;
+      border-top: 1px solid var(--border);
+    }
+    .brand-models {
+      font-size: 0.78rem;
+      color: var(--muted);
+    }
+    .brand-models strong { color: var(--text); font-weight: 600; }
+
+    .btn-brand {
+      background: var(--purple-pale);
+      border: 1.5px solid var(--purple-mid);
+      color: var(--purple);
+      padding: 0.45rem 1rem;
+      border-radius: 8px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.82rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+      text-decoration: none;
+      display: inline-block;
+    }
+    .btn-brand:hover { background: var(--purple); color: var(--white); border-color: var(--purple); }
+
+    /* ─── ORIGEM SECTION ─── */
+    .origem-section {
+      background: var(--light);
+      padding: 5rem 5%;
+    }
+    .origem-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+    .origem-card {
+      background: var(--white);
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.5rem;
+      text-align: center;
+      transition: all 0.25s;
+      cursor: pointer;
+    }
+    .origem-card:hover { border-color: var(--purple); transform: translateY(-3px); box-shadow: 0 8px 24px rgba(106,38,205,0.09); }
+    .origem-card.active { border-color: var(--purple); background: var(--purple-pale); }
+    .origem-flag { font-size: 2.5rem; margin-bottom: 0.6rem; display: block; }
+    .origem-name { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 0.88rem; color: var(--text); margin-bottom: 0.2rem; }
+    .origem-count { font-size: 0.72rem; color: var(--muted); }
+
+    /* ─── CTA SECTION ─── */
+    .cta-marcas {
+      background: var(--purple-xdark);
+      padding: 5rem 5%;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .cta-marcas::before {
+      content: '';
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      width: 700px; height: 700px;
+      background: radial-gradient(circle, rgba(106,38,205,0.5) 0%, transparent 65%);
+      pointer-events: none;
+    }
+    .cta-marcas-inner { position: relative; z-index: 1; max-width: 600px; margin: 0 auto; }
+    .cta-marcas-title {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(1.8rem, 3.5vw, 2.8rem);
+      font-weight: 800;
+      color: var(--white);
+      letter-spacing: -1px;
+      margin-bottom: 1rem;
+      line-height: 1.15;
+    }
+    .cta-marcas-sub { color: rgba(255,255,255,0.55); font-size: 0.98rem; line-height: 1.7; font-weight: 300; margin-bottom: 2rem; }
+    .cta-marcas-btns { display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap; }
+    .btn-cta-white {
+      background: var(--white);
+      color: var(--purple);
+      border: none;
+      padding: 0.85rem 2.2rem;
+      border-radius: 10px;
+      font-family: 'Syne', sans-serif;
+      font-size: 0.95rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s;
+      text-decoration: none;
+      display: inline-block;
+    }
+    .btn-cta-white:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(0,0,0,0.25); }
+    .btn-cta-outline {
+      background: transparent;
+      color: rgba(255,255,255,0.75);
+      border: 1.5px solid rgba(255,255,255,0.25);
+      padding: 0.85rem 2.2rem;
+      border-radius: 10px;
+      font-family: 'Syne', sans-serif;
+      font-size: 0.95rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s;
+      text-decoration: none;
+      display: inline-block;
+    }
+    .btn-cta-outline:hover { border-color: rgba(255,255,255,0.6); color: var(--white); }
+
+    /* ─── NO RESULTS ─── */
+    .no-results {
+      text-align: center;
+      padding: 4rem 1rem;
+      display: none;
+      grid-column: 1 / -1;
+    }
+    .no-results-icon { font-size: 3rem; margin-bottom: 1rem; display: block; }
+    .no-results-text { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 1.2rem; color: var(--text); margin-bottom: 0.5rem; }
+    .no-results-sub { color: var(--muted); font-size: 0.9rem; }
+
+    @media (max-width: 860px) {
+      .filter-bar { top: 0; position: static; }
+    }
+    @media (max-width: 600px) {
+      .brands-grid { grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 1rem; }
+      .brands-section { padding: 1rem 4% 4rem; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ─── NAVBAR ─── -->
+<header class="navbar">
+  <div class="logo">NO<span>VARE</span></div>
+  <nav class="nav-links">
+    <a href="index.html">Início</a>
+    <a href="frota.html">Alugar</a>
+    <a href="marcas.html" style="color: var(--purple); font-weight: 600;">Marcas</a>
+    <a href="#">Localidades</a>
+    <a href="#">Empresa</a>
+  </nav>
+  <div class="nav-actions">
+    <button class="btn-ghost">Cadastrar</button>
+    <button class="btn-primary">Minha Conta</button>
+  </div>
+</header>
+
+<!-- ─── PAGE HERO ─── -->
+<section class="page-hero">
+  <div class="page-hero-content">
+    <span class="hero-badge">
+      <span class="hero-badge-dot"></span>
+      12 marcas na nossa frota
+    </span>
+    <h1 class="page-hero-title">As marcas que<br>você <em>já conhece</em><br>e confia.</h1>
+    <p class="page-hero-sub">Nossa frota conta com os veículos mais populares e confiáveis do mercado brasileiro. Encontre sua marca favorita e reserve agora.</p>
+  </div>
+</section>
+
+<!-- ─── ORIGEM FILTER ─── -->
+<section class="origem-section">
+  <div class="section-header reveal">
+    <span class="section-label">Filtrar por origem</span>
+    <h2 class="section-title">Marcas por país</h2>
+    <p class="section-sub">Escolha pelo país de origem da marca e veja as opções disponíveis.</p>
+  </div>
+  <div class="origem-grid reveal">
+    <div class="origem-card active" id="orig-todos" onclick="filterOrigem(this, 'todos')">
+      <span class="origem-flag">🌍</span>
+      <div class="origem-name">Todas</div>
+      <div class="origem-count">12 marcas</div>
+    </div>
+    <div class="origem-card" id="orig-brasil" onclick="filterOrigem(this, 'brasil')">
+      <span class="origem-flag">🇧🇷</span>
+      <div class="origem-name">Brasil</div>
+      <div class="origem-count">1 marca</div>
+    </div>
+    <div class="origem-card" id="orig-alemanha" onclick="filterOrigem(this, 'alemanha')">
+      <span class="origem-flag">🇩🇪</span>
+      <div class="origem-name">Alemanha</div>
+      <div class="origem-count">2 marcas</div>
+    </div>
+    <div class="origem-card" id="orig-italia" onclick="filterOrigem(this, 'italia')">
+      <span class="origem-flag">🇮🇹</span>
+      <div class="origem-name">Itália</div>
+      <div class="origem-count">1 marca</div>
+    </div>
+    <div class="origem-card" id="orig-eua" onclick="filterOrigem(this, 'eua')">
+      <span class="origem-flag">🇺🇸</span>
+      <div class="origem-name">EUA</div>
+      <div class="origem-count">2 marcas</div>
+    </div>
+    <div class="origem-card" id="orig-coreia" onclick="filterOrigem(this, 'coreia')">
+      <span class="origem-flag">🇰🇷</span>
+      <div class="origem-name">Coreia</div>
+      <div class="origem-count">3 marcas</div>
+    </div>
+    <div class="origem-card" id="orig-japao" onclick="filterOrigem(this, 'japao')">
+      <span class="origem-flag">🇯🇵</span>
+      <div class="origem-name">Japão</div>
+      <div class="origem-count">3 marcas</div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── SEARCH + CHIP FILTER ─── -->
+<div class="filter-bar">
+  <div class="filter-search">
+    <input type="text" id="brandSearch" placeholder="Buscar marca..." oninput="searchBrands(this.value)">
+  </div>
+  <div class="filter-chips">
+    <div class="chip active" onclick="filterSegment(this, 'todos')">Todos</div>
+    <div class="chip" onclick="filterSegment(this, 'popular')">Popular</div>
+    <div class="chip" onclick="filterSegment(this, 'premium')">Premium</div>
+    <div class="chip" onclick="filterSegment(this, 'suv')">SUV</div>
+    <div class="chip" onclick="filterSegment(this, 'eletrico')">Elétrico</div>
+  </div>
+</div>
+
+<!-- ─── BRANDS COUNT ─── -->
+<div class="brands-count">
+  Mostrando <strong id="visibleCount">12</strong> marcas disponíveis na frota Novare
+</div>
+
+<!-- ─── BRANDS GRID ─── -->
+<section class="brands-section">
+  <div class="brands-grid" id="brandsGrid">
+
+    <!-- Volkswagen -->
+    <div class="brand-card reveal" data-origem="alemanha" data-segmento="popular suv" data-name="volkswagen">
+      <div class="brand-logo-wrap">🚗</div>
+      <div class="brand-name">Volkswagen</div>
+      <div class="brand-country">🇩🇪 Alemanha</div>
+      <div class="brand-tag">Popular · SUV</div>
+      <div class="brand-stats">
+        <div class="brand-stat">
+          <span class="brand-stat-val">8</span>
+          <span class="brand-stat-lbl">Modelos</span>
+        </div>
+        <div class="brand-stat">
+          <span class="brand-stat-val">R$ 129</span>
+          <span class="brand-stat-lbl">A partir de/dia</span>
+        </div>
+      </div>
+      <div class="brand-footer">
+        <div class="brand-models"><strong>Polo, Gol, T-Cross</strong></div>
+        <a href="frota.html" class="btn-brand">Ver frota →</a>
+      </div>
+    </div>
+
+    <!-- Fiat -->
+    <div class="brand-card reveal" data-origem="italia" data-segmento="popular suv" data-name="fiat">
+      <div class="brand-logo-wrap">🏎️</div>
+      <div class="brand-name">Fiat</div>
+      <div class="brand-country">🇮🇹 Itália</div>
+      <div class="brand-tag">Popular · SUV</div>
+      <div class="brand-stats">
+        <div class="brand-stat">
+          <span class="brand-stat-val">7</span>
+          <span class="brand-stat-lbl">Modelos</span>
+        </div>
+        <div class="brand-stat">
+          <span class="brand-stat-val">R$ 119</span>
+          <span class="brand-stat-lbl">A partir de/dia</span>
+        </div>
+      </div>
+      <div class="brand-footer">
+        <div class="brand-models"><strong>Fastback, Pulse, Strada</strong></div>
+        <a href="frota.html" class="btn-brand">Ver frota →</a>
+      </div>
+    </div>
+
+    <!-- Chevrolet -->
+    <div class="brand-card reveal" data-origem="eua" data-segmento="popular suv" data-name="chevrolet">
+      <div class="brand-logo-wrap">⚡</div>
+      <div class="brand-name">Chevrolet</div>
+      <div class="brand-country">🇺🇸 EUA</div>
+      <div class="brand-tag">Popular · SUV</div>
+      <div class="brand-stats">
+        <div class="brand-stat">
+          <span class="brand-stat-val">6</span>
+          <span class="brand-stat-lbl">Modelos</span>
+        </div>
+        <div class="brand-stat">
+          <span class="brand-stat-val">R$ 124</span>
+          <span class="brand-stat-lbl">A partir de/dia</span>
+        </div>
+      </div>
+      <div class="brand-footer">
+        <div class="brand-models"><strong>Onix, Tracker, Cruze</strong></div>
+        <a href="frota.html" class="btn-brand">Ver frota →</a>
+      </div>
+    </div>
+
+    <!-- Hyundai -->
+    <div class="brand-card reveal" data-origem="coreia" data-segmento="popular suv premium" data-name="hyundai">
+      <div class="brand-logo-wrap">🚙</div>
+      <div class="brand-name">Hyundai</div>
+      <div class="brand-country">🇰🇷 Coreia do Sul</div>
+      <div class="brand-tag">Popular · Premium</div>
+      <div class="brand-stats">
+        <div class="brand-stat">
+          <span class="brand-stat-val">5</span>
+          <span class="brand-stat-lbl">Modelos</span>
+        </div>
+        <div class="brand-stat">
+          <span class="brand-stat-val">R$ 139</span>
+          <span class="brand-stat-lbl">A partir de/dia</span>
+        </div>
+      </div>
+      <div class="brand-footer">
+        <div class="brand-models"><strong>HB20, Creta, Tucson</strong></div>
+        <a href="frota.html" class="btn-brand">Ver frota →</a>
+      </div>
+    </div>
+
+    <!-- Toyota -->
+    <div class="brand-card reveal" data-origem="japao" data-segmento="popular suv premium" data-name="toyota">
+      <div class="brand-logo-wrap">🏁</div>
+      <div class="brand-name">Toyota</div>
+      <div class="brand-country">🇯🇵 Japão</div>
+      <div class="brand-tag">SUV · Premium</div>
+      <div class="brand-stats">
+        <div class="brand-stat">
+          <span class="brand-stat-val">5</span>
+          <span class="brand-stat-lbl">Modelos</span>
+        </div>
+        <div class="brand-stat">
+          <span class="brand-stat-val">R$ 179</span>
+          <span class="brand-stat-lbl">A partir de/dia</span>
+        </div>
+      </div>
+      <div class="brand-footer">
+        <div class="brand-models"><strong>Corolla, Yaris, SW4</strong></div>
+        <a href="frota.html" class="btn-brand">Ver frota →</a>
+      </div>
+    </div>
+
+    <!-- Honda -->
+    <div class="brand-card reveal" data-origem="japao" data-segmento="popular premium" data-name="honda">
+      <div class="brand-logo-wrap">🏍️</div>
+      <div class="brand-name">Honda</div>
+      <div class="brand-country">🇯🇵 Japão</div>
+      <div class="brand-tag">Popular · Premium</div>
+      <div class="brand-stats">
+        <div class="brand-stat">
+          <span class="brand-stat-val">4</span>
+          <span class="brand-stat-lbl">Modelos</span>
+        </div>
+        <div class="brand-stat">
+          <span class="brand-stat-val">R$ 159</span>
+          <span class="brand-stat-lbl">A partir de/dia</span>
+        </div>
+      </div>
+      <div class="brand-footer">
+        <div class="brand-models"><strong>HR-V, City, Civic</strong></div>
+        <a href="frota.html" class="btn-brand">Ver frota →</a>
+      </div>
+    </div>
+
+    <!-- Jeep -->
+    <div class="brand-card reveal" data-origem="eua" data-segmento="suv premium" data-name="jeep">
+      <div class="brand-logo-wrap">🏔️</div>
+      <div class="brand-name">Jeep</div>
+      <div class="brand-country">🇺🇸 EUA</div>
+      <div class="brand-tag">SUV · Premium</div>
+      <div class="brand-stats">
+        <div class="brand-stat">
+          <span class="brand-stat-val">4</span>
+          <span class="brand-stat-lbl">Modelos</span>
+        </div>
+        <div class="brand-stat">
+          <span class="brand-stat-val">R$ 219</span>
+          <span class="brand-stat-lbl">A partir de/dia</span>
+        </div>
+      </div>
+      <div class="brand-footer">
+        <div class="brand-models"><strong>Compass, Renegade, Grand</strong></div>
+        <a href="frota.html" class="btn-brand">Ver frota →</a>
+      </div>
+    </div>
+
+    <!-- Kia -->
+    <div class="brand-card reveal" data-origem="coreia" data-segmento="popular suv" data-name="kia">
+      <div class="brand-logo-wrap">🌟</div>
+      <div class="brand-name">Kia</div>
+      <div class="brand-country">🇰🇷 Coreia do Sul</div>
+      <div class="brand-tag">Popular · SUV</div>
+      <div class="brand-stats">
+        <div class="brand-stat">
+          <span class="brand-stat-val">3</span>
+          <span class="brand-stat-lbl">Modelos</span>
+        </div>
+        <div class="brand-stat">
+          <span class="brand-stat-val">R$ 149</span>
+          <span class="brand-stat-lbl">A partir de/dia</span>
+        </div>
+      </div>
+      <div class="brand-footer">
+        <div class="brand-models"><strong>Sportage, Soul, Stonic</strong></div>
+        <a href="frota.html" class="btn-brand">Ver frota →</a>
+      </div>
+    </div>
+
+    <!-- Renault -->
+    <div class="brand-card reveal" data-origem="alemanha" data-segmento="popular suv" data-name="renault">
+      <div class="brand-logo-wrap">💫</div>
+      <div class="brand-name">Renault</div>
+      <div class="brand-country">🇫🇷 França</div>
+      <div class="brand-tag">Popular · SUV</div>
+      <div class="brand-stats">
+        <div class="brand-stat">
+          <span class="brand-stat-val">4</span>
+          <span class="brand-stat-lbl">Modelos</span>
+        </div>
+        <div class="brand-stat">
+          <span class="brand-stat-val">R$ 129</span>
+          <span class="brand-stat-lbl">A partir de/dia</span>
+        </div>
+      </div>
+      <div class="brand-footer">
+        <div class="brand-models"><strong>Kwid, Duster, Sandero</strong></div>
+        <a href="frota.html" class="btn-brand">Ver frota →</a>
+      </div>
+    </div>
+
+    <!-- Nissan -->
+    <div class="brand-card reveal" data-origem="japao" data-segmento="popular suv eletrico" data-name="nissan">
+      <div class="brand-logo-wrap">🔋</div>
+      <div class="brand-name">Nissan</div>
+      <div class="brand-country">🇯🇵 Japão</div>
+      <div class="brand-tag">SUV · Elétrico</div>
+      <div class="brand-stats">
+        <div class="brand-stat">
+          <span class="brand-stat-val">3</span>
+          <span class="brand-stat-lbl">Modelos</span>
+        </div>
+        <div class="brand-stat">
+          <span class="brand-stat-val">R$ 199</span>
+          <span class="brand-stat-lbl">A partir de/dia</span>
+        </div>
+      </div>
+      <div class="brand-footer">
+        <div class="brand-models"><strong>Kicks, Frontier, Leaf</strong></div>
+        <a href="frota.html" class="btn-brand">Ver frota →</a>
+      </div>
+    </div>
+
+    <!-- BYD -->
+    <div class="brand-card reveal" data-origem="coreia" data-segmento="eletrico suv premium" data-name="byd">
+      <div class="brand-logo-wrap">⚡</div>
+      <div class="brand-name">BYD</div>
+      <div class="brand-country">🇨🇳 China</div>
+      <div class="brand-tag">Elétrico · Premium</div>
+      <div class="brand-stats">
+        <div class="brand-stat">
+          <span class="brand-stat-val">3</span>
+          <span class="brand-stat-lbl">Modelos</span>
+        </div>
+        <div class="brand-stat">
+          <span class="brand-stat-val">R$ 249</span>
+          <span class="brand-stat-lbl">A partir de/dia</span>
+        </div>
+      </div>
+      <div class="brand-footer">
+        <div class="brand-models"><strong>Dolphin, Seal, Atto 3</strong></div>
+        <a href="frota.html" class="btn-brand">Ver frota →</a>
+      </div>
+    </div>
+
+    <!-- Caoa Chery -->
+    <div class="brand-card reveal" data-origem="brasil" data-segmento="popular suv" data-name="caoa chery">
+      <div class="brand-logo-wrap">🏭</div>
+      <div class="brand-name">Caoa Chery</div>
+      <div class="brand-country">🇧🇷 Brasil / China</div>
+      <div class="brand-tag">Popular · SUV</div>
+      <div class="brand-stats">
+        <div class="brand-stat">
+          <span class="brand-stat-val">3</span>
+          <span class="brand-stat-lbl">Modelos</span>
+        </div>
+        <div class="brand-stat">
+          <span class="brand-stat-val">R$ 134</span>
+          <span class="brand-stat-lbl">A partir de/dia</span>
+        </div>
+      </div>
+      <div class="brand-footer">
+        <div class="brand-models"><strong>Tiggo 5x, 7, 8 Pro</strong></div>
+        <a href="frota.html" class="btn-brand">Ver frota →</a>
+      </div>
+    </div>
+
+    <!-- No results placeholder -->
+    <div class="no-results" id="noResults">
+      <span class="no-results-icon">🔍</span>
+      <div class="no-results-text">Nenhuma marca encontrada</div>
+      <div class="no-results-sub">Tente um termo diferente ou limpe os filtros</div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ─── CTA ─── -->
+<section class="cta-marcas">
+  <div class="cta-marcas-inner reveal">
+    <h2 class="cta-marcas-title">Pronto para escolher seu carro?</h2>
+    <p class="cta-marcas-sub">Escolha sua marca favorita, reserve online em menos de 2 minutos e retire sem filas. É simples assim.</p>
+    <div class="cta-marcas-btns">
+      <a href="frota.html" class="btn-cta-white">Ver toda a frota →</a>
+      <a href="index.html" class="btn-cta-outline">Fazer reserva</a>
+    </div>
+  </div>
+</section>
+
+<!-- ─── FOOTER ─── -->
+<footer>
+  <div class="footer-top">
+    <div class="footer-brand">
+      <span class="logo-footer">NO<span>VARE</span></span>
+      <p>Mobilidade inteligente para o Brasil. Alugue com transparência, tecnologia e cuidado.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Serviços</h4>
+      <a href="#">Aluguel diário</a>
+      <a href="#">Assinatura mensal</a>
+      <a href="#">Frota empresarial</a>
+      <a href="#">Aeroportos</a>
+    </div>
+    <div class="footer-col">
+      <h4>Empresa</h4>
+      <a href="#">Sobre nós</a>
+      <a href="#">Blog</a>
+      <a href="#">Trabalhe conosco</a>
+      <a href="#">Imprensa</a>
+    </div>
+    <div class="footer-col">
+      <h4>Ajuda</h4>
+      <a href="#">FAQ</a>
+      <a href="#">Contato</a>
+      <a href="#">Privacidade</a>
+      <a href="#">Termos de uso</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2025 Novare. Todos os direitos reservados.</span>
+    <div class="footer-badges">
+      <div class="footer-badge">SSL Seguro</div>
+      <div class="footer-badge">CNPJ: 00.000.000/0001-00</div>
+      <div class="footer-badge">RNTRC Autorizado</div>
+    </div>
+  </div>
+</footer>
+
+<script>
+  /* ─── REVEAL ON SCROLL ─── */
+  const observer = new IntersectionObserver(
+    entries => entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); }),
+    { threshold: 0.1 }
+  );
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+  /* ─── STATE ─── */
+  let activeOrigem = 'todos';
+  let activeSegmento = 'todos';
+  let searchQuery = '';
+
+  /* ─── FILTER BY ORIGEM ─── */
+  function filterOrigem(el, origem) {
+    document.querySelectorAll('.origem-card').forEach(c => c.classList.remove('active'));
+    el.classList.add('active');
+    activeOrigem = origem;
+    applyFilters();
+  }
+
+  /* ─── FILTER BY SEGMENTO ─── */
+  function filterSegment(el, seg) {
+    document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+    el.classList.add('active');
+    activeSegmento = seg;
+    applyFilters();
+  }
+
+  /* ─── SEARCH ─── */
+  function searchBrands(val) {
+    searchQuery = val.toLowerCase().trim();
+    applyFilters();
+  }
+
+  /* ─── APPLY ALL FILTERS ─── */
+  function applyFilters() {
+    const cards = document.querySelectorAll('.brand-card[data-name]');
+    let visible = 0;
+
+    cards.forEach(card => {
+      const origem = card.dataset.origem;
+      const segmento = card.dataset.segmento;
+      const name = card.dataset.name;
+
+      const matchOrigem = activeOrigem === 'todos' || origem === activeOrigem;
+      const matchSeg = activeSegmento === 'todos' || segmento.includes(activeSegmento);
+      const matchSearch = !searchQuery || name.includes(searchQuery);
+
+      if (matchOrigem && matchSeg && matchSearch) {
+        card.style.display = '';
+        visible++;
+      } else {
+        card.style.display = 'none';
+      }
+    });
+
+    document.getElementById('visibleCount').textContent = visible;
+    const noRes = document.getElementById('noResults');
+    noRes.style.display = visible === 0 ? 'block' : 'none';
+  }
+
+  /* ─── STAGGER CARD ANIMATION ─── */
+  document.querySelectorAll('.brand-card').forEach((card, i) => {
+    card.style.transitionDelay = (i * 60) + 'ms';
+  });
+</script>
+</body>
+</html>

@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Novare | Frota Completa</title>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <style>
+    
+    /* ─── PAGE HEADER ─── */
+    .page-header {
+      background: var(--light);
+      border-bottom: 1px solid var(--border);
+      padding: 2.5rem 5%;
+      margin-top: 68px;
+    }
+    .page-header-inner {
+      max-width: 1280px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+    .breadcrumb {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.82rem;
+      color: var(--muted);
+      margin-bottom: 0.5rem;
+    }
+    .breadcrumb a {
+      color: var(--purple);
+      text-decoration: none;
+    }
+    .breadcrumb a:hover { text-decoration: underline; }
+    .breadcrumb-sep { opacity: 0.4; }
+    .page-header h1 {
+      font-family: 'Syne', sans-serif;
+      font-size: 2rem;
+      font-weight: 800;
+      color: var(--text);
+      letter-spacing: -0.8px;
+    }
+    .result-count {
+      font-size: 0.85rem;
+      color: var(--muted);
+      font-weight: 400;
+    }
+    .result-count strong { color: var(--purple); font-weight: 700; }
+
+    /* ─── SORT ─── */
+    .sort-select {
+      background: var(--white);
+      border: 1.5px solid var(--border);
+      border-radius: 8px;
+      padding: 0.5rem 1rem;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.88rem;
+      color: var(--text);
+      cursor: pointer;
+      outline: none;
+    }
+    .sort-select:focus { border-color: var(--purple); }
+
+    /* ─── LAYOUT ─── */
+    .fleet-layout {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 2.5rem 5%;
+      display: grid;
+      grid-template-columns: 260px 1fr;
+      gap: 2.5rem;
+      align-items: start;
+    }
+
+    /* ─── SIDEBAR ─── */
+    .sidebar {
+      position: sticky;
+      top: 88px;
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    .filter-card {
+      background: var(--white);
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 1.4rem;
+    }
+
+    .filter-title {
+      font-family: 'Syne', sans-serif;
+      font-weight: 700;
+      font-size: 0.88rem;
+      color: var(--text);
+      margin-bottom: 1rem;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+    }
+
+    /* category pills */
+    .filter-pills {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .pill {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.5rem 0.75rem;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.18s;
+      font-size: 0.88rem;
+      color: var(--text);
+      border: 1.5px solid transparent;
+    }
+    .pill:hover { background: var(--purple-pale); }
+    .pill.active {
+      background: var(--purple-pale);
+      border-color: var(--purple-mid);
+      color: var(--purple);
+      font-weight: 600;
+    }
+    .pill-left { display: flex; align-items: center; gap: 8px; }
+    .pill-count {
+      font-size: 0.73rem;
+      color: var(--muted);
+      background: var(--light);
+      border-radius: 100px;
+      padding: 1px 8px;
+    }
+    .pill.active .pill-count { background: var(--purple-mid); color: var(--purple-dark); }
+
+    /* price range */
+    .price-range {
+      display: flex;
+      flex-direction: column;
+      gap: 0.8rem;
+    }
+    .range-inputs {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.5rem;
+    }
+    .range-input {
+      background: var(--off-white);
+      border: 1.5px solid var(--border);
+      border-radius: 8px;
+      padding: 0.5rem 0.7rem;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.85rem;
+      color: var(--text);
+      outline: none;
+      width: 100%;
+    }
+    .range-input:focus { border-color: var(--purple); }
+    .range-label {
+      font-size: 0.72rem;
+      color: var(--muted);
+      margin-bottom: 2px;
+    }
+
+    /* transmission checkboxes */
+    .check-list {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .check-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 0.88rem;
+      color: var(--text);
+      cursor: pointer;
+    }
+    .check-item input[type="checkbox"] {
+      accent-color: var(--purple);
+      width: 15px; height: 15px;
+      cursor: pointer;
+    }
+
+    /* clear button */
+    .btn-clear {
+      width: 100%;
+      background: transparent;
+      border: 1.5px solid var(--border);
+      border-radius: 8px;
+      padding: 0.55rem;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.85rem;
+      color: var(--muted);
+      cursor: pointer;
+      transition: all 0.18s;
+    }
+    .btn-clear:hover { border-color: var(--purple); color: var(--purple); }
+
+    /* ─── FLEET GRID (frota page) ─── */
+    .fleet-grid-full {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
+      gap: 1.2rem;
+    }
+
+    /* empty state */
+    .empty-state {
+      grid-column: 1 / -1;
+      text-align: center;
+      padding: 4rem 2rem;
+      color: var(--muted);
+    }
+    .empty-state p { font-size: 0.95rem; }
+
+    /* ─── RESPONSIVE ─── */
+    @media (max-width: 860px) {
+      .fleet-layout {
+        grid-template-columns: 1fr;
+        padding: 2rem 4%;
+      }
+      .sidebar {
+        position: static;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1rem;
+      }
+    }
+    @media (max-width: 520px) {
+      .sidebar { grid-template-columns: 1fr; }
+      .page-header { padding: 2rem 4%; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ─── NAVBAR ─── -->
+<header class="navbar">
+  <a href="index.html" class="logo" style="text-decoration:none;">NO<span>VARE</span></a>
+  <nav class="nav-links">
+    <a href="index.html">Início</a>
+    <a href="frota.html" style="color: var(--purple); font-weight:600;">Frota</a>
+    <a href="marcas.html">Marcas</a>
+    <a href="#">Localidades</a>
+    <a href="#">Empresa</a>
+  </nav>
+  <div class="nav-actions">
+    <button class="btn-ghost">Cadastrar</button>
+    <button class="btn-primary">Minha Conta</button>
+  </div>
+</header>
+
+<!-- ─── PAGE HEADER ─── -->
+<div class="page-header">
+  <div class="page-header-inner">
+    <div>
+      <div class="breadcrumb">
+        <a href="index.html">Início</a>
+        <span class="breadcrumb-sep">›</span>
+        <span>Frota completa</span>
+      </div>
+      <h1>Frota completa</h1>
+      <p class="result-count" id="resultCount"><strong>18</strong> veículos disponíveis</p>
+    </div>
+    <select class="sort-select" id="sortSelect" onchange="sortCars()">
+      <option value="preco-asc">Menor preço</option>
+      <option value="preco-desc">Maior preço</option>
+      <option value="nome">Nome A–Z</option>
+    </select>
+  </div>
+</div>
+
+<!-- ─── MAIN LAYOUT ─── -->
+<div class="fleet-layout">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+
+    <div class="filter-card">
+      <div class="filter-title">Categoria</div>
+      <div class="filter-pills">
+        <div class="pill active" onclick="setCat(this,'todos')">
+          <span class="pill-left">🚗 Todos</span>
+          <span class="pill-count">18</span>
+        </div>
+        <div class="pill" onclick="setCat(this,'economico')">
+          <span class="pill-left">💨 Econômico</span>
+          <span class="pill-count">5</span>
+        </div>
+        <div class="pill" onclick="setCat(this,'intermediario')">
+          <span class="pill-left">🚙 Intermediário</span>
+          <span class="pill-count">5</span>
+        </div>
+        <div class="pill" onclick="setCat(this,'suv')">
+          <span class="pill-left">🏔️ SUV</span>
+          <span class="pill-count">4</span>
+        </div>
+        <div class="pill" onclick="setCat(this,'premium')">
+          <span class="pill-left">💎 Premium</span>
+          <span class="pill-count">2</span>
+        </div>
+        <div class="pill" onclick="setCat(this,'eletrico')">
+          <span class="pill-left">⚡ Elétrico</span>
+          <span class="pill-count">2</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="filter-card">
+      <div class="filter-title">Preço / dia</div>
+      <div class="price-range">
+        <div class="range-inputs">
+          <div>
+            <div class="range-label">Mínimo</div>
+            <input class="range-input" type="number" id="priceMin" placeholder="R$ 0" min="0" onchange="applyFilters()">
+          </div>
+          <div>
+            <div class="range-label">Máximo</div>
+            <input class="range-input" type="number" id="priceMax" placeholder="R$ 999" min="0" onchange="applyFilters()">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="filter-card">
+      <div class="filter-title">Câmbio</div>
+      <div class="check-list">
+        <label class="check-item">
+          <input type="checkbox" value="Automático" checked onchange="applyFilters()"> Automático
+        </label>
+        <label class="check-item">
+          <input type="checkbox" value="Manual" checked onchange="applyFilters()"> Manual
+        </label>
+      </div>
+    </div>
+
+    <button class="btn-clear" onclick="clearFilters()">Limpar filtros</button>
+
+  </aside>
+
+  <!-- GRID -->
+  <main>
+    <div class="fleet-grid-full" id="carGrid"></div>
+  </main>
+
+</div>
+
+<!-- ─── FOOTER ─── -->
+<footer>
+  <div class="footer-top">
+    <div class="footer-brand">
+      <span class="logo-footer">NO<span>VARE</span></span>
+      <p>Mobilidade inteligente para o Brasil. Alugue com transparência, tecnologia e cuidado.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Serviços</h4>
+      <a href="#">Aluguel diário</a>
+      <a href="#">Assinatura mensal</a>
+      <a href="#">Frota empresarial</a>
+      <a href="#">Aeroportos</a>
+    </div>
+    <div class="footer-col">
+      <h4>Empresa</h4>
+      <a href="#">Sobre nós</a>
+      <a href="#">Blog</a>
+      <a href="#">Trabalhe conosco</a>
+      <a href="#">Imprensa</a>
+    </div>
+    <div class="footer-col">
+      <h4>Ajuda</h4>
+      <a href="#">FAQ</a>
+      <a href="#">Contato</a>
+      <a href="#">Privacidade</a>
+      <a href="#">Termos de uso</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2025 Novare. Todos os direitos reservados.</span>
+    <div class="footer-badges">
+      <div class="footer-badge">SSL Seguro</div>
+      <div class="footer-badge">CNPJ: 00.000.000/0001-00</div>
+      <div class="footer-badge">RNTRC Autorizado</div>
+    </div>
+  </div>
+</footer>
+
+<script src="script.js"></script>
+<script>
+  /* ── frota page state ── */
+  let activeCat = 'todos';
+
+  function setCat(el, cat) {
+    document.querySelectorAll('.pill').forEach(p => p.classList.remove('active'));
+    el.classList.add('active');
+    activeCat = cat;
+    applyFilters();
+  }
+
+  function applyFilters() {
+    const minP = parseFloat(document.getElementById('priceMin').value) || 0;
+    const maxP = parseFloat(document.getElementById('priceMax').value) || Infinity;
+    const checked = Array.from(document.querySelectorAll('.check-list input:checked')).map(i => i.value);
+
+    let list = activeCat === 'todos' ? allCars : allCars.filter(c => c.cat === activeCat);
+    list = list.filter(c => c.price >= minP && c.price <= maxP && checked.includes(c.trans));
+
+    const sort = document.getElementById('sortSelect').value;
+    if (sort === 'preco-asc') list.sort((a, b) => a.price - b.price);
+    else if (sort === 'preco-desc') list.sort((a, b) => b.price - a.price);
+    else list.sort((a, b) => a.name.localeCompare(b.name));
+
+    renderFlota(list);
+  }
+
+  function sortCars() { applyFilters(); }
+
+  function clearFilters() {
+    document.getElementById('priceMin').value = '';
+    document.getElementById('priceMax').value = '';
+    document.querySelectorAll('.check-list input').forEach(i => i.checked = true);
+    document.querySelectorAll('.pill').forEach(p => p.classList.remove('active'));
+    document.querySelector('.pill').classList.add('active');
+    activeCat = 'todos';
+    applyFilters();
+  }
+
+  function renderFlota(list) {
+    const grid = document.getElementById('carGrid');
+    document.getElementById('resultCount').innerHTML =
+      `<strong>${list.length}</strong> veículo${list.length !== 1 ? 's' : ''} disponível${list.length !== 1 ? 'is' : ''}`;
+
+    if (list.length === 0) {
+      grid.innerHTML = `<div class="empty-state"><p>Nenhum veículo encontrado com esses filtros.</p></div>`;
+      return;
+    }
+
+    grid.innerHTML = list.map((car, i) => `
+      <div class="car-card reveal" style="animation-delay:${i * 0.05}s">
+        <div class="car-img-wrap">
+          ${car.badge ? `<span class="car-badge ${car.badgeClass}">${car.badge}</span>` : ''}
+          ${drawCarSVG(car.cat)}
+        </div>
+        <div class="car-info">
+          <div class="car-category">${car.label}</div>
+          <div class="car-name">${car.name}</div>
+          <div class="car-specs">
+            <div class="spec-item">
+              <span class="spec-val">${car.km}</span>
+              <span class="spec-lbl">Quilômetros</span>
+            </div>
+            <div class="spec-item">
+              <span class="spec-val">${car.pass} lug.</span>
+              <span class="spec-lbl">Passageiros</span>
+            </div>
+            <div class="spec-item">
+              <span class="spec-val">${car.trans}</span>
+              <span class="spec-lbl">Câmbio</span>
+            </div>
+          </div>
+          <div class="car-footer">
+            <div class="car-price">
+              <div class="price-from">A partir de</div>
+              <div>
+                <span class="price-val">R$${car.price}</span>
+                <span class="price-unit">/dia</span>
+              </div>
+            </div>
+            <button class="btn-rent">Reservar</button>
+          </div>
+        </div>
+      </div>
+    `).join('');
+
+    setTimeout(() => {
+      document.querySelectorAll('.car-card.reveal').forEach(el => el.classList.add('visible'));
+    }, 60);
+  }
+
+  /* initial render */
+  applyFilters();
+</script>
+</body>
+</html>
