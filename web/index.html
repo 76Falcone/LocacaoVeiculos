@@ -1,10 +1,275 @@
-<html>
-    <head>
-        <title>TODO supply a title</title>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    </head>
-    <body>
-        <div>TODO write content</div>
-    </body>
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Novare | Aluguel de Carros</title>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- ─── NAVBAR ─── -->
+<header class="navbar">
+  <div class="logo">NO<span>VARE</span></div>
+  <nav class="nav-links">
+    <a href="index.html">Início</a>
+    <a href="frota.html">Alugar</a>
+    <a href="marcas.html">Marcas</a>
+  </nav>
+  <div class="nav-actions">
+    <button class="btn-ghost">Cadastrar</button>
+    <button class="btn-primary">Minha Conta</button>
+  </div>
+</header>
+
+<!-- ─── HERO ─── -->
+<section class="hero">
+  <div class="hero-content">
+    <span class="hero-badge">
+      <span class="hero-badge-dot"></span>
+      Mais de 50 cidades no Brasil
+    </span>
+    <h1 class="hero-title">Sua próxima<br>jornada começa<br><em>aqui.</em></h1>
+    <p class="hero-sub">Carros de qualidade, preços transparentes e processo 100% digital. Alugue em minutos, dirija com liberdade.</p>
+
+    <div class="search-box">
+      <div class="search-row">
+        <div class="field">
+          <label for="location">📍 Local de Retirada</label>
+          <input type="text" id="location" placeholder="Cidade ou aeroporto...">
+        </div>
+        <div class="field-divider"></div>
+        <div class="field field-sm">
+          <label for="pickup">📅 Retirada</label>
+          <input type="date" id="pickup">
+        </div>
+        <div class="field-divider"></div>
+        <div class="field field-sm">
+          <label for="return">📅 Devolução</label>
+          <input type="date" id="return">
+        </div>
+      </div>
+      <button class="btn-search" onclick="buscarCarros()">Buscar carros →</button>
+    </div>
+  </div>
+</section>
+
+<!-- ─── TRUST BAR ─── -->
+<div class="trust-bar">
+  <div class="trust-item"><span class="trust-dot"></span>Cobertura total incluída</div>
+  <div class="trust-item"><span class="trust-dot"></span>Reserva em 2 minutos</div>
+  <div class="trust-item"><span class="trust-dot"></span>Retirada sem filas</div>
+  <div class="trust-item"><span class="trust-dot"></span>Suporte 24h / 7 dias</div>
+  <div class="trust-item"><span class="trust-dot"></span>+120.000 clientes satisfeitos</div>
+</div>
+
+<!-- ─── CATEGORIES ─── -->
+<section class="section categories">
+  <div class="section-header reveal">
+    <span class="section-label">Encontre o seu</span>
+    <h2 class="section-title">Categorias de Veículos</h2>
+    <p class="section-sub">Do econômico ao premium, temos o carro certo para cada ocasião.</p>
+  </div>
+  <div class="cat-grid reveal">
+    <div class="cat-card active" onclick="filterCat(this,'todos')">
+      <span class="cat-icon">🚗</span>
+      <div class="cat-name">Todos</div>
+      <div class="cat-count">48 carros</div>
+    </div>
+    <div class="cat-card" onclick="filterCat(this,'economico')">
+      <span class="cat-icon">💨</span>
+      <div class="cat-name">Econômico</div>
+      <div class="cat-count">14 carros</div>
+    </div>
+    <div class="cat-card" onclick="filterCat(this,'intermediario')">
+      <span class="cat-icon">🚙</span>
+      <div class="cat-name">Intermediário</div>
+      <div class="cat-count">12 carros</div>
+    </div>
+    <div class="cat-card" onclick="filterCat(this,'suv')">
+      <span class="cat-icon">🏔️</span>
+      <div class="cat-name">SUV</div>
+      <div class="cat-count">10 carros</div>
+    </div>
+    <div class="cat-card" onclick="filterCat(this,'premium')">
+      <span class="cat-icon">💎</span>
+      <div class="cat-name">Premium</div>
+      <div class="cat-count">6 carros</div>
+    </div>
+    <div class="cat-card" onclick="filterCat(this,'eletrico')">
+      <span class="cat-icon">⚡</span>
+      <div class="cat-name">Elétrico</div>
+      <div class="cat-count">6 carros</div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── FLEET PREVIEW ─── -->
+<section class="section" style="padding-top: 1rem;" id="fleet-section">
+  <div class="fleet-grid" id="carGrid"></div>
+  <div style="text-align:center; margin-top: 3rem;">
+    <a href="frota.html" class="btn-frota">Ver toda a frota →</a>
+  </div>
+</section>
+
+<!-- ─── HOW IT WORKS ─── -->
+<section class="section how">
+  <div class="section-header reveal">
+    <span class="section-label">Processo simples</span>
+    <h2 class="section-title">Como funciona</h2>
+    <p class="section-sub">Do celular à estrada em menos de 3 minutos.</p>
+  </div>
+  <div class="steps-grid reveal">
+    <div class="step">
+      <div class="step-num">01</div>
+      <div class="step-icon">📍</div>
+      <div class="step-title">Escolha o local</div>
+      <div class="step-desc">Selecione a cidade, aeroporto ou agência mais próxima de você.</div>
+    </div>
+    <div class="step">
+      <div class="step-num">02</div>
+      <div class="step-icon">🚗</div>
+      <div class="step-title">Escolha o carro</div>
+      <div class="step-desc">Filtre por categoria, preço ou funcionalidades. Sem letras miúdas.</div>
+    </div>
+    <div class="step">
+      <div class="step-num">03</div>
+      <div class="step-icon">💳</div>
+      <div class="step-title">Confirme e pague</div>
+      <div class="step-desc">PIX, cartão ou faturamento empresarial. Rápido e seguro.</div>
+    </div>
+    <div class="step">
+      <div class="step-num">04</div>
+      <div class="step-icon">🔑</div>
+      <div class="step-title">Retire e dirija</div>
+      <div class="step-desc">Sem filas. Retirada digital com seu QR Code no celular.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── BENEFITS ─── -->
+<section class="section">
+  <div class="section-header reveal">
+    <span class="section-label">Por que a Novare</span>
+    <h2 class="section-title">Vantagens que fazem a diferença</h2>
+  </div>
+  <div class="benefits-grid reveal">
+    <div class="benefit-card">
+      <div class="benefit-icon-wrap">🛡️</div>
+      <div class="benefit-title">Cobertura total</div>
+      <div class="benefit-desc">Seguro com cobertura completa sem taxa de franquia. Você dirige, a gente cuida do resto.</div>
+    </div>
+    <div class="benefit-card">
+      <div class="benefit-icon-wrap">📱</div>
+      <div class="benefit-title">100% digital</div>
+      <div class="benefit-desc">Contrato assinado no celular, retirada por QR Code. Nada de papel nem espera.</div>
+    </div>
+    <div class="benefit-card">
+      <div class="benefit-icon-wrap">⛽</div>
+      <div class="benefit-title">Combustível flexível</div>
+      <div class="benefit-desc">Devolva com o tanque vazio. Abastecemos por você sem burocracia.</div>
+    </div>
+    <div class="benefit-card">
+      <div class="benefit-icon-wrap">🏆</div>
+      <div class="benefit-title">Programa Novare+</div>
+      <div class="benefit-desc">Acumule pontos a cada locação e troque por upgrades, diárias grátis e muito mais.</div>
+    </div>
+    <div class="benefit-card">
+      <div class="benefit-icon-wrap">🌎</div>
+      <div class="benefit-title">+50 cidades</div>
+      <div class="benefit-desc">Presença em todos os principais aeroportos e centros urbanos do Brasil.</div>
+    </div>
+    <div class="benefit-card">
+      <div class="benefit-icon-wrap">🔧</div>
+      <div class="benefit-title">Assistência 24h</div>
+      <div class="benefit-desc">Em caso de pane, acidente ou dúvida, estamos disponíveis a qualquer hora.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── TESTIMONIALS ─── -->
+<section class="section" style="background: var(--light);">
+  <div class="section-header reveal">
+    <span class="section-label">Avaliações</span>
+    <h2 class="section-title">O que nossos clientes dizem</h2>
+  </div>
+  <div class="testimonials-grid reveal">
+    <div class="testimonial">
+      <div class="stars">★★★★★</div>
+      <p class="testimonial-text">"Processo incrivelmente simples. Reservei pelo celular, cheguei no aeroporto e o carro já estava pronto. Sem filas, sem papel."</p>
+      <div class="testimonial-author">
+        <div class="author-avatar">RM</div>
+        <div>
+          <div class="author-name">Rafael Mendes</div>
+          <div class="author-city">São Paulo, SP</div>
+        </div>
+      </div>
+    </div>
+    <div class="testimonial">
+      <div class="stars">★★★★★</div>
+      <p class="testimonial-text">"Carro impecável, processo todo pelo app. Nunca precisei entrar em uma fila ou assinar papel. Recomendo demais."</p>
+      <div class="testimonial-author">
+        <div class="author-avatar">CS</div>
+        <div>
+          <div class="author-name">Carla Santos</div>
+          <div class="author-city">Rio de Janeiro, RJ</div>
+        </div>
+      </div>
+    </div>
+    <div class="testimonial">
+      <div class="stars">★★★★☆</div>
+      <p class="testimonial-text">"Atendimento 24h funcionou de verdade quando tive um problema na estrada. Suporte rápido e resolutivo. Diferente das locadoras tradicionais."</p>
+      <div class="testimonial-author">
+        <div class="author-avatar">AL</div>
+        <div>
+          <div class="author-name">André Lima</div>
+          <div class="author-city">Curitiba, PR</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── FOOTER ─── -->
+<footer>
+  <div class="footer-top">
+    <div class="footer-brand">
+      <span class="logo-footer">NO<span>VARE</span></span>
+      <p>Mobilidade inteligente para o Brasil. Alugue com transparência, tecnologia e cuidado.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Serviços</h4>
+      <a href="#">Aluguel diário</a>
+      <a href="#">Assinatura mensal</a>
+      <a href="#">Frota empresarial</a>
+      <a href="#">Aeroportos</a>
+    </div>
+    <div class="footer-col">
+      <h4>Empresa</h4>
+      <a href="#">Sobre nós</a>
+      <a href="#">Blog</a>
+      <a href="#">Trabalhe conosco</a>
+      <a href="#">Imprensa</a>
+    </div>
+    <div class="footer-col">
+      <h4>Ajuda</h4>
+      <a href="#">FAQ</a>
+      <a href="#">Contato</a>
+      <a href="#">Privacidade</a>
+      <a href="#">Termos de uso</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2025 Novare. Todos os direitos reservados.</span>
+    <div class="footer-badges">
+      <div class="footer-badge">SSL Seguro</div>
+      <div class="footer-badge">CNPJ: 00.000.000/0001-00</div>
+      <div class="footer-badge">RNTRC Autorizado</div>
+    </div>
+  </div>
+</footer>
+
+<script src="script.js"></script>
+</body>
 </html>
