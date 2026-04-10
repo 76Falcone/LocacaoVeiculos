@@ -4,10 +4,20 @@
  */
 package dao;
 
+import java.sql.SQLException;
+import java.util.List;
+import model.Usuario;
+
 /**
  *
  * @author 76Falcone
  */
 public interface IUsuario {
     
+        // Metodos para o UsuarioDAO
+    void cadastrarVeiculo(Usuario u)throws ClassNotFoundException, SQLException;
+    void deletarVeiculo(Usuario u)throws ClassNotFoundException, SQLException;
+    void atualizarVeiculo(Usuario u)throws ClassNotFoundException, SQLException;
+    Usuario visualizarVeiculoByID(Usuario u)throws ClassNotFoundException, SQLException;
+    List<Usuario> visualizarTodosVeiculos()throws ClassNotFoundException, SQLException;
 }
