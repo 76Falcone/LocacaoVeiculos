@@ -26,4 +26,13 @@ public class UsuarioDAO implements IUsuarioDAO{
         comando.execute();
         con.close();
     }
+    
+    // Deletar usuario
+    public void deletarUsuario(Usuario u)throws ClassNotFoundException, SQLException {
+        Connection con = FabricaConexao.getConexao();
+        PreparedStatement comando = con.prepareStatement("delete from usuario where id = ?");
+        comando.setInt(1, u.getIdUsuario());
+        comando.execute();
+        con.close();
+    }
 }
