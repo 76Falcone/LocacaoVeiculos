@@ -2,8 +2,10 @@ package dao;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import model.Usuario;
+import model.Veiculo;
 import util.FabricaConexao;
 
 /**
@@ -51,5 +53,27 @@ public class UsuarioDAO implements IUsuarioDAO{
         comando.setInt(7, u.getIdUsuario());
         comando.execute();
         con.close(); 
+    }
+
+    // Buscar por ID
+    @Override
+    public Usuario visualizarUsuarioByID(Usuario u)throws ClassNotFoundException, SQLException{
+        Connection con = FabricaConexao.getConexao();
+        PreparedStatement comando = con.prepareStatement("select * from usuario where id = ?");
+        comando.setInt(1, u.getIdUsuario());
+        ResultSet rs = comando.executeQuery();
+        Usuario user = new Usuario();
+
+        if (rs.next()) {
+            user.setIdUsuario(rs.getInt("id"));
+            user.setNomeUsuario(rs.getString("nomeUsuario"));
+            user.setCpfUsuario(rs.getString("cpfUsuario"));
+            user.setCnhUsuario(rs.getString("cnhUsuario"));
+            user.setEmailUsuario(rs.getString("emailUsuario"));
+            user.setSenhaUsuario(rs.getString("senhaUsuario"));
+            user.setCelularUsuario(rs.getString("celularUsuario"));
+        }
+        con.close();
+        return user;
     }
 }
