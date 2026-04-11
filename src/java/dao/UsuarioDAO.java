@@ -4,8 +4,10 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
 import model.Usuario;
-import model.Veiculo;
 import util.FabricaConexao;
 
 /**
@@ -76,4 +78,26 @@ public class UsuarioDAO implements IUsuarioDAO{
         con.close();
         return user;
     }
+
+    // Metodo de buscar todos
+    @Override
+    public List<Usuario> visualizarTodosUsuarios()throws ClassNotFoundException, SQLException{
+        Connection con = FabricaConexao.getConexao();
+        PreparedStatement comando = con.prepareStatement("select * from usuario");
+        ResultSet rs = comando.executeQuery();
+
+        List<Usuario> listaUsuario = new ArrayList<Usuario>();
+        while (rs.next()) {
+            Usuario user = new Usuario();
+            user.setIdUsuario(rs.getInt("id"));
+            user.setNomeUsuario(rs.getString("nomeUsuario"));
+            user.setCpfUsuario(rs.getString("cpfUsuario"));
+            user.setCnhUsuario(rs.getString("cnhUsuario"));
+            user.setEmailUsuario(rs.getString("emailUsuario"));
+            user.setSenhaUsuario(rs.getString("senhaUsuario"));
+            user.setCelularUsuario(rs.getString("celularUsuario"));           
+        }
+        return listaUsuario;
+    } 
+    
 }
