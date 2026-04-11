@@ -38,6 +38,7 @@ public class UsuarioDAO implements IUsuarioDAO{
     }
 
     // Atualizar usuario
+    @Override
     public void atualizarUsuario(Usuario u)throws ClassNotFoundException, SQLException {
         Connection con = FabricaConexao.getConexao();
         PreparedStatement comando = con.prepareStatement("update usuario set nomeUsuario = ?, cpfUsuario = ?, cnhUsuario = ?, emailUsuario = ?, senhaUsuario = ?, celularUsuario = ? where id = ?");
