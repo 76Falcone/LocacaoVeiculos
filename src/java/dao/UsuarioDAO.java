@@ -14,7 +14,7 @@ public class UsuarioDAO implements IUsuarioDAO{
     
     // Cadastrar usuario
     @Override
-    public void cadastrarVeiculo(Usuario u)throws ClassNotFoundException, SQLException {
+    public void cadastrarUsuario(Usuario u)throws ClassNotFoundException, SQLException {
         Connection con = FabricaConexao.getConexao();
         PreparedStatement comando = con.prepareStatement("insert into usuarios (nomeUsuario, cpfUsuario, cnhUsuario, emailUsuario, senhaUsuario, celularUsuario) value (?, ?, ?, ?, ?, ?)");
         comando.setString(1, u.getNomeUsuario());

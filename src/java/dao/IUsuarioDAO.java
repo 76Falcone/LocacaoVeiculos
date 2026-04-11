@@ -15,9 +15,9 @@ import model.Usuario;
 public interface IUsuarioDAO {
     
         // Metodos para o UsuarioDAO
-    void cadastrarVeiculo(Usuario u)throws ClassNotFoundException, SQLException;
-    void deletarVeiculo(Usuario u)throws ClassNotFoundException, SQLException;
-    void atualizarVeiculo(Usuario u)throws ClassNotFoundException, SQLException;
-    Usuario visualizarVeiculoByID(Usuario u)throws ClassNotFoundException, SQLException;
-    List<Usuario> visualizarTodosVeiculos()throws ClassNotFoundException, SQLException;
+    void cadastrarUsuario(Usuario u)throws ClassNotFoundException, SQLException;
+    void deletarUsuario(Usuario u)throws ClassNotFoundException, SQLException;
+    void atualizarUsuario(Usuario u)throws ClassNotFoundException, SQLException;
+    Usuario visualizarUsuarioByID(Usuario u)throws ClassNotFoundException, SQLException;
+    List<Usuario> visualizarTodosUsuarios()throws ClassNotFoundException, SQLException;
 }
