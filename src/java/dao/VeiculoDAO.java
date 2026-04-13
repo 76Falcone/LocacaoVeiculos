@@ -21,7 +21,7 @@ public class VeiculoDAO implements IVeiculoDAO {
     public void cadastrarVeiculo(Veiculo v) throws ClassNotFoundException, SQLException {
         Connection con = FabricaConexao.getConexao();
         PreparedStatement comando = con.prepareStatement(
-                "insert into veiculo (placa, modelo, cor, valor, funcionalidade, disponibilidade, arCondicionado, cambio) value (?, ?, ?, ?, ?, ?, ?, ?)");
+                "insert into veiculos (placa, modelo, cor, valorDiaria, funcionalidade, disponibilidade, arCondicionado, cambio) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
         comando.setString(1, v.getPlacaVeiculo());
         comando.setString(2, v.getModeloVeiculo());
         comando.setString(3, v.getCorVeiculo());
@@ -38,7 +38,7 @@ public class VeiculoDAO implements IVeiculoDAO {
     @Override
     public void deletarVeiculo(Veiculo v) throws ClassNotFoundException, SQLException {
         Connection con = FabricaConexao.getConexao();
-        PreparedStatement comando = con.prepareStatement("delete from veiculo where id = ?");
+        PreparedStatement comando = con.prepareStatement("delete from veiculos where id = ?");
         comando.setInt(1, v.getIdVeiculo());
         comando.execute();
         con.close();
@@ -49,7 +49,7 @@ public class VeiculoDAO implements IVeiculoDAO {
     public void atualizarVeiculo(Veiculo v) throws ClassNotFoundException, SQLException {
         Connection con = FabricaConexao.getConexao();
         PreparedStatement comando = con.prepareStatement(
-                "update veiculo set placa = ?, modelo = ?, cor = ?, valor = ?, funcionalidade = ?, disponibilidade = ?, arCondicionado = ?, cambio = ? where id = ?");
+                "update veiculos set placa = ?, modelo = ?, cor = ?, valorDiaria = ?, funcionalidade = ?, disponibilidade = ?, arCondicionado = ?, cambio = ? where id = ?");
         comando.setString(1, v.getPlacaVeiculo());
         comando.setString(2, v.getModeloVeiculo());
         comando.setString(3, v.getCorVeiculo());
@@ -67,7 +67,7 @@ public class VeiculoDAO implements IVeiculoDAO {
     @Override
     public Veiculo visualizarVeiculoByID(Veiculo v) throws ClassNotFoundException, SQLException {
         Connection con = FabricaConexao.getConexao();
-        PreparedStatement comando = con.prepareStatement("select * from veiculo where id = ?");
+        PreparedStatement comando = con.prepareStatement("select * from veiculos where id = ?");
         comando.setInt(1, v.getIdVeiculo());
         ResultSet rs = comando.executeQuery();
         Veiculo produtoVcl = new Veiculo();
@@ -90,7 +90,7 @@ public class VeiculoDAO implements IVeiculoDAO {
     @Override
     public List<Veiculo> visualizarTodosVeiculos() throws ClassNotFoundException, SQLException {
         Connection con = FabricaConexao.getConexao();
-        PreparedStatement comando = con.prepareStatement("select * from veiculo");
+        PreparedStatement comando = con.prepareStatement("select * from veiculos");
         ResultSet rs = comando.executeQuery();
 
         List<Veiculo> listaVeiculo = new ArrayList<Veiculo>();
