@@ -21,7 +21,7 @@ public class VeiculoDAO implements IVeiculoDAO {
     public void cadastrarVeiculo(Veiculo v) throws ClassNotFoundException, SQLException {
         Connection con = FabricaConexao.getConexao();
         PreparedStatement comando = con.prepareStatement(
-                "insert into veiculo (placaVeiculo, modeloVeiculo, corVeiculo, valorDiaria, funcionalidadeVeiculo, disponibilidade, arCondicionado, tipoCambio) value (?, ?, ?, ?, ?, ?, ?, ?)");
+                "insert into veiculo (placa, modelo, cor, valor, funcionalidade, disponibilidade, arCondicionado, cambio) value (?, ?, ?, ?, ?, ?, ?, ?)");
         comando.setString(1, v.getPlacaVeiculo());
         comando.setString(2, v.getModeloVeiculo());
         comando.setString(3, v.getCorVeiculo());
@@ -49,7 +49,7 @@ public class VeiculoDAO implements IVeiculoDAO {
     public void atualizarVeiculo(Veiculo v) throws ClassNotFoundException, SQLException {
         Connection con = FabricaConexao.getConexao();
         PreparedStatement comando = con.prepareStatement(
-                "update veiculo set placaVeiculo = ?, modeloVeiculo = ?, corVeiculo = ?, valorDiaria = ?, funcionalidadeVeiculo = ?, disponibilidade = ?, arCondicionado = ?, tipoCambio = ? where id = ?");
+                "update veiculo set placa = ?, modelo = ?, cor = ?, valor = ?, funcionalidade = ?, disponibilidade = ?, arCondicionado = ?, cambio = ? where id = ?");
         comando.setString(1, v.getPlacaVeiculo());
         comando.setString(2, v.getModeloVeiculo());
         comando.setString(3, v.getCorVeiculo());
