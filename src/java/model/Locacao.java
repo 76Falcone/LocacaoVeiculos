@@ -77,12 +77,12 @@ public class Locacao {
         this.seguroLocacao = seguroLocacao;
     }
     
-    public double getLocalRetirada() {
-        return seguroLocacao;
+    public String getLocalRetirada() {
+        return localRetirada;
     }
 
-    public void setLocalRetirada(double seguroLocacao) {
-        this.seguroLocacao = seguroLocacao;
+    public void setLocalRetirada(String localRetirada) {
+        this.localRetirada = localRetirada;
     }
 
     public double getValorTotal() {
