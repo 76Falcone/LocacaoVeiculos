@@ -21,7 +21,7 @@ public class UsuarioDAO implements IUsuarioDAO {
     public void cadastrarUsuario(Usuario u) throws ClassNotFoundException, SQLException {
         Connection con = FabricaConexao.getConexao();
         PreparedStatement comando = con.prepareStatement(
-                "insert into usuarios (nomeUsuario, cpfUsuario, cnhUsuario, emailUsuario, senhaUsuario, celularUsuario) value (?, ?, ?, ?, ?, ?)");
+                "insert into usuarios (nome, cpf, cnh, email, senha, celular) VALUES (?, ?, ?, ?, ?, ?)");
         comando.setString(1, u.getNomeUsuario());
         comando.setString(2, u.getCpfUsuario());
         comando.setString(3, u.getCnhUsuario());
@@ -36,7 +36,7 @@ public class UsuarioDAO implements IUsuarioDAO {
     @Override
     public void deletarUsuario(Usuario u) throws ClassNotFoundException, SQLException {
         Connection con = FabricaConexao.getConexao();
-        PreparedStatement comando = con.prepareStatement("delete from usuario where id = ?");
+        PreparedStatement comando = con.prepareStatement("delete from usuarios where id = ?");
         comando.setInt(1, u.getIdUsuario());
         comando.execute();
         con.close();
@@ -47,7 +47,7 @@ public class UsuarioDAO implements IUsuarioDAO {
     public void atualizarUsuario(Usuario u) throws ClassNotFoundException, SQLException {
         Connection con = FabricaConexao.getConexao();
         PreparedStatement comando = con.prepareStatement(
-                "update usuario set nomeUsuario = ?, cpfUsuario = ?, cnhUsuario = ?, emailUsuario = ?, senhaUsuario = ?, celularUsuario = ? where id = ?");
+                "update usuarios set nome = ?, cpf = ?, cnh = ?, email = ?, senha = ?, celular = ? where id = ?");
         comando.setString(1, u.getNomeUsuario());
         comando.setString(2, u.getCpfUsuario());
         comando.setString(3, u.getCnhUsuario());
@@ -63,19 +63,19 @@ public class UsuarioDAO implements IUsuarioDAO {
     @Override
     public Usuario visualizarUsuarioByID(Usuario u) throws ClassNotFoundException, SQLException {
         Connection con = FabricaConexao.getConexao();
-        PreparedStatement comando = con.prepareStatement("select * from usuario where id = ?");
+        PreparedStatement comando = con.prepareStatement("select * from usuarios where id = ?");
         comando.setInt(1, u.getIdUsuario());
         ResultSet rs = comando.executeQuery();
         Usuario user = new Usuario();
 
         if (rs.next()) {
             user.setIdUsuario(rs.getInt("id"));
-            user.setNomeUsuario(rs.getString("nomeUsuario"));
-            user.setCpfUsuario(rs.getString("cpfUsuario"));
-            user.setCnhUsuario(rs.getString("cnhUsuario"));
-            user.setEmailUsuario(rs.getString("emailUsuario"));
-            user.setSenhaUsuario(rs.getString("senhaUsuario"));
-            user.setCelularUsuario(rs.getString("celularUsuario"));
+            user.setNomeUsuario(rs.getString("nome"));
+            user.setCpfUsuario(rs.getString("cpf"));
+            user.setCnhUsuario(rs.getString("cnh"));
+            user.setEmailUsuario(rs.getString("email"));
+            user.setSenhaUsuario(rs.getString("senha"));
+            user.setCelularUsuario(rs.getString("celular"));
         }
         con.close();
         return user;
@@ -85,19 +85,19 @@ public class UsuarioDAO implements IUsuarioDAO {
     @Override
     public List<Usuario> visualizarTodosUsuarios() throws ClassNotFoundException, SQLException {
         Connection con = FabricaConexao.getConexao();
-        PreparedStatement comando = con.prepareStatement("select * from usuario");
+        PreparedStatement comando = con.prepareStatement("select * from usuarios");
         ResultSet rs = comando.executeQuery();
 
         List<Usuario> listaUsuario = new ArrayList<Usuario>();
         while (rs.next()) {
             Usuario user = new Usuario();
             user.setIdUsuario(rs.getInt("id"));
-            user.setNomeUsuario(rs.getString("nomeUsuario"));
-            user.setCpfUsuario(rs.getString("cpfUsuario"));
-            user.setCnhUsuario(rs.getString("cnhUsuario"));
-            user.setEmailUsuario(rs.getString("emailUsuario"));
-            user.setSenhaUsuario(rs.getString("senhaUsuario"));
-            user.setCelularUsuario(rs.getString("celularUsuario"));
+            user.setNomeUsuario(rs.getString("nome"));
+            user.setCpfUsuario(rs.getString("cpf"));
+            user.setCnhUsuario(rs.getString("cnh"));
+            user.setEmailUsuario(rs.getString("email"));
+            user.setSenhaUsuario(rs.getString("senha"));
+            user.setCelularUsuario(rs.getString("celular"));
             listaUsuario.add(user);
         }
         con.close();
