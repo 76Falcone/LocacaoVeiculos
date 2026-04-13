@@ -97,6 +97,7 @@ public class UsuarioDAO implements IUsuarioDAO{
             user.setSenhaUsuario(rs.getString("senhaUsuario"));
             user.setCelularUsuario(rs.getString("celularUsuario"));           
         }
+        listaUsuario.add(user);
         return listaUsuario;
     } 
     
