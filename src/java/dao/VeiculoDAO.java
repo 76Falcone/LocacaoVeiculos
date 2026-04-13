@@ -14,13 +14,14 @@ import java.util.List;
  *
  * @author 76Falcone
  */
-public class VeiculoDAO implements IVeiculoDAO{
-  
+public class VeiculoDAO implements IVeiculoDAO {
+
     // Cadastrar Veiculo
     @Override
-    public void cadastrarVeiculo(Veiculo v) throws ClassNotFoundException, SQLException{
+    public void cadastrarVeiculo(Veiculo v) throws ClassNotFoundException, SQLException {
         Connection con = FabricaConexao.getConexao();
-        PreparedStatement comando = con.prepareStatement("insert into veiculo (placaVeiculo, modeloVeiculo, corVeiculo, valorDiaria, funcionalidadeVeiculo, disponibilidade, arCondicionado, tipoCambio) value (?, ?, ?, ?, ?, ?, ?, ?)");
+        PreparedStatement comando = con.prepareStatement(
+                "insert into veiculo (placaVeiculo, modeloVeiculo, corVeiculo, valorDiaria, funcionalidadeVeiculo, disponibilidade, arCondicionado, tipoCambio) value (?, ?, ?, ?, ?, ?, ?, ?)");
         comando.setString(1, v.getPlacaVeiculo());
         comando.setString(2, v.getModeloVeiculo());
         comando.setString(3, v.getCorVeiculo());
@@ -32,23 +33,23 @@ public class VeiculoDAO implements IVeiculoDAO{
         comando.execute();
         con.close();
     }
-    
-        
+
     // Deletar veiculo
     @Override
-    public void deletarVeiculo (Veiculo v) throws ClassNotFoundException, SQLException{
+    public void deletarVeiculo(Veiculo v) throws ClassNotFoundException, SQLException {
         Connection con = FabricaConexao.getConexao();
         PreparedStatement comando = con.prepareStatement("delete from veiculo where id = ?");
         comando.setInt(1, v.getIdVeiculo());
         comando.execute();
         con.close();
     }
-    
+
     // Atualizar veiculo
     @Override
-    public void atualizarVeiculo(Veiculo v)throws ClassNotFoundException, SQLException {
+    public void atualizarVeiculo(Veiculo v) throws ClassNotFoundException, SQLException {
         Connection con = FabricaConexao.getConexao();
-        PreparedStatement comando = con.prepareStatement("update veiculo set placaVeiculo = ?, modeloVeiculo = ?, corVeiculo = ?, valorDiaria = ?, funcionalidadeVeiculo = ?, disponibilidade = ?, arCondicionado = ?, tipoCambio = ? where id = ?");
+        PreparedStatement comando = con.prepareStatement(
+                "update veiculo set placaVeiculo = ?, modeloVeiculo = ?, corVeiculo = ?, valorDiaria = ?, funcionalidadeVeiculo = ?, disponibilidade = ?, arCondicionado = ?, tipoCambio = ? where id = ?");
         comando.setString(1, v.getPlacaVeiculo());
         comando.setString(2, v.getModeloVeiculo());
         comando.setString(3, v.getCorVeiculo());
@@ -59,12 +60,12 @@ public class VeiculoDAO implements IVeiculoDAO{
         comando.setString(8, v.getTipoCambio());
         comando.setInt(9, v.getIdVeiculo());
         comando.execute();
-        con.close();    
+        con.close();
     }
-    
-   // Buscar por ID
+
+    // Buscar por ID
     @Override
-    public Veiculo visualizarVeiculoByID(Veiculo v)throws ClassNotFoundException, SQLException {
+    public Veiculo visualizarVeiculoByID(Veiculo v) throws ClassNotFoundException, SQLException {
         Connection con = FabricaConexao.getConexao();
         PreparedStatement comando = con.prepareStatement("select * from veiculo where id = ?");
         comando.setInt(1, v.getIdVeiculo());
@@ -84,14 +85,14 @@ public class VeiculoDAO implements IVeiculoDAO{
         con.close();
         return produtoVcl;
     }
-    
+
     // Buscar todos
     @Override
-    public List<Veiculo> visualizarTodosVeiculos()throws ClassNotFoundException, SQLException {
+    public List<Veiculo> visualizarTodosVeiculos() throws ClassNotFoundException, SQLException {
         Connection con = FabricaConexao.getConexao();
         PreparedStatement comando = con.prepareStatement("select * from veiculo");
         ResultSet rs = comando.executeQuery();
-        
+
         List<Veiculo> listaVeiculo = new ArrayList<Veiculo>();
         while (rs.next()) {
             Veiculo v = new Veiculo();
@@ -104,9 +105,10 @@ public class VeiculoDAO implements IVeiculoDAO{
             v.setFuncionalidadeVeiculo(rs.getString("funcionalidade"));
             v.setDisponibilidade(rs.getBoolean("disponibilidade"));
             v.setArCondicionadoVeiculo(rs.getBoolean("arCondicionado"));
-            v.setTipoCambio(rs.getString("cambio"));            
+            v.setTipoCambio(rs.getString("cambio"));
+            listaVeiculo.add(v);
         }
-        listaVeiculo.add(v);
+        con.close();
         return listaVeiculo;
     }
 }
