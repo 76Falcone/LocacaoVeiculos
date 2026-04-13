@@ -31,7 +31,6 @@ O projeto foi construído utilizando tecnologias sólidas para garantir desempen
 
 👥 Colaboradores
 
-Conheça os desenvolvedores responsáveis por este projeto:
 Back End
 
    Nicolas Falcone – [GitHub Profile](https://github.com/76Falcone)
