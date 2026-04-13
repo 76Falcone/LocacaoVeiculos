@@ -20,7 +20,7 @@ A segurança é uma prioridade neste projeto. Para proteger a infraestrutura e e
 ## 🛠️ Como executar
 1. Clone o repositório:
    ```bash
-   git clone [https://github.com/76Falcone/LocacaoVeiculos.git](https://github.com/76Falcone/LocacaoVeiculos.git)Iniciando readme
+   git clone https://github.com/76Falcone/LocacaoVeiculos.git
 
 2. Utilize o arquivo de modelo de conexão disponível para configurar seu ambiente local.
 
