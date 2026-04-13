@@ -32,6 +32,6 @@ A segurança é uma prioridade neste projeto. Para proteger a infraestrutura e e
 
 O desenvolvimento deste projeto contou com a dedicação dos seguintes membros:
 Back End
-    [Nicolas Falcone] - [GitHub/LinkedIn]
+Nicolas Falcone - [GitHub/LinkedIn]
 Front End
-    [Gustavo Palmeira] - [GitHub/LinkedIn]
+Gustavo Palmeira - [GitHub/LinkedIn]
