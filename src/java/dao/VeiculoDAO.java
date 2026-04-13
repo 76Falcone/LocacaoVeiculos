@@ -106,6 +106,7 @@ public class VeiculoDAO implements IVeiculoDAO{
             v.setArCondicionadoVeiculo(rs.getBoolean("arCondicionado"));
             v.setTipoCambio(rs.getString("cambio"));            
         }
+        listaVeiculo.add(v);
         return listaVeiculo;
     }
 }
