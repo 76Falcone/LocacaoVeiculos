@@ -1,0 +1,41 @@
+/* ═══════════════════════════════════════════════════════════
+   VARIABLES.CSS — Variáveis complementares para telas internas
+   Novare · Sistema de Gestão de Veículos
+   ═══════════════════════════════════════════════════════════ */
+
+/*
+ * Este arquivo centraliza variáveis EXTRAS que não existem no
+ * style.css original, mas são necessárias para as telas internas
+ * (login, cadastro, painel administrativo).
+ *
+ * As variáveis principais (--purple, --text, --border, etc.)
+ * continuam sendo herdadas do style.css.
+ */
+
+:root {
+  /* ─── Sombras ─── */
+  --shadow-sm:  0 2px 8px rgba(106, 38, 205, 0.06);
+  --shadow-md:  0 8px 24px rgba(106, 38, 205, 0.09);
+  --shadow-lg:  0 16px 40px rgba(106, 38, 205, 0.12);
+
+  /* ─── Feedback (status) ─── */
+  --success:    #22C55E;
+  --success-bg: #F0FDF4;
+  --error:      #EF4444;
+  --error-bg:   #FEF2F2;
+  --warning:    #F59E0B;
+  --warning-bg: #FFFBEB;
+
+  /* ─── Layout do painel admin ─── */
+  --sidebar-w:  260px;
+  --topbar-h:   64px;
+
+  /* ─── Transições ─── */
+  --transition-fast: all 0.18s ease;
+  --transition:      all 0.25s ease;
+  --transition-slow: all 0.4s ease;
+
+  /* ─── Input específicos ─── */
+  --input-h:     46px;
+  --input-radius: 10px;
+}
