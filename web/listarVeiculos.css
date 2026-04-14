@@ -1,0 +1,77 @@
+/* ═══════════════════════════════════════════════════════════
+   LISTARVEICULOS.CSS — Estilização da listagem de veículos
+   Novare · Sistema de Gestão de Veículos
+   ═══════════════════════════════════════════════════════════ */
+
+/* ─── CABEÇALHO DA PÁGINA COM BOTÃO ─── */
+.page-header-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+}
+
+/* ─── BOTÃO ADICIONAR ─── */
+.btn-add {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--purple);
+  color: var(--white);
+  border: none;
+  padding: 0.6rem 1.3rem;
+  border-radius: var(--input-radius);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.88rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: var(--transition);
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.btn-add:hover {
+  background: var(--purple-light);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-md);
+}
+
+/* ─── VALOR DIÁRIA NA TABELA ─── */
+.valor-cell {
+  font-weight: 600;
+  color: var(--purple);
+}
+
+/* ─── BADGE SIM/NÃO ─── */
+.bool-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 3px 10px;
+  border-radius: 100px;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.bool-badge.yes {
+  background: var(--success-bg);
+  color: var(--success);
+}
+
+.bool-badge.no {
+  background: var(--light);
+  color: var(--muted);
+}
+
+/* ─── RESPONSIVO ─── */
+@media (max-width: 600px) {
+  .page-header-row {
+    flex-direction: column;
+  }
+
+  .btn-add {
+    width: 100%;
+    justify-content: center;
+  }
+}
