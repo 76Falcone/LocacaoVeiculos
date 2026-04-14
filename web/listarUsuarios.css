@@ -1,0 +1,61 @@
+/* ═══════════════════════════════════════════════════════════
+   LISTARUSUARIOS.CSS — Estilização da listagem de usuários
+   Novare · Sistema de Gestão de Veículos
+   ═══════════════════════════════════════════════════════════ */
+
+/* ─── CABEÇALHO DA PÁGINA ─── */
+.page-header-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+}
+
+/* ─── CÉLULA DE NOME COM AVATAR ─── */
+.user-name-cell {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.user-avatar-table {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--purple-pale);
+  border: 1.5px solid var(--purple-mid);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Syne', sans-serif;
+  font-weight: 700;
+  color: var(--purple);
+  font-size: 0.68rem;
+  flex-shrink: 0;
+}
+
+.user-name-text {
+  font-weight: 500;
+  color: var(--text);
+}
+
+/* ─── CPF COM BLUR (privacidade) ─── */
+.cpf-masked {
+  filter: blur(3px);
+  transition: filter 0.2s ease;
+  cursor: pointer;
+  user-select: none;
+}
+
+.cpf-masked:hover {
+  filter: blur(0);
+}
+
+/* ─── RESPONSIVO ─── */
+@media (max-width: 600px) {
+  .page-header-row {
+    flex-direction: column;
+  }
+}
