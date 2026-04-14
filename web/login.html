@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Novare | Login</title>
+  <meta name="description" content="Faça login na sua conta Novare para acessar o sistema de gestão de veículos.">
+
+  <!-- Fontes -->
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet">
+
+  <!-- Estilos -->
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="variables.css">
+  <link rel="stylesheet" href="login.css">
+</head>
+<body class="login-page">
+
+  <!-- ─── CONTAINER PRINCIPAL ─── -->
+  <main class="login-container">
+
+    <!-- Lado esquerdo: painel decorativo -->
+    <aside class="login-brand" aria-hidden="true">
+      <div class="login-brand-content">
+        <div class="login-brand-badge">
+          <span class="login-brand-dot"></span>
+          Sistema de Gestão
+        </div>
+        <h2 class="login-brand-title">Gerencie sua<br>frota com<br><em>eficiência.</em></h2>
+        <p class="login-brand-sub">Controle completo de veículos, usuários e locações em um único painel.</p>
+
+        <!-- Ilustração decorativa (SVG) -->
+        <div class="login-brand-illustration">
+          <svg viewBox="0 0 320 140" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <ellipse cx="160" cy="125" rx="140" ry="8" fill="rgba(255,255,255,0.1)"/>
+            <path d="M40 98 Q48 68 85 54 Q122 40 160 38 Q198 36 228 52 Q258 64 270 82 Q280 92 282 105 L40 105 Z" fill="rgba(255,255,255,0.2)"/>
+            <path d="M100 78 Q108 50 145 42 Q178 36 200 52 Q220 64 226 82 Z" fill="rgba(255,255,255,0.15)"/>
+            <rect x="103" y="52" width="58" height="26" rx="5" fill="rgba(255,255,255,0.25)"/>
+            <rect x="168" y="55" width="50" height="23" rx="5" fill="rgba(255,255,255,0.18)"/>
+            <circle cx="95" cy="109" r="16" fill="rgba(255,255,255,0.15)"/>
+            <circle cx="95" cy="109" r="10" fill="rgba(255,255,255,0.1)"/>
+            <circle cx="95" cy="109" r="5" fill="rgba(255,255,255,0.2)"/>
+            <circle cx="218" cy="109" r="16" fill="rgba(255,255,255,0.15)"/>
+            <circle cx="218" cy="109" r="10" fill="rgba(255,255,255,0.1)"/>
+            <circle cx="218" cy="109" r="5" fill="rgba(255,255,255,0.2)"/>
+          </svg>
+        </div>
+      </div>
+
+      <!-- Decorações de fundo -->
+      <div class="login-brand-circle login-brand-circle-1"></div>
+      <div class="login-brand-circle login-brand-circle-2"></div>
+    </aside>
+
+    <!-- Lado direito: formulário de login -->
+    <section class="login-form-section">
+      <div class="login-form-wrap">
+
+        <!-- Logo (mobile) -->
+        <a href="index.html" class="login-logo-mobile">
+          <span class="logo">NO<span>VARE</span></span>
+        </a>
+
+        <!-- Cabeçalho -->
+        <h1 class="login-title">Bem-vindo de volta</h1>
+        <p class="login-subtitle">Acesse sua conta para continuar.</p>
+
+        <!-- Formulário -->
+        <form id="loginForm" action="ControleUsuario" method="post" novalidate>
+          <input type="hidden" name="op" value="LOGIN">
+
+          <!-- E-mail -->
+          <div class="form-group" id="emailGroup">
+            <label for="email">E-mail</label>
+            <div class="input-wrap">
+              <span class="input-icon">✉️</span>
+              <input
+                type="email"
+                id="email"
+                name="email"
+                placeholder="email@exemplo.com"
+                autocomplete="email"
+                required
+              >
+            </div>
+            <span class="form-error" id="emailError"></span>
+          </div>
+
+          <!-- Senha -->
+          <div class="form-group" id="senhaGroup">
+            <label for="senha">Senha</label>
+            <div class="input-wrap">
+              <span class="input-icon">🔒</span>
+              <input
+                type="password"
+                id="senha"
+                name="senha"
+                placeholder="Sua senha"
+                autocomplete="current-password"
+                required
+              >
+              <button type="button" class="toggle-password" id="toggleSenha" aria-label="Mostrar senha">
+                👁️
+              </button>
+            </div>
+            <span class="form-error" id="senhaError"></span>
+          </div>
+
+          <!-- Botão de login -->
+          <button type="submit" class="btn-submit" id="btnLogin">
+            <span class="btn-text">Entrar</span>
+            <span class="btn-loader" aria-hidden="true"></span>
+          </button>
+        </form>
+
+        <!-- Link para cadastro -->
+        <p class="login-link">
+          Não tem conta? <a href="cadastroUsuario.html">Cadastre-se</a>
+        </p>
+
+        <!-- Voltar ao site -->
+        <a href="index.html" class="login-back">← Voltar ao início</a>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Script -->
+  <script src="login.js"></script>
+</body>
+</html>
