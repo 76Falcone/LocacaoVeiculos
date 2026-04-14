@@ -81,7 +81,39 @@ public class LocacaoDAO implements ILocacaoDAO {
     // Buscar por ID
     @Override
     public Locacao visualizarLocacaoByID(Locacao l) throws ClassNotFoundException, SQLException {
-        return new Locacao();
+        Connection con = FabricaConexao.getConexao();
+        PreparedStatement comando = con.prepareStatement("select * from locacao where id = ?");
+        comando.setInt(1, l.getIdLocacao());
+        ResultSet rs = comando.executeQuery();
+        Locacao locacao = new Locacao();
+
+        if (rs.next()) {
+            locacao.setIdLocacao(rs.getInt("id"));
+            locacao.setQtdDias(rs.getInt("qtdDias"));
+            locacao.setSeguroLocacao(rs.getDouble("seguro"));
+            locacao.setLocalRetirada(rs.getString("localRetirada"));
+            locacao.setValorTotal(rs.getDouble("valorTotal"));
+
+            Date dataRetirada = rs.getDate("data_retirada");
+            if (dataRetirada != null) locacao.setDataRetirada(dataRetirada.toLocalDate());
+
+            Date dataEntrega = rs.getDate("data_entrega");
+            if (dataEntrega != null) locacao.setDataEntrega(dataEntrega.toLocalDate());
+
+            // Busca o usuario pela FK
+            UsuarioDAO uDAO = new UsuarioDAO();
+            Usuario uParam = new Usuario();
+            uParam.setIdUsuario(rs.getInt("id_usuario"));
+            locacao.setUsuario(uDAO.visualizarUsuarioByID(uParam));
+
+            // Busca o veiculo pela FK
+            VeiculoDAO vDAO = new VeiculoDAO();
+            Veiculo vParam = new Veiculo();
+            vParam.setIdVeiculo(rs.getInt("id_veiculo"));
+            locacao.setVeiculo(vDAO.visualizarVeiculoByID(vParam));
+        }
+        con.close();
+        return locacao;
     }
 
     // Buscar todas
