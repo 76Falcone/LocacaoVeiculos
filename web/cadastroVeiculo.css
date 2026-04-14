@@ -1,0 +1,168 @@
+/* ═══════════════════════════════════════════════════════════
+   CADASTROVEICULO.CSS — Estilização do cadastro de veículo
+   Novare · Sistema de Gestão de Veículos
+   ═══════════════════════════════════════════════════════════ */
+
+/* ─── FORM CARD ─── */
+.form-card {
+  max-width: 680px;
+}
+
+/* ─── FORM GROUP ─── */
+.form-group {
+  margin-bottom: 1.15rem;
+}
+
+.form-group label {
+  display: block;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  margin-bottom: 0.4rem;
+}
+
+/* ─── INPUT ─── */
+.input-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.input-wrap input {
+  width: 100%;
+  height: var(--input-h);
+  padding: 0 1rem;
+  border: 1.5px solid var(--border);
+  border-radius: var(--input-radius);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.92rem;
+  color: var(--text);
+  background: var(--white);
+  outline: none;
+  transition: var(--transition-fast);
+}
+
+.input-wrap input::placeholder {
+  color: #C4B5E0;
+}
+
+.input-wrap input:focus {
+  border-color: var(--purple);
+  box-shadow: 0 0 0 3px rgba(106, 38, 205, 0.08);
+}
+
+/* ─── SELECT ─── */
+.form-select {
+  width: 100%;
+  height: var(--input-h);
+  padding: 0 1rem;
+  border: 1.5px solid var(--border);
+  border-radius: var(--input-radius);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.92rem;
+  color: var(--text);
+  background: var(--white);
+  cursor: pointer;
+  outline: none;
+  transition: var(--transition-fast);
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%237B6EA0' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 14px center;
+}
+
+.form-select:focus {
+  border-color: var(--purple);
+  box-shadow: 0 0 0 3px rgba(106, 38, 205, 0.08);
+}
+
+/* ─── ESTADO DE ERRO ─── */
+.form-group.has-error .input-wrap input,
+.form-group.has-error .form-select {
+  border-color: var(--error);
+  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.08);
+}
+
+.form-error {
+  display: block;
+  font-size: 0.76rem;
+  color: var(--error);
+  margin-top: 0.3rem;
+  min-height: 0.9rem;
+  transition: var(--transition-fast);
+}
+
+/* ─── LINHA DE 2 COLUNAS ─── */
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+/* ─── BOTÃO SUBMIT ─── */
+.btn-submit {
+  width: 100%;
+  height: 48px;
+  background: var(--purple);
+  color: var(--white);
+  border: none;
+  border-radius: var(--input-radius);
+  font-family: 'Syne', sans-serif;
+  font-size: 0.95rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: var(--transition);
+  position: relative;
+  overflow: hidden;
+  margin-top: 0.8rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-submit:hover {
+  background: var(--purple-light);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-md);
+}
+
+.btn-submit:active {
+  transform: translateY(0);
+}
+
+.btn-submit.loading .btn-text {
+  opacity: 0;
+}
+
+.btn-submit.loading .btn-loader {
+  display: block;
+}
+
+.btn-loader {
+  display: none;
+  width: 20px;
+  height: 20px;
+  border: 2.5px solid rgba(255, 255, 255, 0.3);
+  border-top-color: var(--white);
+  border-radius: 50%;
+  animation: spin 0.6s linear infinite;
+  position: absolute;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* ─── RESPONSIVO ─── */
+@media (max-width: 600px) {
+  .form-row {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+
+  .form-card {
+    padding: 1.5rem;
+  }
+}
