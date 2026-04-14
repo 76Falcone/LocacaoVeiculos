@@ -22,6 +22,25 @@ public class LocacaoDAO implements ILocacaoDAO {
     // Cadastrar Locacao
     @Override
     public void cadastrarLocacao(Locacao l) throws ClassNotFoundException, SQLException {
+        Connection con = FabricaConexao.getConexao();
+        PreparedStatement comando = con.prepareStatement(
+                "insert into locacao (id_usuario, id_veiculo, qtdDias, seguro, localRetirada, valorTotal, data_retirada, data_entrega) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
+        comando.setInt(1, l.getUsuario().getIdUsuario());
+        comando.setInt(2, l.getVeiculo().getIdVeiculo());
+        comando.setInt(3, l.getQtdDias());
+        comando.setDouble(4, l.getSeguroLocacao());
+        comando.setString(5, l.getLocalRetirada());
+        comando.setDouble(6, l.getValorTotal());
+        comando.setDate(7, Date.valueOf(l.getDataRetirada()));
+
+        if (l.getDataEntrega() != null) {
+            comando.setDate(8, Date.valueOf(l.getDataEntrega()));
+        } else {
+            comando.setNull(8, java.sql.Types.DATE);
+        }
+
+        comando.execute();
+        con.close();
     }
 
     // Deletar Locacao
