@@ -46,6 +46,11 @@ public class LocacaoDAO implements ILocacaoDAO {
     // Deletar Locacao
     @Override
     public void deletarLocacao(Locacao l) throws ClassNotFoundException, SQLException {
+        Connection con = FabricaConexao.getConexao();
+        PreparedStatement comando = con.prepareStatement("delete from locacao where id = ?");
+        comando.setInt(1, l.getIdLocacao());
+        comando.execute();
+        con.close();
     }
 
     // Atualizar Locacao
