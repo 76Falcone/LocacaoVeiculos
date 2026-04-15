@@ -5,34 +5,14 @@
 
 document.addEventListener('DOMContentLoaded', () => {
 
-  // ─── Dados mockados (substituir por fetch ao backend futuramente) ───
-  const veiculos = [
-    { id: 1, placa: 'ABC-1D23', modelo: 'Toyota Corolla', cor: 'Preto', valorDiaria: 179.00, funcionalidade: 'Passeio', disponibilidade: true, arCondicionado: true, tipoCambio: 'Automático' },
-    { id: 2, placa: 'DEF-2E45', modelo: 'Honda Civic', cor: 'Prata', valorDiaria: 169.00, funcionalidade: 'Passeio', disponibilidade: true, arCondicionado: true, tipoCambio: 'Automático' },
-    { id: 3, placa: 'GHI-3F67', modelo: 'Renault Kwid', cor: 'Branco', valorDiaria: 79.00, funcionalidade: 'Passeio', disponibilidade: false, arCondicionado: false, tipoCambio: 'Manual' },
-    { id: 4, placa: 'JKL-4G89', modelo: 'Jeep Compass', cor: 'Cinza', valorDiaria: 219.00, funcionalidade: 'Utilitário', disponibilidade: true, arCondicionado: true, tipoCambio: 'Automático' },
-    { id: 5, placa: 'MNO-5H01', modelo: 'Volkswagen Polo', cor: 'Vermelho', valorDiaria: 98.00, funcionalidade: 'Passeio', disponibilidade: true, arCondicionado: true, tipoCambio: 'Automático' },
-    { id: 6, placa: 'PQR-6I23', modelo: 'Fiat Mobi', cor: 'Azul', valorDiaria: 72.00, funcionalidade: 'Trabalho', disponibilidade: false, arCondicionado: false, tipoCambio: 'Manual' },
-    { id: 7, placa: 'STU-7J45', modelo: 'BMW 320i', cor: 'Preto', valorDiaria: 349.00, funcionalidade: 'Passeio', disponibilidade: true, arCondicionado: true, tipoCambio: 'Automático' },
-    { id: 8, placa: 'VWX-8K67', modelo: 'Hyundai Creta', cor: 'Branco', valorDiaria: 189.00, funcionalidade: 'Utilitário', disponibilidade: true, arCondicionado: true, tipoCambio: 'Automático' },
-    { id: 9, placa: 'YZA-9L89', modelo: 'Chevrolet Onix', cor: 'Prata', valorDiaria: 89.00, funcionalidade: 'Passeio', disponibilidade: true, arCondicionado: true, tipoCambio: 'Automático' },
-    { id: 10, placa: 'BCD-0M01', modelo: 'Nissan Leaf', cor: 'Verde', valorDiaria: 199.00, funcionalidade: 'Passeio', disponibilidade: false, arCondicionado: true, tipoCambio: 'Automático' },
-    { id: 11, placa: 'EFG-1N23', modelo: 'Fiat Argo', cor: 'Vermelho', valorDiaria: 85.00, funcionalidade: 'Passeio', disponibilidade: true, arCondicionado: true, tipoCambio: 'Manual' },
-    { id: 12, placa: 'HIJ-2O45', modelo: 'Chevrolet Tracker', cor: 'Cinza', valorDiaria: 205.00, funcionalidade: 'Utilitário', disponibilidade: true, arCondicionado: true, tipoCambio: 'Automático' },
-    { id: 13, placa: 'KLM-3P67', modelo: 'Toyota Hilux', cor: 'Branco', valorDiaria: 289.00, funcionalidade: 'Trabalho', disponibilidade: true, arCondicionado: true, tipoCambio: 'Automático' },
-    { id: 14, placa: 'NOP-4Q89', modelo: 'Volkswagen T-Cross', cor: 'Azul', valorDiaria: 175.00, funcionalidade: 'Passeio', disponibilidade: false, arCondicionado: true, tipoCambio: 'Automático' },
-    { id: 15, placa: 'QRS-5R01', modelo: 'Honda HRV', cor: 'Prata', valorDiaria: 210.00, funcionalidade: 'Passeio', disponibilidade: true, arCondicionado: true, tipoCambio: 'Automático' },
-    { id: 16, placa: 'TUV-6S23', modelo: 'Fiat Strada', cor: 'Branco', valorDiaria: 135.00, funcionalidade: 'Trabalho', disponibilidade: true, arCondicionado: false, tipoCambio: 'Manual' },
-    { id: 17, placa: 'WXY-7T45', modelo: 'Renault Duster', cor: 'Cinza', valorDiaria: 155.00, funcionalidade: 'Utilitário', disponibilidade: true, arCondicionado: true, tipoCambio: 'Manual' },
-    { id: 18, placa: 'ZAB-8U67', modelo: 'Mercedes C200', cor: 'Preto', valorDiaria: 420.00, funcionalidade: 'Passeio', disponibilidade: true, arCondicionado: true, tipoCambio: 'Automático' },
-    { id: 19, placa: 'CDE-9V89', modelo: 'Audi A3', cor: 'Branco', valorDiaria: 380.00, funcionalidade: 'Passeio', disponibilidade: false, arCondicionado: true, tipoCambio: 'Automático' },
-    { id: 20, placa: 'FGH-0W01', modelo: 'Hyundai HB20', cor: 'Vermelho', valorDiaria: 78.00, funcionalidade: 'Passeio', disponibilidade: true, arCondicionado: true, tipoCambio: 'Manual' },
-    { id: 21, placa: 'IJK-1X23', modelo: 'Toyota Yaris', cor: 'Prata', valorDiaria: 95.00, funcionalidade: 'Passeio', disponibilidade: true, arCondicionado: true, tipoCambio: 'Automático' },
-    { id: 22, placa: 'LMN-2Y45', modelo: 'Ford Ranger', cor: 'Preto', valorDiaria: 310.00, funcionalidade: 'Trabalho', disponibilidade: true, arCondicionado: true, tipoCambio: 'Automático' },
-    { id: 23, placa: 'OPQ-3Z67', modelo: 'Chevrolet S10', cor: 'Branco', valorDiaria: 275.00, funcionalidade: 'Trabalho', disponibilidade: false, arCondicionado: true, tipoCambio: 'Automático' },
-    { id: 24, placa: 'RST-4A89', modelo: 'Fiat Toro', cor: 'Bronze', valorDiaria: 225.00, funcionalidade: 'Utilitário', disponibilidade: true, arCondicionado: true, tipoCambio: 'Automático' },
-    { id: 25, placa: 'UVW-5B01', modelo: 'Jeep Renegade', cor: 'Verde', valorDiaria: 195.00, funcionalidade: 'Passeio', disponibilidade: true, arCondicionado: true, tipoCambio: 'Automático' },
-  ];
+  // ─── Dados carregados do backend ───
+  let veiculos = [];
+
+  // Buscar dados do banco de dados
+  fetch('ControleVeiculo?op=LISTAR')
+    .then(r => r.json())
+    .then(data => { veiculos = data; renderTable(); })
+    .catch(err => { console.error('Erro ao carregar veículos:', err); renderTable(); });
 
   // ─── Configuração de paginação ───
   const ITEMS_PER_PAGE = 15;
@@ -263,6 +243,15 @@ document.addEventListener('DOMContentLoaded', () => {
     };
     return map[cor.toLowerCase()] || '#A78BFA';
   }
+
+  // ─── Confirmar exclusão ───
+  window.confirmarExclusao = function(id, modelo) {
+    if (confirm(`Tem certeza que deseja excluir o veículo "${modelo}" (ID: ${id})?`)) {
+      fetch(`ControleVeiculo?op=DELETAR&id=${id}`, { method: 'POST' })
+        .then(() => { location.reload(); })
+        .catch(err => { console.error(err); alert('Erro ao excluir veículo.'); });
+    }
+  };
 
   // ─── Render inicial ───
   renderTable();

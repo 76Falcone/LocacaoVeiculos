@@ -5,19 +5,14 @@
 
 document.addEventListener('DOMContentLoaded', () => {
 
-  // ─── Dados mockados (substituir por fetch ao backend futuramente) ───
-  const reservas = [
-    { idLocacao: 1,  idUsuario: 1,  nomeUsuario: 'João Silva',       idVeiculo: 1,  modeloVeiculo: 'Toyota Corolla',     qtdDias: 5,  seguroLocacao: 89.90,  localRetirada: 'Aeroporto de Guarulhos',   valorTotal: 984.90,  dataRetirada: '2025-06-10', dataEntrega: '2025-06-15' },
-    { idLocacao: 2,  idUsuario: 2,  nomeUsuario: 'Maria Santos',     idVeiculo: 4,  modeloVeiculo: 'Jeep Compass',       qtdDias: 3,  seguroLocacao: 120.00, localRetirada: 'Centro SP',                valorTotal: 777.00,  dataRetirada: '2025-06-12', dataEntrega: '2025-06-15' },
-    { idLocacao: 3,  idUsuario: 3,  nomeUsuario: 'Carlos Oliveira',  idVeiculo: 7,  modeloVeiculo: 'BMW 320i',           qtdDias: 7,  seguroLocacao: 200.00, localRetirada: 'Aeroporto de Congonhas',    valorTotal: 2643.00, dataRetirada: '2025-06-20', dataEntrega: '2025-06-27' },
-    { idLocacao: 4,  idUsuario: 5,  nomeUsuario: 'Pedro Almeida',    idVeiculo: 9,  modeloVeiculo: 'Chevrolet Onix',     qtdDias: 2,  seguroLocacao: 45.00,  localRetirada: 'Rodoviária Tietê',         valorTotal: 223.00,  dataRetirada: '2025-07-01', dataEntrega: '2025-07-03' },
-    { idLocacao: 5,  idUsuario: 4,  nomeUsuario: 'Ana Costa',        idVeiculo: 13, modeloVeiculo: 'Toyota Hilux',       qtdDias: 10, seguroLocacao: 350.00, localRetirada: 'Aeroporto de Viracopos',    valorTotal: 3240.00, dataRetirada: '2025-07-05', dataEntrega: '2025-07-15' },
-    { idLocacao: 6,  idUsuario: 6,  nomeUsuario: 'Juliana Ferreira', idVeiculo: 5,  modeloVeiculo: 'Volkswagen Polo',    qtdDias: 4,  seguroLocacao: 60.00,  localRetirada: 'Centro RJ',                valorTotal: 452.00,  dataRetirada: '2025-07-10', dataEntrega: '2025-07-14' },
-    { idLocacao: 7,  idUsuario: 8,  nomeUsuario: 'Fernanda Lima',    idVeiculo: 2,  modeloVeiculo: 'Honda Civic',        qtdDias: 6,  seguroLocacao: 100.00, localRetirada: 'Aeroporto Santos Dumont',   valorTotal: 1114.00, dataRetirada: '2025-07-18', dataEntrega: '2025-07-24' },
-    { idLocacao: 8,  idUsuario: 10, nomeUsuario: 'Camila Souza',     idVeiculo: 8,  modeloVeiculo: 'Hyundai Creta',      qtdDias: 3,  seguroLocacao: 75.00,  localRetirada: 'Shopping Iguatemi',        valorTotal: 642.00,  dataRetirada: '2025-08-01', dataEntrega: '2025-08-04' },
-    { idLocacao: 9,  idUsuario: 7,  nomeUsuario: 'Lucas Rodrigues',  idVeiculo: 18, modeloVeiculo: 'Mercedes C200',      qtdDias: 2,  seguroLocacao: 250.00, localRetirada: 'Aeroporto de Guarulhos',    valorTotal: 1090.00, dataRetirada: '2025-08-10', dataEntrega: '2025-08-12' },
-    { idLocacao: 10, idUsuario: 9,  nomeUsuario: 'Rafael Mendes',    idVeiculo: 16, modeloVeiculo: 'Fiat Strada',        qtdDias: 8,  seguroLocacao: 80.00,  localRetirada: 'Campinas Centro',          valorTotal: 1160.00, dataRetirada: '2025-08-15', dataEntrega: '2025-08-23' },
-  ];
+  // ─── Dados carregados do backend ───
+  let reservas = [];
+
+  // Buscar dados do banco de dados
+  fetch('ControleLocacao?op=LISTAR')
+    .then(r => r.json())
+    .then(data => { reservas = data; renderTable(); })
+    .catch(err => { console.error('Erro ao carregar reservas:', err); renderTable(); });
 
   // ─── Configuração de paginação ───
   const ITEMS_PER_PAGE = 15;
@@ -214,14 +209,12 @@ document.addEventListener('DOMContentLoaded', () => {
     return [1, '...', current - 1, current, current + 1, '...', total];
   }
 
-  // ─── Confirmar exclusão (preparado para integração com Servlet) ───
+  // ─── Confirmar exclusão ───
   window.confirmarExclusao = function(id, nome) {
     if (confirm(`Tem certeza que deseja excluir a reserva #${id} do usuário "${nome}"?`)) {
-      // TODO: Integrar com ControleLocacao?op=DELETAR&id=<id>
-      // fetch(`ControleLocacao?op=DELETAR&id=${id}`, { method: 'POST' })
-      //   .then(() => { location.reload(); })
-      //   .catch(err => console.error(err));
-      alert('Funcionalidade de exclusão será integrada ao backend futuramente.');
+      fetch(`ControleLocacao?op=DELETAR&id=${id}`, { method: 'POST' })
+        .then(() => { location.reload(); })
+        .catch(err => { console.error(err); alert('Erro ao excluir reserva.'); });
     }
   };
 

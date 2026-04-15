@@ -5,29 +5,14 @@
 
 document.addEventListener('DOMContentLoaded', () => {
 
-  // ─── Dados mockados (substituir por fetch ao backend futuramente) ───
-  const usuarios = [
-    { id: 1,  nome: 'João Silva',         cpf: '123.456.789-00', cnh: '12345678901', email: 'joao.silva@email.com',       celular: '(11) 99876-5432' },
-    { id: 2,  nome: 'Maria Santos',       cpf: '234.567.890-11', cnh: '23456789012', email: 'maria.santos@email.com',     celular: '(21) 98765-4321' },
-    { id: 3,  nome: 'Carlos Oliveira',    cpf: '345.678.901-22', cnh: '34567890123', email: 'carlos.oliveira@email.com',  celular: '(31) 97654-3210' },
-    { id: 4,  nome: 'Ana Costa',          cpf: '456.789.012-33', cnh: '45678901234', email: 'ana.costa@email.com',        celular: '(41) 96543-2109' },
-    { id: 5,  nome: 'Pedro Almeida',      cpf: '567.890.123-44', cnh: '56789012345', email: 'pedro.almeida@email.com',    celular: '(51) 95432-1098' },
-    { id: 6,  nome: 'Juliana Ferreira',   cpf: '678.901.234-55', cnh: '67890123456', email: 'juliana.f@email.com',        celular: '(61) 94321-0987' },
-    { id: 7,  nome: 'Lucas Rodrigues',    cpf: '789.012.345-66', cnh: '78901234567', email: 'lucas.r@email.com',          celular: '(71) 93210-9876' },
-    { id: 8,  nome: 'Fernanda Lima',      cpf: '890.123.456-77', cnh: '89012345678', email: 'fernanda.lima@email.com',    celular: '(81) 92109-8765' },
-    { id: 9,  nome: 'Rafael Mendes',      cpf: '901.234.567-88', cnh: '90123456789', email: 'rafael.mendes@email.com',    celular: '(91) 91098-7654' },
-    { id: 10, nome: 'Camila Souza',       cpf: '012.345.678-99', cnh: '01234567890', email: 'camila.souza@email.com',     celular: '(85) 90987-6543' },
-    { id: 11, nome: 'Bruno Carvalho',     cpf: '111.222.333-44', cnh: '11122233344', email: 'bruno.carvalho@email.com',   celular: '(62) 99988-7766' },
-    { id: 12, nome: 'Larissa Martins',    cpf: '222.333.444-55', cnh: '22233344455', email: 'larissa.m@email.com',        celular: '(48) 98877-6655' },
-    { id: 13, nome: 'Diego Nascimento',   cpf: '333.444.555-66', cnh: '33344455566', email: 'diego.n@email.com',          celular: '(27) 97766-5544' },
-    { id: 14, nome: 'Patrícia Rocha',     cpf: '444.555.666-77', cnh: '44455566677', email: 'patricia.rocha@email.com',   celular: '(65) 96655-4433' },
-    { id: 15, nome: 'Gustavo Pereira',    cpf: '555.666.777-88', cnh: '55566677788', email: 'gustavo.p@email.com',        celular: '(79) 95544-3322' },
-    { id: 16, nome: 'Isabela Araújo',     cpf: '666.777.888-99', cnh: '66677788899', email: 'isabela.a@email.com',        celular: '(82) 94433-2211' },
-    { id: 17, nome: 'Thiago Barbosa',     cpf: '777.888.999-00', cnh: '77788899900', email: 'thiago.b@email.com',         celular: '(84) 93322-1100' },
-    { id: 18, nome: 'Amanda Ribeiro',     cpf: '888.999.000-11', cnh: '88899900011', email: 'amanda.ribeiro@email.com',   celular: '(69) 92211-0099' },
-    { id: 19, nome: 'Felipe Cardoso',     cpf: '999.000.111-22', cnh: '99900011122', email: 'felipe.c@email.com',         celular: '(92) 91100-9988' },
-    { id: 20, nome: 'Vanessa Teixeira',   cpf: '000.111.222-33', cnh: '00011122233', email: 'vanessa.t@email.com',        celular: '(63) 90099-8877' },
-  ];
+  // ─── Dados carregados do backend ───
+  let usuarios = [];
+
+  // Buscar dados do banco de dados
+  fetch('ControleUsuario?op=LISTAR')
+    .then(r => r.json())
+    .then(data => { usuarios = data; renderTable(); })
+    .catch(err => { console.error('Erro ao carregar usuários:', err); renderTable(); });
 
   // ─── Configuração de paginação ───
   const ITEMS_PER_PAGE = 15;
@@ -224,14 +209,12 @@ document.addEventListener('DOMContentLoaded', () => {
     return [1, '...', current - 1, current, current + 1, '...', total];
   }
 
-  // ─── Confirmar exclusão (preparado para integração com Servlet) ───
+  // ─── Confirmar exclusão ───
   window.confirmarExclusao = function(id, nome) {
     if (confirm(`Tem certeza que deseja excluir o usuário "${nome}" (ID: ${id})?`)) {
-      // TODO: Integrar com ControleUsuario?op=DELETAR&id=<id>
-      // fetch(`ControleUsuario?op=DELETAR&id=${id}`, { method: 'POST' })
-      //   .then(() => { location.reload(); })
-      //   .catch(err => console.error(err));
-      alert('Funcionalidade de exclusão será integrada ao backend futuramente.');
+      fetch(`ControleUsuario?op=DELETAR&id=${id}`, { method: 'POST' })
+        .then(() => { location.reload(); })
+        .catch(err => { console.error(err); alert('Erro ao excluir usuário.'); });
     }
   };
 

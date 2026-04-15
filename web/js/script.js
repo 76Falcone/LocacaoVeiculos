@@ -1,26 +1,7 @@
 /* ─── CAR DATA ─── */
 /* Exported as `allCars` so frota.html can access the full list.
    index.html shows only the first 6 as a preview. */
-const allCars = [
-  { name: 'Renault Kwid',        cat: 'economico',     label: 'Econômico',     price: 79,  km: '150km/d',  pass: '5', trans: 'Manual',    badge: '',             badgeClass: '' },
-  { name: 'Volkswagen Polo',     cat: 'economico',     label: 'Econômico',     price: 98,  km: '200km/d',  pass: '5', trans: 'Automático', badge: 'Mais alugado', badgeClass: '' },
-  { name: 'Fiat Mobi',           cat: 'economico',     label: 'Econômico',     price: 72,  km: '150km/d',  pass: '5', trans: 'Manual',    badge: '',             badgeClass: '' },
-  { name: 'Chevrolet Onix',      cat: 'economico',     label: 'Econômico',     price: 89,  km: '180km/d',  pass: '5', trans: 'Automático', badge: '',             badgeClass: '' },
-  { name: 'Hyundai HB20',        cat: 'economico',     label: 'Econômico',     price: 85,  km: '150km/d',  pass: '5', trans: 'Manual',    badge: '',             badgeClass: '' },
-  { name: 'Chevrolet Onix Plus', cat: 'intermediario', label: 'Intermediário', price: 119, km: '250km/d',  pass: '5', trans: 'Automático', badge: '',             badgeClass: '' },
-  { name: 'Toyota Corolla',      cat: 'intermediario', label: 'Intermediário', price: 179, km: 'Ilimitado', pass: '5', trans: 'Automático', badge: 'Top Rated',   badgeClass: 'gold' },
-  { name: 'Fiat Pulse',          cat: 'intermediario', label: 'Intermediário', price: 139, km: '200km/d',  pass: '5', trans: 'Automático', badge: 'Novo',         badgeClass: '' },
-  { name: 'Volkswagen Virtus',   cat: 'intermediario', label: 'Intermediário', price: 129, km: '220km/d',  pass: '5', trans: 'Automático', badge: '',             badgeClass: '' },
-  { name: 'Honda Civic',         cat: 'intermediario', label: 'Intermediário', price: 169, km: 'Ilimitado', pass: '5', trans: 'Automático', badge: '',             badgeClass: '' },
-  { name: 'Jeep Compass',        cat: 'suv',           label: 'SUV',           price: 219, km: 'Ilimitado', pass: '5', trans: 'Automático', badge: '',             badgeClass: '' },
-  { name: 'Hyundai Creta',       cat: 'suv',           label: 'SUV',           price: 189, km: 'Ilimitado', pass: '5', trans: 'Automático', badge: '',             badgeClass: '' },
-  { name: 'Toyota SW4',          cat: 'suv',           label: 'SUV',           price: 289, km: 'Ilimitado', pass: '7', trans: 'Automático', badge: '',             badgeClass: '' },
-  { name: 'Jeep Renegade',       cat: 'suv',           label: 'SUV',           price: 199, km: 'Ilimitado', pass: '5', trans: 'Automático', badge: 'Novo',         badgeClass: '' },
-  { name: 'BMW 320i',            cat: 'premium',       label: 'Premium',       price: 349, km: 'Ilimitado', pass: '5', trans: 'Automático', badge: 'Premium',      badgeClass: 'gold' },
-  { name: 'Mercedes C 200',      cat: 'premium',       label: 'Premium',       price: 389, km: 'Ilimitado', pass: '5', trans: 'Automático', badge: 'Premium',      badgeClass: 'gold' },
-  { name: 'Nissan Leaf',         cat: 'eletrico',      label: 'Elétrico',      price: 199, km: '300km/d',  pass: '5', trans: 'Automático', badge: '⚡ Zero CO₂',   badgeClass: '' },
-  { name: 'BYD Dolphin',         cat: 'eletrico',      label: 'Elétrico',      price: 219, km: '400km/d',  pass: '5', trans: 'Automático', badge: '⚡ Zero CO₂',   badgeClass: '' },
-];
+const allCars = [];
 
 /* index.html preview: first 6 cards */
 const cars = allCars.slice(0, 6);
