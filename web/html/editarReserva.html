@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Novare | Editar Reserva</title>
+  <meta name="description" content="Edite os dados de uma reserva no sistema Novare.">
+
+  <!-- Fontes -->
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet">
+
+  <!-- Estilos -->
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/variables.css">
+  <link rel="stylesheet" href="../css/dashboard.css">
+  <link rel="stylesheet" href="../css/cadastroVeiculo.css">
+  <link rel="stylesheet" href="../css/reserva.css">
+</head>
+<body>
+
+  <div class="dashboard">
+
+    <!-- ─── SIDEBAR ─── -->
+    <aside class="sidebar" id="sidebar">
+      <a href="../index.html" class="sidebar-logo">
+        <span class="logo">NO<span>VARE</span></span>
+      </a>
+
+      <span class="sidebar-label">Gerenciamento</span>
+
+      <nav class="sidebar-nav">
+        <a href="listarVeiculos.html">
+          <span class="nav-icon">🚗</span>
+          Veículos
+        </a>
+        <a href="listarUsuarios.html">
+          <span class="nav-icon">👥</span>
+          Usuários
+        </a>
+        <a href="listarReservas.html">
+          <span class="nav-icon">📋</span>
+          Reservas
+        </a>
+
+        <span class="sidebar-label" style="padding-left:0; padding-right:0;">Cadastros</span>
+
+        <a href="cadastroVeiculo.html">
+          <span class="nav-icon">➕</span>
+          Novo Veículo
+        </a>
+      </nav>
+
+      <div class="sidebar-footer">
+        <a href="../index.html">
+          <span>🚪</span>
+          Sair do painel
+        </a>
+      </div>
+    </aside>
+
+    <!-- ─── OVERLAY MOBILE ─── -->
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <!-- ─── CONTEÚDO PRINCIPAL ─── -->
+    <div class="main-content">
+
+      <!-- Topbar -->
+      <header class="topbar">
+        <div class="topbar-left">
+          <button class="menu-toggle" id="menuToggle" aria-label="Abrir menu">☰</button>
+          <div class="topbar-breadcrumb">
+            <a href="listarReservas.html">Reservas</a>
+            <span class="sep">›</span>
+            <span>Editar reserva</span>
+          </div>
+        </div>
+        <div class="topbar-user">
+          <div class="topbar-user-avatar">AD</div>
+          <span class="topbar-user-name">Admin</span>
+        </div>
+      </header>
+
+      <!-- Área de conteúdo -->
+      <main class="content-area">
+        <h1 class="page-title">Editar Reserva</h1>
+        <p class="page-subtitle">Altere os dados da locação e salve as mudanças.</p>
+
+        <!-- Card de resumo do veículo -->
+        <div class="card reserva-resumo-card" id="resumoVeiculo">
+          <div class="resumo-icon">🚗</div>
+          <div class="resumo-info">
+            <div class="resumo-label">Veículo da reserva</div>
+            <div class="resumo-modelo" id="resumoModelo">Carregando...</div>
+            <div class="resumo-detalhes" id="resumoDetalhes"></div>
+          </div>
+        </div>
+
+        <!-- Card do formulário -->
+        <div class="card form-card">
+          <form id="editarReservaForm" action="ControleLocacao" method="post" novalidate>
+            <input type="hidden" name="op" value="EDITAR">
+            <input type="hidden" id="idLocacao" name="idLocacao">
+            <input type="hidden" id="idUsuario" name="idUsuario">
+            <input type="hidden" id="idVeiculo" name="idVeiculo">
+
+            <!-- Linha 1: Data de Retirada e Data de Entrega -->
+            <div class="form-row">
+              <div class="form-group" id="dataRetiradaGroup">
+                <label for="dataRetirada">Data de Retirada</label>
+                <div class="input-wrap">
+                  <input type="date" id="dataRetirada" name="dataRetirada" required>
+                </div>
+                <span class="form-error" id="dataRetiradaError"></span>
+              </div>
+
+              <div class="form-group" id="dataEntregaGroup">
+                <label for="dataEntrega">Data de Entrega</label>
+                <div class="input-wrap">
+                  <input type="date" id="dataEntrega" name="dataEntrega" required>
+                </div>
+                <span class="form-error" id="dataEntregaError"></span>
+              </div>
+            </div>
+
+            <!-- Linha 2: Quantidade de Dias e Local de Retirada -->
+            <div class="form-row">
+              <div class="form-group" id="qtdDiasGroup">
+                <label for="qtdDias">Quantidade de Dias</label>
+                <div class="input-wrap">
+                  <input type="number" id="qtdDias" name="qtdDias" placeholder="0" min="1" readonly>
+                </div>
+                <span class="form-error" id="qtdDiasError"></span>
+              </div>
+
+              <div class="form-group" id="localRetiradaGroup">
+                <label for="localRetirada">Local de Retirada</label>
+                <div class="input-wrap">
+                  <input type="text" id="localRetirada" name="localRetirada" placeholder="Ex: Aeroporto de Guarulhos" required>
+                </div>
+                <span class="form-error" id="localRetiradaError"></span>
+              </div>
+            </div>
+
+            <!-- Linha 3: Seguro -->
+            <div class="form-group" id="seguroLocacaoGroup">
+              <label for="seguroLocacao">Seguro da Locação (R$)</label>
+              <div class="input-wrap">
+                <input type="number" id="seguroLocacao" name="seguroLocacao" placeholder="0.00" step="0.01" min="0" required>
+              </div>
+              <span class="form-error" id="seguroLocacaoError"></span>
+            </div>
+
+            <!-- Card de resumo do valor total -->
+            <div class="reserva-total-card" id="totalCard">
+              <div class="total-row">
+                <span class="total-label">Nº de dias</span>
+                <span class="total-val" id="totalDias">0 dias</span>
+              </div>
+              <div class="total-row">
+                <span class="total-label">Seguro</span>
+                <span class="total-val" id="totalSeguro">R$ 0,00</span>
+              </div>
+              <div class="total-divider"></div>
+              <div class="total-row total-final">
+                <span class="total-label">Valor Total</span>
+                <span class="total-val" id="totalValor">R$ 0,00</span>
+              </div>
+              <input type="hidden" id="valorTotal" name="valorTotal">
+            </div>
+
+            <!-- Botão -->
+            <button type="submit" class="btn-submit" id="btnSalvar">
+              <span class="btn-text">Salvar Alterações</span>
+              <span class="btn-loader" aria-hidden="true"></span>
+            </button>
+          </form>
+        </div>
+      </main>
+
+    </div>
+  </div>
+
+  <!-- Toast de feedback -->
+  <div class="toast" id="toast"></div>
+
+  <!-- Script -->
+  <script src="../js/editarReserva.js"></script>
+</body>
+</html>
