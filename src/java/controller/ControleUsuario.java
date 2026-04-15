@@ -15,7 +15,7 @@ import dao.UsuarioDAO;
 import dao.LoginDAO;
 import model.Usuario;
 
-@WebServlet(name = "ControleUsuario", urlPatterns = {"/ControleUsuario", "/html/ControleUsuario"})
+@WebServlet(name = "ControleUsuario", urlPatterns = { "/ControleUsuario", "/html/ControleUsuario" })
 public class ControleUsuario extends HttpServlet {
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
@@ -56,11 +56,7 @@ public class ControleUsuario extends HttpServlet {
                     Cookie cookieRole = new Cookie("role", "admin");
                     cookieRole.setPath("/");
                     response.addCookie(cookieRole);
-<<<<<<< HEAD
-                    Cookie cookieId = new Cookie("idUsuario", "0");
-=======
                     Cookie cookieId = new Cookie("idUsuario", adminIdToUse);
->>>>>>> 453269164eb1d11cf145d0930ba57ab711c5668a
                     cookieId.setPath("/");
                     response.addCookie(cookieId);
 
@@ -74,25 +70,36 @@ public class ControleUsuario extends HttpServlet {
 
                 if (usuarioValido != null) {
                     HttpSession session = request.getSession();
+
+                    String userRole = "user";
+                    if ("falcone0407@gmail.com".equalsIgnoreCase(usuarioValido.getEmailUsuario())) {
+                        userRole = "admin";
+                    }
+
                     session.setAttribute("usuarioLogado", usuarioValido.getEmailUsuario());
                     session.setAttribute("nomeUsuario", usuarioValido.getNomeUsuario());
-                    session.setAttribute("role", "user");
+                    session.setAttribute("role", userRole);
 
                     // Cookies para o frontend detectar o estado de login
                     Cookie cookieUser = new Cookie("usuarioLogado", usuarioValido.getEmailUsuario());
                     cookieUser.setPath("/");
                     response.addCookie(cookieUser);
-                    Cookie cookieName = new Cookie("nomeUsuario", java.net.URLEncoder.encode(usuarioValido.getNomeUsuario(), "UTF-8"));
+                    Cookie cookieName = new Cookie("nomeUsuario",
+                            java.net.URLEncoder.encode(usuarioValido.getNomeUsuario(), "UTF-8"));
                     cookieName.setPath("/");
                     response.addCookie(cookieName);
-                    Cookie cookieRole = new Cookie("role", "user");
+                    Cookie cookieRole = new Cookie("role", userRole);
                     cookieRole.setPath("/");
                     response.addCookie(cookieRole);
                     Cookie cookieId = new Cookie("idUsuario", String.valueOf(usuarioValido.getIdUsuario()));
                     cookieId.setPath("/");
                     response.addCookie(cookieId);
 
-                    response.sendRedirect(request.getContextPath() + "/index.html");
+                    if ("admin".equals(userRole)) {
+                        response.sendRedirect(request.getContextPath() + "/html/listarVeiculos.html");
+                    } else {
+                        response.sendRedirect(request.getContextPath() + "/index.html");
+                    }
                 } else {
                     response.sendRedirect(request.getContextPath() + "/html/login.html?erro=1");
                 }
@@ -114,9 +121,9 @@ public class ControleUsuario extends HttpServlet {
                 u.setCelularUsuario(celular);
 
                 dao.cadastrarUsuario(u);
-                
+
                 // Redireciona para o INICIO após se cadastrar
-                response.sendRedirect(request.getContextPath() + "/index.html"); 
+                response.sendRedirect(request.getContextPath() + "/index.html");
 
             } else if (operacao.equals("ATUALIZAR")) {
                 int idUsuario = Integer.parseInt(request.getParameter("id"));
@@ -154,7 +161,8 @@ public class ControleUsuario extends HttpServlet {
                 StringBuilder json = new StringBuilder("[");
                 for (int i = 0; i < usuarios.size(); i++) {
                     Usuario u = usuarios.get(i);
-                    if (i > 0) json.append(",");
+                    if (i > 0)
+                        json.append(",");
                     json.append("{");
                     json.append("\"id\":").append(u.getIdUsuario()).append(",");
                     json.append("\"nome\":\"").append(u.getNomeUsuario()).append("\",");
@@ -207,7 +215,8 @@ public class ControleUsuario extends HttpServlet {
         } catch (Exception e) {
             e.printStackTrace();
             System.err.println("Erro na operacao " + operacao + ": " + e.getMessage());
-            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Erro ao processar requisição: " + e.getMessage());
+            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
+                    "Erro ao processar requisição: " + e.getMessage());
         }
     }
 
