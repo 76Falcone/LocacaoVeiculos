@@ -38,13 +38,61 @@
   box-shadow: var(--shadow-md);
 }
 
-/* ─── VALOR DIÁRIA NA TABELA ─── */
-.valor-cell {
-  font-weight: 600;
+/* ─── BADGES MELHORADOS ─── */
+
+/* Badge ID */
+.id-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 28px;
+  padding: 2px 8px;
+  background: var(--purple-pale);
   color: var(--purple);
+  font-weight: 700;
+  font-size: 0.78rem;
+  border-radius: 6px;
 }
 
-/* ─── BADGE SIM/NÃO ─── */
+/* Badge Placa */
+.placa-badge {
+  display: inline-block;
+  padding: 3px 10px;
+  background: var(--light);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.82rem;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  color: var(--text);
+}
+
+/* Célula de Modelo */
+.modelo-cell {
+  font-weight: 600;
+  color: var(--text);
+}
+
+/* Dot de cor */
+.cor-dot {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  margin-right: 6px;
+  vertical-align: middle;
+  border: 1px solid rgba(0,0,0,0.1);
+}
+
+/* Valor diária */
+.valor-cell {
+  font-weight: 700;
+  color: var(--purple);
+  font-size: 0.88rem;
+}
+
+/* Badge Sim/Não */
 .bool-badge {
   display: inline-flex;
   align-items: center;
@@ -62,6 +110,42 @@
 .bool-badge.no {
   background: var(--light);
   color: var(--muted);
+}
+
+/* Badge Câmbio */
+.cambio-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 3px 10px;
+  border-radius: 100px;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.cambio-badge.auto {
+  background: #EEF2FF;
+  color: #4338CA;
+}
+
+.cambio-badge.manual {
+  background: #FFF7ED;
+  color: #C2410C;
+}
+
+/* ─── ANIMAÇÃO DAS LINHAS ─── */
+.table-row {
+  animation: fadeInRow 0.3s ease both;
+}
+
+@keyframes fadeInRow {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 /* ─── FILTROS POR COLUNA ─── */
@@ -121,6 +205,83 @@
   box-shadow: 0 0 0 2px rgba(106, 38, 205, 0.08);
 }
 
+/* ─── PAGINAÇÃO ─── */
+.pagination-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.2rem 0 0.5rem;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.pagination-info {
+  font-size: 0.82rem;
+  color: var(--muted);
+}
+
+.pagination-info strong {
+  color: var(--text);
+}
+
+.pagination-buttons {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.page-btn {
+  height: 36px;
+  min-width: 36px;
+  padding: 0 10px;
+  border: 1.5px solid var(--border);
+  border-radius: 8px;
+  background: var(--white);
+  color: var(--text);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.82rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.18s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.page-btn:hover:not(.disabled):not(.active) {
+  border-color: var(--purple);
+  color: var(--purple);
+  background: var(--purple-pale);
+}
+
+.page-btn.active {
+  background: var(--purple);
+  border-color: var(--purple);
+  color: var(--white);
+  font-weight: 700;
+  box-shadow: 0 2px 8px rgba(106, 38, 205, 0.25);
+}
+
+.page-btn.disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+.page-num {
+  min-width: 36px;
+  padding: 0;
+}
+
+.page-ellipsis {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 36px;
+  font-size: 0.9rem;
+  color: var(--muted);
+}
+
 /* ─── RESPONSIVO ─── */
 @media (max-width: 600px) {
   .page-header-row {
@@ -130,5 +291,10 @@
   .btn-add {
     width: 100%;
     justify-content: center;
+  }
+
+  .pagination-wrap {
+    flex-direction: column;
+    align-items: center;
   }
 }
