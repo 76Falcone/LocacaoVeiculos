@@ -168,6 +168,12 @@ document.addEventListener('DOMContentLoaded', () => {
         <td><span class="cnh-cell">${u.cnh}</span></td>
         <td><span class="email-cell">${u.email}</span></td>
         <td>${u.celular}</td>
+        <td>
+          <div class="action-buttons">
+            <button class="btn-action btn-edit" title="Editar" onclick="window.location.href='editarUsuario.html?id=${u.id}&nome=${encodeURIComponent(u.nome)}&cpf=${encodeURIComponent(u.cpf)}&cnh=${encodeURIComponent(u.cnh)}&email=${encodeURIComponent(u.email)}&celular=${encodeURIComponent(u.celular)}'">✏️</button>
+            <button class="btn-action btn-delete" title="Deletar" onclick="confirmarExclusao(${u.id}, '${u.nome}')">🗑️</button>
+          </div>
+        </td>
       </tr>
     `).join('');
 
@@ -217,6 +223,17 @@ document.addEventListener('DOMContentLoaded', () => {
     if (current >= total - 2) return [1, '...', total - 3, total - 2, total - 1, total];
     return [1, '...', current - 1, current, current + 1, '...', total];
   }
+
+  // ─── Confirmar exclusão (preparado para integração com Servlet) ───
+  window.confirmarExclusao = function(id, nome) {
+    if (confirm(`Tem certeza que deseja excluir o usuário "${nome}" (ID: ${id})?`)) {
+      // TODO: Integrar com ControleUsuario?op=DELETAR&id=<id>
+      // fetch(`ControleUsuario?op=DELETAR&id=${id}`, { method: 'POST' })
+      //   .then(() => { location.reload(); })
+      //   .catch(err => console.error(err));
+      alert('Funcionalidade de exclusão será integrada ao backend futuramente.');
+    }
+  };
 
   // ─── Render inicial ───
   renderTable();
