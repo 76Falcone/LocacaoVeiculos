@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import model.Usuario;
 
 import util.FabricaConexao;
 
@@ -15,19 +16,20 @@ import util.FabricaConexao;
 public class LoginDAO implements ILoginDAO {
 
     @Override
-    public boolean validarLogin(String email, String senha) throws ClassNotFoundException, SQLException {
+    public Usuario validarLogin(String email, String senha) throws ClassNotFoundException, SQLException {
         Connection con = FabricaConexao.getConexao();
         PreparedStatement comando = con.prepareStatement("SELECT * FROM usuarios WHERE email = ? AND senha = ?");
         comando.setString(1, email);
         comando.setString(2, senha);
         ResultSet resultado = comando.executeQuery();
-        boolean acessoLiberado = false;
+        Usuario usuarioLogado = null;
         if (resultado.next()) {
-            acessoLiberado = true;
-        } else {
-            acessoLiberado = false;
+            usuarioLogado = new Usuario();
+            usuarioLogado.setIdUsuario(resultado.getInt("id"));
+            usuarioLogado.setNomeUsuario(resultado.getString("nome"));
+            usuarioLogado.setEmailUsuario(resultado.getString("email"));
         }
         con.close();
-        return acessoLiberado;
+        return usuarioLogado;
     }
 }
