@@ -1,0 +1,274 @@
+/* ═══════════════════════════════════════════════════════════
+   RESERVA.CSS — Estilos da tela de reserva de veículo
+   Novare · Sistema de Gestão de Veículos
+   ═══════════════════════════════════════════════════════════ */
+
+/* ─── FORM CARD ─── */
+.form-card {
+  max-width: 680px;
+}
+
+/* ─── FORM GROUP ─── */
+.form-group {
+  margin-bottom: 1.15rem;
+}
+
+.form-group label {
+  display: block;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  margin-bottom: 0.4rem;
+}
+
+/* ─── INPUT ─── */
+.input-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.input-wrap input {
+  width: 100%;
+  height: var(--input-h);
+  padding: 0 1rem;
+  border: 1.5px solid var(--border);
+  border-radius: var(--input-radius);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.92rem;
+  color: var(--text);
+  background: var(--white);
+  outline: none;
+  transition: var(--transition-fast);
+}
+
+.input-wrap input[readonly] {
+  background: var(--light);
+  color: var(--muted);
+  cursor: default;
+}
+
+.input-wrap input::placeholder {
+  color: #C4B5E0;
+}
+
+.input-wrap input:focus {
+  border-color: var(--purple);
+  box-shadow: 0 0 0 3px rgba(106, 38, 205, 0.08);
+}
+
+/* ─── ESTADO DE ERRO ─── */
+.form-group.has-error .input-wrap input {
+  border-color: var(--error);
+  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.08);
+}
+
+.form-error {
+  display: block;
+  font-size: 0.76rem;
+  color: var(--error);
+  margin-top: 0.3rem;
+  min-height: 0.9rem;
+  transition: var(--transition-fast);
+}
+
+/* ─── LINHA DE 2 COLUNAS ─── */
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+/* ─── CARD DE RESUMO DO VEÍCULO ─── */
+.reserva-resumo-card {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  max-width: 680px;
+  margin-bottom: 1.5rem;
+  padding: 1.25rem 1.5rem;
+  background: var(--purple-pale);
+  border-color: var(--purple-mid);
+}
+
+.resumo-icon {
+  font-size: 2.2rem;
+  flex-shrink: 0;
+}
+
+.resumo-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.resumo-label {
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  margin-bottom: 0.2rem;
+}
+
+.resumo-modelo {
+  font-family: 'Syne', sans-serif;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.resumo-detalhes {
+  font-size: 0.82rem;
+  color: var(--muted);
+  margin-top: 0.15rem;
+}
+
+.resumo-preco {
+  text-align: right;
+  flex-shrink: 0;
+}
+
+.resumo-preco-label {
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+}
+
+.resumo-preco-valor {
+  font-family: 'Syne', sans-serif;
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: var(--purple);
+}
+
+/* ─── CARD DE VALOR TOTAL ─── */
+.reserva-total-card {
+  max-width: 680px;
+  background: var(--light);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 1.25rem 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.total-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.35rem 0;
+  font-size: 0.9rem;
+}
+
+.total-label {
+  color: var(--muted);
+}
+
+.total-val {
+  font-weight: 600;
+  color: var(--text);
+}
+
+.total-divider {
+  height: 1.5px;
+  background: var(--border);
+  margin: 0.5rem 0;
+}
+
+.total-final .total-label {
+  font-family: 'Syne', sans-serif;
+  font-weight: 700;
+  font-size: 0.95rem;
+  color: var(--text);
+}
+
+.total-final .total-val {
+  font-family: 'Syne', sans-serif;
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: var(--purple);
+}
+
+/* ─── BOTÃO SUBMIT ─── */
+.btn-submit {
+  width: 100%;
+  max-width: 680px;
+  height: 48px;
+  background: var(--purple);
+  color: var(--white);
+  border: none;
+  border-radius: var(--input-radius);
+  font-family: 'Syne', sans-serif;
+  font-size: 0.95rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: var(--transition);
+  position: relative;
+  overflow: hidden;
+  margin-top: 0.8rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-submit:hover {
+  background: var(--purple-light);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-md);
+}
+
+.btn-submit:active {
+  transform: translateY(0);
+}
+
+.btn-submit.loading .btn-text {
+  opacity: 0;
+}
+
+.btn-submit.loading .btn-loader {
+  display: block;
+}
+
+.btn-loader {
+  display: none;
+  width: 20px;
+  height: 20px;
+  border: 2.5px solid rgba(255, 255, 255, 0.3);
+  border-top-color: var(--white);
+  border-radius: 50%;
+  animation: spin 0.6s linear infinite;
+  position: absolute;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* ─── RESPONSIVO ─── */
+@media (max-width: 600px) {
+  .form-row {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+
+  .form-card,
+  .reserva-resumo-card,
+  .reserva-total-card,
+  .btn-submit {
+    max-width: 100%;
+  }
+
+  .reserva-resumo-card {
+    flex-wrap: wrap;
+  }
+
+  .resumo-preco {
+    text-align: left;
+  }
+}
