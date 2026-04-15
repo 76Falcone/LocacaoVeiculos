@@ -1,11 +1,12 @@
 package dao;
 
 import java.sql.SQLException;
+import model.Usuario;
 
 /**
  *
  * @author 76Falcone
  */
 public interface ILoginDAO {
-    boolean validarLogin(String email, String senha) throws ClassNotFoundException, SQLException;
+    Usuario validarLogin(String email, String senha) throws ClassNotFoundException, SQLException;
 }
