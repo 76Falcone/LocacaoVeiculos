@@ -55,8 +55,6 @@
       <table class="data-table has-filters" id="veiculosTable">
         <thead>
           <tr>
-            <th class="sortable" data-col="id">ID ↕</th>
-            <th class="sortable" data-col="placa">Placa ↕</th>
             <th class="sortable" data-col="modelo">Modelo ↕</th>
             <th>Cor</th>
             <th class="sortable" data-col="valorDiaria">Diária ↕</th>
@@ -68,8 +66,6 @@
           </tr>
           <!-- Linha de filtros por coluna -->
           <tr class="filter-row">
-            <th><input type="text" class="col-filter" id="filterId" placeholder="ID"></th>
-            <th><input type="text" class="col-filter" id="filterPlaca" placeholder="Placa"></th>
             <th><input type="text" class="col-filter" id="filterModelo" placeholder="Modelo"></th>
             <th><input type="text" class="col-filter" id="filterCor" placeholder="Cor"></th>
             <th><input type="text" class="col-filter" id="filterValor" placeholder="R$"></th>
@@ -175,8 +171,6 @@
       const pagination = document.getElementById('pagination');
 
       // Filtros por coluna
-      const filterId = document.getElementById('filterId');
-      const filterPlaca = document.getElementById('filterPlaca');
       const filterModelo = document.getElementById('filterModelo');
       const filterCor = document.getElementById('filterCor');
       const filterValor = document.getElementById('filterValor');
@@ -186,11 +180,11 @@
       const filterCambio = document.getElementById('filterCambio');
 
       // Estado de ordenação
-      let sortCol = 'id';
+      let sortCol = 'modelo';
       let sortAsc = true;
 
       // ─── Eventos de filtro (resetar para página 1 ao filtrar) ───
-      const allInputFilters = [filterId, filterPlaca, filterModelo, filterCor, filterValor, filterFunc];
+      const allInputFilters = [filterModelo, filterCor, filterValor, filterFunc];
       const allSelectFilters = [filterDisp, filterAr, filterCambio];
 
       allInputFilters.forEach(input => {
@@ -217,8 +211,6 @@
 
       // ─── Obter dados filtrados e ordenados ───
       function getFilteredData() {
-        const fId = filterId.value.trim().toLowerCase();
-        const fPlaca = filterPlaca.value.trim().toLowerCase();
         const fModelo = filterModelo.value.trim().toLowerCase();
         const fCor = filterCor.value.trim().toLowerCase();
         const fValor = filterValor.value.trim();
@@ -228,8 +220,6 @@
         const fCambio = filterCambio.value;
 
         let filtered = veiculos.filter(v => {
-          if (fId && !String(v.id).includes(fId)) return false;
-          if (fPlaca && !v.placa.toLowerCase().includes(fPlaca)) return false;
           if (fModelo && !v.modelo.toLowerCase().includes(fModelo)) return false;
           if (fCor && !v.cor.toLowerCase().includes(fCor)) return false;
           if (fValor && !String(v.valorDiaria.toFixed(2)).includes(fValor)) return false;
@@ -290,8 +280,6 @@
 
         tableBody.innerHTML = pageData.map((v, i) => `
           <tr class="table-row" style="animation-delay: ${i * 0.03}s">
-            <td><span class="id-badge">${v.id}</span></td>
-            <td><span class="placa-badge">${v.placa}</span></td>
             <td class="modelo-cell">${v.modelo}</td>
             <td><span class="cor-dot" style="background:${getColorHex(v.cor)}"></span>${v.cor}</td>
             <td class="valor-cell">R$ ${v.valorDiaria.toFixed(2)}</td>
