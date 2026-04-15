@@ -27,7 +27,7 @@ public class ControleUsuario extends HttpServlet {
             UsuarioDAO dao = new UsuarioDAO();
 
             if (operacao == null) {
-                response.sendRedirect("listarUsuarios.html");
+                response.sendRedirect(request.getContextPath() + "/html/listarUsuarios.html");
 
             } else if (operacao.equals("LOGIN")) {
                 String email = request.getParameter("email");
@@ -44,35 +44,41 @@ public class ControleUsuario extends HttpServlet {
                     Cookie cookieUser = new Cookie("usuarioLogado", "admin");
                     cookieUser.setPath("/");
                     response.addCookie(cookieUser);
+                    Cookie cookieName = new Cookie("nomeUsuario", java.net.URLEncoder.encode("Administrador", "UTF-8"));
+                    cookieName.setPath("/");
+                    response.addCookie(cookieName);
                     Cookie cookieRole = new Cookie("role", "admin");
                     cookieRole.setPath("/");
                     response.addCookie(cookieRole);
 
-                    response.sendRedirect("listarVeiculos.html");
+                    response.sendRedirect(request.getContextPath() + "/html/listarVeiculos.html");
                     return;
                 }
 
                 // Verifica no banco de dados (usuário comum)
                 LoginDAO loginDao = new LoginDAO();
-                boolean valido = loginDao.validarLogin(email, senha);
+                Usuario usuarioValido = loginDao.validarLogin(email, senha);
 
-                if (valido) {
+                if (usuarioValido != null) {
                     HttpSession session = request.getSession();
-                    session.setAttribute("usuarioLogado", email);
-                    session.setAttribute("nomeUsuario", email);
+                    session.setAttribute("usuarioLogado", usuarioValido.getEmailUsuario());
+                    session.setAttribute("nomeUsuario", usuarioValido.getNomeUsuario());
                     session.setAttribute("role", "user");
 
                     // Cookies para o frontend detectar o estado de login
-                    Cookie cookieUser = new Cookie("usuarioLogado", email);
+                    Cookie cookieUser = new Cookie("usuarioLogado", usuarioValido.getEmailUsuario());
                     cookieUser.setPath("/");
                     response.addCookie(cookieUser);
+                    Cookie cookieName = new Cookie("nomeUsuario", java.net.URLEncoder.encode(usuarioValido.getNomeUsuario(), "UTF-8"));
+                    cookieName.setPath("/");
+                    response.addCookie(cookieName);
                     Cookie cookieRole = new Cookie("role", "user");
                     cookieRole.setPath("/");
                     response.addCookie(cookieRole);
 
-                    response.sendRedirect("../index.html");
+                    response.sendRedirect(request.getContextPath() + "/index.html");
                 } else {
-                    response.sendRedirect("login.html?erro=1");
+                    response.sendRedirect(request.getContextPath() + "/html/login.html?erro=1");
                 }
 
             } else if (operacao.equals("CADASTRAR")) {
@@ -93,8 +99,8 @@ public class ControleUsuario extends HttpServlet {
 
                 dao.cadastrarUsuario(u);
                 
-                // Pode redirecionar para login ou listagem dependendo de quem cadastra
-                response.sendRedirect("login.html"); 
+                // Redireciona para o INICIO após se cadastrar
+                response.sendRedirect(request.getContextPath() + "/index.html"); 
 
             } else if (operacao.equals("ATUALIZAR")) {
                 int idUsuario = Integer.parseInt(request.getParameter("id"));
@@ -115,7 +121,7 @@ public class ControleUsuario extends HttpServlet {
                 u.setCelularUsuario(celular);
 
                 dao.atualizarUsuario(u);
-                response.sendRedirect("listarUsuarios.html");
+                response.sendRedirect(request.getContextPath() + "/sucessoUsuario.jsp");
 
             } else if (operacao.equals("DELETAR")) {
                 int idUsuario = Integer.parseInt(request.getParameter("id"));
@@ -123,7 +129,7 @@ public class ControleUsuario extends HttpServlet {
                 u.setIdUsuario(idUsuario);
 
                 dao.deletarUsuario(u);
-                response.sendRedirect("listarUsuarios.html");
+                response.sendRedirect(request.getContextPath() + "/sucessoUsuario.jsp");
 
             } else if (operacao.equals("LISTAR")) {
                 List<Usuario> usuarios = dao.visualizarTodosUsuarios();
@@ -166,12 +172,16 @@ public class ControleUsuario extends HttpServlet {
                 cookieUser.setPath("/");
                 cookieUser.setMaxAge(0);
                 response.addCookie(cookieUser);
+                Cookie cookieName = new Cookie("nomeUsuario", "");
+                cookieName.setPath("/");
+                cookieName.setMaxAge(0);
+                response.addCookie(cookieName);
                 Cookie cookieRole = new Cookie("role", "");
                 cookieRole.setPath("/");
                 cookieRole.setMaxAge(0);
                 response.addCookie(cookieRole);
 
-                response.sendRedirect("../index.html");
+                response.sendRedirect(request.getContextPath() + "/index.html");
             }
 
         } catch (Exception e) {
