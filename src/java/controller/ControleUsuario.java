@@ -40,6 +40,12 @@ public class ControleUsuario extends HttpServlet {
                     session.setAttribute("nomeUsuario", "Administrador");
                     session.setAttribute("role", "admin");
 
+                    String adminIdToUse = "1";
+                    List<Usuario> usersExistentes = dao.visualizarTodosUsuarios();
+                    if (usersExistentes != null && !usersExistentes.isEmpty()) {
+                        adminIdToUse = String.valueOf(usersExistentes.get(0).getIdUsuario());
+                    }
+
                     // Cookies para o frontend detectar o estado de login
                     Cookie cookieUser = new Cookie("usuarioLogado", "admin");
                     cookieUser.setPath("/");
@@ -50,7 +56,11 @@ public class ControleUsuario extends HttpServlet {
                     Cookie cookieRole = new Cookie("role", "admin");
                     cookieRole.setPath("/");
                     response.addCookie(cookieRole);
+<<<<<<< HEAD
                     Cookie cookieId = new Cookie("idUsuario", "0");
+=======
+                    Cookie cookieId = new Cookie("idUsuario", adminIdToUse);
+>>>>>>> 453269164eb1d11cf145d0930ba57ab711c5668a
                     cookieId.setPath("/");
                     response.addCookie(cookieId);
 
