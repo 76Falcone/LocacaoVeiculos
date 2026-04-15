@@ -1,0 +1,155 @@
+<%@page contentType="text/html" pageEncoding="UTF-8" %>
+  <%@page import="model.Usuario" %>
+    <% Usuario usuario=(Usuario) request.getAttribute("usuario"); if (usuario==null) {
+      response.sendRedirect("html/listarUsuarios.html"); return; } %>
+      <!DOCTYPE html>
+      <html lang="pt-br">
+
+      <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Novare | Editar Usuário</title>
+        <meta name="description" content="Edite os dados de um usuário no sistema Novare.">
+
+        <!-- Fontes -->
+        <link
+          href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap"
+          rel="stylesheet">
+
+        <!-- Estilos ajustados -->
+        <link rel="stylesheet" href="css/style.css">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/cadastroUsuario.css">
+      </head>
+
+      <body class="cadastro-page">
+
+        <!-- ─── CONTAINER PRINCIPAL ─── -->
+        <main class="cadastro-container">
+
+          <!-- Lado esquerdo: painel decorativo -->
+          <aside class="cadastro-brand" aria-hidden="true">
+            <div class="cadastro-brand-content">
+              <div class="cadastro-brand-badge">
+                <span class="cadastro-brand-dot"></span>
+                Editar usuário
+              </div>
+              <h2 class="cadastro-brand-title">Atualize os<br><em>dados.</em></h2>
+              <p class="cadastro-brand-sub">Altere as informações do usuário cadastrado no sistema.</p>
+
+              <!-- Stats decorativos -->
+              <div class="cadastro-stats">
+                <div class="cadastro-stat">
+                  <span class="cadastro-stat-val">+120k</span>
+                  <span class="cadastro-stat-label">Usuários</span>
+                </div>
+                <div class="cadastro-stat">
+                  <span class="cadastro-stat-val">+50</span>
+                  <span class="cadastro-stat-label">Cidades</span>
+                </div>
+                <div class="cadastro-stat">
+                  <span class="cadastro-stat-val">4.9★</span>
+                  <span class="cadastro-stat-label">Avaliação</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Decorações de fundo -->
+            <div class="cadastro-brand-circle cadastro-brand-circle-1"></div>
+            <div class="cadastro-brand-circle cadastro-brand-circle-2"></div>
+          </aside>
+
+          <!-- Lado direito: formulário de edição -->
+          <section class="cadastro-form-section">
+            <div class="cadastro-form-wrap">
+
+              <!-- Logo (mobile) -->
+              <a href="index.html" class="cadastro-logo-mobile">
+                <span class="logo">NO<span>VARE</span></span>
+              </a>
+
+              <!-- Cabeçalho -->
+              <h1 class="cadastro-title">Editar Usuário</h1>
+              <p class="cadastro-subtitle">Altere os dados e salve as mudanças.</p>
+
+              <!-- Formulário -->
+              <form id="editarUsuarioForm" action="ControleUsuario" method="post" novalidate>
+                <input type="hidden" name="op" value="ATUALIZAR">
+                <input type="hidden" id="idUsuario" name="id" value="<%= usuario.getIdUsuario() %>">
+                <input type="hidden" name="senha" value="<%= usuario.getSenhaUsuario() %>">
+
+                <!-- Nome Completo -->
+                <div class="form-group" id="nomeGroup">
+                  <label for="nome">Nome Completo</label>
+                  <div class="input-wrap">
+                    <span class="input-icon">👤</span>
+                    <input type="text" id="nome" name="nome" placeholder="Ex: João Silva" autocomplete="name"
+                      value="<%= usuario.getNomeUsuario() %>" required>
+                  </div>
+                  <span class="form-error" id="nomeError"></span>
+                </div>
+
+                <!-- CPF e CNH (2 colunas) -->
+                <div class="form-row">
+                  <div class="form-group" id="cpfGroup">
+                    <label for="cpf">CPF</label>
+                    <div class="input-wrap">
+                      <span class="input-icon">📄</span>
+                      <input type="text" id="cpf" name="cpf" placeholder="000.000.000-00" maxlength="14"
+                        value="<%= usuario.getCpfUsuario() %>" required>
+                    </div>
+                    <span class="form-error" id="cpfError"></span>
+                  </div>
+
+                  <div class="form-group" id="cnhGroup">
+                    <label for="cnh">CNH</label>
+                    <div class="input-wrap">
+                      <span class="input-icon">🪪</span>
+                      <input type="text" id="cnh" name="cnh" placeholder="00000000000" maxlength="11"
+                        value="<%= usuario.getCnhUsuario() %>" required>
+                    </div>
+                    <span class="form-error" id="cnhError"></span>
+                  </div>
+                </div>
+
+                <!-- E-mail -->
+                <div class="form-group" id="emailGroup">
+                  <label for="email">E-mail</label>
+                  <div class="input-wrap">
+                    <span class="input-icon">✉️</span>
+                    <input type="email" id="email" name="email" placeholder="email@exemplo.com" autocomplete="email"
+                      value="<%= usuario.getEmailUsuario() %>" required>
+                  </div>
+                  <span class="form-error" id="emailError"></span>
+                </div>
+
+                <!-- Celular -->
+                <div class="form-group" id="celularGroup">
+                  <label for="celular">Celular</label>
+                  <div class="input-wrap">
+                    <span class="input-icon">📱</span>
+                    <input type="tel" id="celular" name="celular" placeholder="(11) 99999-9999" maxlength="15"
+                      value="<%= usuario.getCelularUsuario() %>" required>
+                  </div>
+                  <span class="form-error" id="celularError"></span>
+                </div>
+
+                <!-- Botão de salvar -->
+                <button type="submit" class="btn-submit" id="btnSalvar">
+                  <span class="btn-text">Salvar Alterações</span>
+                  <span class="btn-loader" aria-hidden="true"></span>
+                </button>
+              </form>
+
+              <!-- Voltar -->
+              <a href="html/listarUsuarios.html" class="cadastro-back">← Voltar para lista</a>
+            </div>
+          </section>
+
+        </main>
+
+        <!-- Script -->
+        <script src="js/editarUsuario.js"></script>
+      </body>
+
+      </html>
