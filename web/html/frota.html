@@ -59,27 +59,27 @@
         <div class="filter-pills">
           <div class="pill active" onclick="setCat(this,'todos')">
             <span class="pill-left">🚗 Todos</span>
-            <span class="pill-count">18</span>
+           
           </div>
           <div class="pill" onclick="setCat(this,'economico')">
             <span class="pill-left">💨 Econômico</span>
-            <span class="pill-count">5</span>
+           
           </div>
           <div class="pill" onclick="setCat(this,'intermediario')">
             <span class="pill-left">🚙 Intermediário</span>
-            <span class="pill-count">5</span>
+   
           </div>
           <div class="pill" onclick="setCat(this,'suv')">
             <span class="pill-left">🏔️ SUV</span>
-            <span class="pill-count">4</span>
+  
           </div>
           <div class="pill" onclick="setCat(this,'premium')">
             <span class="pill-left">💎 Premium</span>
-            <span class="pill-count">2</span>
+           
           </div>
           <div class="pill" onclick="setCat(this,'eletrico')">
             <span class="pill-left">⚡ Elétrico</span>
-            <span class="pill-count">2</span>
+           
           </div>
         </div>
       </div>
@@ -178,8 +178,8 @@
 
     function inferirLabel(cat) {
       const labels = {
-        economico: '💨 Econômico', intermediario: '🚙 Intermediário',
-        suv: '🏔️ SUV', premium: '💎 Premium', eletrico: '⚡ Elétrico'
+        economico: '🚗 Econômico', intermediario: '🛻 Intermediário',
+        suv: '🚙 SUV', premium: '🏎️ Premium', eletrico: '⚡ Elétrico'
       };
       return labels[cat] || '🚗 Veículo';
     }
