@@ -87,41 +87,9 @@
           </a>
         </div>
 
-        <!-- Card da tabela -->
-        <div class="card">
-
-          <!-- Barra de busca e filtros -->
-          <div class="search-bar">
-            <div class="search-input-wrap">
-              <span class="search-icon">🔍</span>
-              <input
-                type="text"
-                class="search-input"
-                id="searchInput"
-                placeholder="Buscar por modelo, placa, cor..."
-              >
-            </div>
-
-            <select class="filter-select" id="filterField">
-              <option value="todos">Todos os campos</option>
-              <option value="id">ID</option>
-              <option value="modelo">Modelo</option>
-              <option value="placa">Placa</option>
-            </select>
-
-            <select class="filter-select" id="filterDisponibilidade">
-              <option value="todos">Disponibilidade</option>
-              <option value="disponivel">Disponível</option>
-              <option value="indisponivel">Indisponível</option>
-            </select>
-          </div>
-
-          <!-- Resultado -->
-          <p class="result-info" id="resultInfo"></p>
-
           <!-- Tabela -->
           <div class="data-table-wrap">
-            <table class="data-table" id="veiculosTable">
+            <table class="data-table has-filters" id="veiculosTable">
               <thead>
                 <tr>
                   <th class="sortable" data-col="id">ID ↕</th>
@@ -133,6 +101,36 @@
                   <th>Disponível</th>
                   <th>Ar Cond.</th>
                   <th>Câmbio</th>
+                </tr>
+                <!-- Linha de filtros por coluna -->
+                <tr class="filter-row">
+                  <th><input type="text" class="col-filter" id="filterId" placeholder="ID"></th>
+                  <th><input type="text" class="col-filter" id="filterPlaca" placeholder="Placa"></th>
+                  <th><input type="text" class="col-filter" id="filterModelo" placeholder="Modelo"></th>
+                  <th><input type="text" class="col-filter" id="filterCor" placeholder="Cor"></th>
+                  <th><input type="text" class="col-filter" id="filterValor" placeholder="R$"></th>
+                  <th><input type="text" class="col-filter" id="filterFunc" placeholder="Função"></th>
+                  <th>
+                    <select class="col-filter-select" id="filterDisp">
+                      <option value="">Todos</option>
+                      <option value="true">Sim</option>
+                      <option value="false">Não</option>
+                    </select>
+                  </th>
+                  <th>
+                    <select class="col-filter-select" id="filterAr">
+                      <option value="">Todos</option>
+                      <option value="true">Sim</option>
+                      <option value="false">Não</option>
+                    </select>
+                  </th>
+                  <th>
+                    <select class="col-filter-select" id="filterCambio">
+                      <option value="">Todos</option>
+                      <option value="Automático">Auto</option>
+                      <option value="Manual">Manual</option>
+                    </select>
+                  </th>
                 </tr>
               </thead>
               <tbody id="veiculosBody"></tbody>

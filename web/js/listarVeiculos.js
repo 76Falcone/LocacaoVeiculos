@@ -20,14 +20,21 @@ document.addEventListener('DOMContentLoaded', () => {
   ];
 
   // ─── Elementos do DOM ───
-  const searchInput        = document.getElementById('searchInput');
-  const filterField        = document.getElementById('filterField');
-  const filterDisp         = document.getElementById('filterDisponibilidade');
-  const tableBody          = document.getElementById('veiculosBody');
-  const resultCount        = document.getElementById('resultCount');
-  const resultInfo         = document.getElementById('resultInfo');
-  const emptyState         = document.getElementById('emptyState');
-  const tableEl            = document.getElementById('veiculosTable');
+  const tableBody    = document.getElementById('veiculosBody');
+  const resultCount  = document.getElementById('resultCount');
+  const emptyState   = document.getElementById('emptyState');
+  const tableEl      = document.getElementById('veiculosTable');
+
+  // Filtros por coluna
+  const filterId     = document.getElementById('filterId');
+  const filterPlaca  = document.getElementById('filterPlaca');
+  const filterModelo = document.getElementById('filterModelo');
+  const filterCor    = document.getElementById('filterCor');
+  const filterValor  = document.getElementById('filterValor');
+  const filterFunc   = document.getElementById('filterFunc');
+  const filterDisp   = document.getElementById('filterDisp');
+  const filterAr     = document.getElementById('filterAr');
+  const filterCambio = document.getElementById('filterCambio');
 
   // Sidebar mobile
   const menuToggle     = document.getElementById('menuToggle');
@@ -51,10 +58,17 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // ─── Eventos de filtro ───
-  searchInput.addEventListener('input', renderTable);
-  filterField.addEventListener('change', renderTable);
-  filterDisp.addEventListener('change', renderTable);
+  // ─── Eventos de filtro por coluna ───
+  const allInputFilters = [filterId, filterPlaca, filterModelo, filterCor, filterValor, filterFunc];
+  const allSelectFilters = [filterDisp, filterAr, filterCambio];
+
+  allInputFilters.forEach(input => {
+    input.addEventListener('input', renderTable);
+  });
+
+  allSelectFilters.forEach(select => {
+    select.addEventListener('change', renderTable);
+  });
 
   // ─── Ordenação por coluna ───
   document.querySelectorAll('th.sortable').forEach(th => {
@@ -72,36 +86,29 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // ─── Renderizar tabela ───
   function renderTable() {
-    const query     = searchInput.value.trim().toLowerCase();
-    const fieldType = filterField.value;
-    const dispType  = filterDisp.value;
+    // Pegar valores dos filtros
+    const fId     = filterId.value.trim().toLowerCase();
+    const fPlaca  = filterPlaca.value.trim().toLowerCase();
+    const fModelo = filterModelo.value.trim().toLowerCase();
+    const fCor    = filterCor.value.trim().toLowerCase();
+    const fValor  = filterValor.value.trim();
+    const fFunc   = filterFunc.value.trim().toLowerCase();
+    const fDisp   = filterDisp.value;
+    const fAr     = filterAr.value;
+    const fCambio = filterCambio.value;
 
     // Filtrar
     let filtered = veiculos.filter(v => {
-      // Filtro de disponibilidade
-      if (dispType === 'disponivel' && !v.disponibilidade) return false;
-      if (dispType === 'indisponivel' && v.disponibilidade) return false;
-
-      // Filtro de busca
-      if (!query) return true;
-
-      if (fieldType === 'id') {
-        return String(v.id).includes(query);
-      } else if (fieldType === 'modelo') {
-        return v.modelo.toLowerCase().includes(query);
-      } else if (fieldType === 'placa') {
-        return v.placa.toLowerCase().includes(query);
-      } else {
-        // Todos os campos
-        return (
-          String(v.id).includes(query) ||
-          v.placa.toLowerCase().includes(query) ||
-          v.modelo.toLowerCase().includes(query) ||
-          v.cor.toLowerCase().includes(query) ||
-          v.funcionalidade.toLowerCase().includes(query) ||
-          v.tipoCambio.toLowerCase().includes(query)
-        );
-      }
+      if (fId && !String(v.id).includes(fId)) return false;
+      if (fPlaca && !v.placa.toLowerCase().includes(fPlaca)) return false;
+      if (fModelo && !v.modelo.toLowerCase().includes(fModelo)) return false;
+      if (fCor && !v.cor.toLowerCase().includes(fCor)) return false;
+      if (fValor && !String(v.valorDiaria.toFixed(2)).includes(fValor)) return false;
+      if (fFunc && !v.funcionalidade.toLowerCase().includes(fFunc)) return false;
+      if (fDisp && String(v.disponibilidade) !== fDisp) return false;
+      if (fAr && String(v.arCondicionado) !== fAr) return false;
+      if (fCambio && v.tipoCambio !== fCambio) return false;
+      return true;
     });
 
     // Ordenar
@@ -119,18 +126,16 @@ document.addEventListener('DOMContentLoaded', () => {
       return 0;
     });
 
-    // Atualizar contadores
+    // Atualizar contador
     resultCount.innerHTML = `<strong>${filtered.length}</strong> veículo${filtered.length !== 1 ? 's' : ''} encontrado${filtered.length !== 1 ? 's' : ''}`;
-    resultInfo.innerHTML = `Exibindo <strong>${filtered.length}</strong> de <strong>${veiculos.length}</strong> veículos`;
 
     // Renderizar
     if (filtered.length === 0) {
-      tableEl.style.display = 'none';
+      tableEl.querySelector('tbody').innerHTML = '';
       emptyState.style.display = 'block';
       return;
     }
 
-    tableEl.style.display = '';
     emptyState.style.display = 'none';
 
     tableBody.innerHTML = filtered.map(v => `

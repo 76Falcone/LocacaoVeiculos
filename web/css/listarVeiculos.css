@@ -1,3 +1,7 @@
+/* ═══════════════════════════════════════════════════════════
+   LISTARVEICULOS.CSS — Estilização da listagem de veículos
+   Novare · Sistema de Gestão de Veículos
+   ═══════════════════════════════════════════════════════════ */
 
 /* ─── CABEÇALHO DA PÁGINA COM BOTÃO ─── */
 .page-header-row {
@@ -58,6 +62,63 @@
 .bool-badge.no {
   background: var(--light);
   color: var(--muted);
+}
+
+/* ─── FILTROS POR COLUNA ─── */
+.filter-row th {
+  padding: 0.4rem 0.3rem 0.6rem;
+  background: var(--light);
+  border-bottom: 2px solid var(--border);
+}
+
+.col-filter {
+  width: 100%;
+  height: 32px;
+  padding: 0 0.5rem;
+  border: 1.5px solid var(--border);
+  border-radius: 6px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.78rem;
+  color: var(--text);
+  background: var(--white);
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  box-sizing: border-box;
+}
+
+.col-filter::placeholder {
+  color: #C4B5E0;
+  font-weight: 400;
+}
+
+.col-filter:focus {
+  border-color: var(--purple);
+  box-shadow: 0 0 0 2px rgba(106, 38, 205, 0.08);
+}
+
+.col-filter-select {
+  width: 100%;
+  height: 32px;
+  padding: 0 0.4rem;
+  border: 1.5px solid var(--border);
+  border-radius: 6px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.78rem;
+  color: var(--text);
+  background: var(--white);
+  cursor: pointer;
+  outline: none;
+  transition: border-color 0.2s;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%237B6EA0' stroke-width='1.2' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 6px center;
+  box-sizing: border-box;
+}
+
+.col-filter-select:focus {
+  border-color: var(--purple);
+  box-shadow: 0 0 0 2px rgba(106, 38, 205, 0.08);
 }
 
 /* ─── RESPONSIVO ─── */
