@@ -7,31 +7,31 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // ─── Dados mockados (substituir por fetch ao backend futuramente) ───
   const veiculos = [
-    { id: 1,  placa: 'ABC-1D23', modelo: 'Toyota Corolla',     cor: 'Preto',    valorDiaria: 179.00, funcionalidade: 'Passeio',     disponibilidade: true,  arCondicionado: true,  tipoCambio: 'Automático' },
-    { id: 2,  placa: 'DEF-2E45', modelo: 'Honda Civic',        cor: 'Prata',    valorDiaria: 169.00, funcionalidade: 'Passeio',     disponibilidade: true,  arCondicionado: true,  tipoCambio: 'Automático' },
-    { id: 3,  placa: 'GHI-3F67', modelo: 'Renault Kwid',       cor: 'Branco',   valorDiaria: 79.00,  funcionalidade: 'Passeio',     disponibilidade: false, arCondicionado: false, tipoCambio: 'Manual' },
-    { id: 4,  placa: 'JKL-4G89', modelo: 'Jeep Compass',       cor: 'Cinza',    valorDiaria: 219.00, funcionalidade: 'Utilitário',  disponibilidade: true,  arCondicionado: true,  tipoCambio: 'Automático' },
-    { id: 5,  placa: 'MNO-5H01', modelo: 'Volkswagen Polo',    cor: 'Vermelho', valorDiaria: 98.00,  funcionalidade: 'Passeio',     disponibilidade: true,  arCondicionado: true,  tipoCambio: 'Automático' },
-    { id: 6,  placa: 'PQR-6I23', modelo: 'Fiat Mobi',          cor: 'Azul',     valorDiaria: 72.00,  funcionalidade: 'Trabalho',    disponibilidade: false, arCondicionado: false, tipoCambio: 'Manual' },
-    { id: 7,  placa: 'STU-7J45', modelo: 'BMW 320i',           cor: 'Preto',    valorDiaria: 349.00, funcionalidade: 'Passeio',     disponibilidade: true,  arCondicionado: true,  tipoCambio: 'Automático' },
-    { id: 8,  placa: 'VWX-8K67', modelo: 'Hyundai Creta',      cor: 'Branco',   valorDiaria: 189.00, funcionalidade: 'Utilitário',  disponibilidade: true,  arCondicionado: true,  tipoCambio: 'Automático' },
-    { id: 9,  placa: 'YZA-9L89', modelo: 'Chevrolet Onix',     cor: 'Prata',    valorDiaria: 89.00,  funcionalidade: 'Passeio',     disponibilidade: true,  arCondicionado: true,  tipoCambio: 'Automático' },
-    { id: 10, placa: 'BCD-0M01', modelo: 'Nissan Leaf',        cor: 'Verde',    valorDiaria: 199.00, funcionalidade: 'Passeio',     disponibilidade: false, arCondicionado: true,  tipoCambio: 'Automático' },
-    { id: 11, placa: 'EFG-1N23', modelo: 'Fiat Argo',          cor: 'Vermelho', valorDiaria: 85.00,  funcionalidade: 'Passeio',     disponibilidade: true,  arCondicionado: true,  tipoCambio: 'Manual' },
-    { id: 12, placa: 'HIJ-2O45', modelo: 'Chevrolet Tracker',  cor: 'Cinza',    valorDiaria: 205.00, funcionalidade: 'Utilitário',  disponibilidade: true,  arCondicionado: true,  tipoCambio: 'Automático' },
-    { id: 13, placa: 'KLM-3P67', modelo: 'Toyota Hilux',       cor: 'Branco',   valorDiaria: 289.00, funcionalidade: 'Trabalho',    disponibilidade: true,  arCondicionado: true,  tipoCambio: 'Automático' },
-    { id: 14, placa: 'NOP-4Q89', modelo: 'Volkswagen T-Cross', cor: 'Azul',     valorDiaria: 175.00, funcionalidade: 'Passeio',     disponibilidade: false, arCondicionado: true,  tipoCambio: 'Automático' },
-    { id: 15, placa: 'QRS-5R01', modelo: 'Honda HRV',          cor: 'Prata',    valorDiaria: 210.00, funcionalidade: 'Passeio',     disponibilidade: true,  arCondicionado: true,  tipoCambio: 'Automático' },
-    { id: 16, placa: 'TUV-6S23', modelo: 'Fiat Strada',        cor: 'Branco',   valorDiaria: 135.00, funcionalidade: 'Trabalho',    disponibilidade: true,  arCondicionado: false, tipoCambio: 'Manual' },
-    { id: 17, placa: 'WXY-7T45', modelo: 'Renault Duster',     cor: 'Cinza',    valorDiaria: 155.00, funcionalidade: 'Utilitário',  disponibilidade: true,  arCondicionado: true,  tipoCambio: 'Manual' },
-    { id: 18, placa: 'ZAB-8U67', modelo: 'Mercedes C200',      cor: 'Preto',    valorDiaria: 420.00, funcionalidade: 'Passeio',     disponibilidade: true,  arCondicionado: true,  tipoCambio: 'Automático' },
-    { id: 19, placa: 'CDE-9V89', modelo: 'Audi A3',            cor: 'Branco',   valorDiaria: 380.00, funcionalidade: 'Passeio',     disponibilidade: false, arCondicionado: true,  tipoCambio: 'Automático' },
-    { id: 20, placa: 'FGH-0W01', modelo: 'Hyundai HB20',      cor: 'Vermelho', valorDiaria: 78.00,  funcionalidade: 'Passeio',     disponibilidade: true,  arCondicionado: true,  tipoCambio: 'Manual' },
-    { id: 21, placa: 'IJK-1X23', modelo: 'Toyota Yaris',       cor: 'Prata',    valorDiaria: 95.00,  funcionalidade: 'Passeio',     disponibilidade: true,  arCondicionado: true,  tipoCambio: 'Automático' },
-    { id: 22, placa: 'LMN-2Y45', modelo: 'Ford Ranger',        cor: 'Preto',    valorDiaria: 310.00, funcionalidade: 'Trabalho',    disponibilidade: true,  arCondicionado: true,  tipoCambio: 'Automático' },
-    { id: 23, placa: 'OPQ-3Z67', modelo: 'Chevrolet S10',      cor: 'Branco',   valorDiaria: 275.00, funcionalidade: 'Trabalho',    disponibilidade: false, arCondicionado: true,  tipoCambio: 'Automático' },
-    { id: 24, placa: 'RST-4A89', modelo: 'Fiat Toro',          cor: 'Bronze',   valorDiaria: 225.00, funcionalidade: 'Utilitário',  disponibilidade: true,  arCondicionado: true,  tipoCambio: 'Automático' },
-    { id: 25, placa: 'UVW-5B01', modelo: 'Jeep Renegade',      cor: 'Verde',    valorDiaria: 195.00, funcionalidade: 'Passeio',     disponibilidade: true,  arCondicionado: true,  tipoCambio: 'Automático' },
+    { id: 1, placa: 'ABC-1D23', modelo: 'Toyota Corolla', cor: 'Preto', valorDiaria: 179.00, funcionalidade: 'Passeio', disponibilidade: true, arCondicionado: true, tipoCambio: 'Automático' },
+    { id: 2, placa: 'DEF-2E45', modelo: 'Honda Civic', cor: 'Prata', valorDiaria: 169.00, funcionalidade: 'Passeio', disponibilidade: true, arCondicionado: true, tipoCambio: 'Automático' },
+    { id: 3, placa: 'GHI-3F67', modelo: 'Renault Kwid', cor: 'Branco', valorDiaria: 79.00, funcionalidade: 'Passeio', disponibilidade: false, arCondicionado: false, tipoCambio: 'Manual' },
+    { id: 4, placa: 'JKL-4G89', modelo: 'Jeep Compass', cor: 'Cinza', valorDiaria: 219.00, funcionalidade: 'Utilitário', disponibilidade: true, arCondicionado: true, tipoCambio: 'Automático' },
+    { id: 5, placa: 'MNO-5H01', modelo: 'Volkswagen Polo', cor: 'Vermelho', valorDiaria: 98.00, funcionalidade: 'Passeio', disponibilidade: true, arCondicionado: true, tipoCambio: 'Automático' },
+    { id: 6, placa: 'PQR-6I23', modelo: 'Fiat Mobi', cor: 'Azul', valorDiaria: 72.00, funcionalidade: 'Trabalho', disponibilidade: false, arCondicionado: false, tipoCambio: 'Manual' },
+    { id: 7, placa: 'STU-7J45', modelo: 'BMW 320i', cor: 'Preto', valorDiaria: 349.00, funcionalidade: 'Passeio', disponibilidade: true, arCondicionado: true, tipoCambio: 'Automático' },
+    { id: 8, placa: 'VWX-8K67', modelo: 'Hyundai Creta', cor: 'Branco', valorDiaria: 189.00, funcionalidade: 'Utilitário', disponibilidade: true, arCondicionado: true, tipoCambio: 'Automático' },
+    { id: 9, placa: 'YZA-9L89', modelo: 'Chevrolet Onix', cor: 'Prata', valorDiaria: 89.00, funcionalidade: 'Passeio', disponibilidade: true, arCondicionado: true, tipoCambio: 'Automático' },
+    { id: 10, placa: 'BCD-0M01', modelo: 'Nissan Leaf', cor: 'Verde', valorDiaria: 199.00, funcionalidade: 'Passeio', disponibilidade: false, arCondicionado: true, tipoCambio: 'Automático' },
+    { id: 11, placa: 'EFG-1N23', modelo: 'Fiat Argo', cor: 'Vermelho', valorDiaria: 85.00, funcionalidade: 'Passeio', disponibilidade: true, arCondicionado: true, tipoCambio: 'Manual' },
+    { id: 12, placa: 'HIJ-2O45', modelo: 'Chevrolet Tracker', cor: 'Cinza', valorDiaria: 205.00, funcionalidade: 'Utilitário', disponibilidade: true, arCondicionado: true, tipoCambio: 'Automático' },
+    { id: 13, placa: 'KLM-3P67', modelo: 'Toyota Hilux', cor: 'Branco', valorDiaria: 289.00, funcionalidade: 'Trabalho', disponibilidade: true, arCondicionado: true, tipoCambio: 'Automático' },
+    { id: 14, placa: 'NOP-4Q89', modelo: 'Volkswagen T-Cross', cor: 'Azul', valorDiaria: 175.00, funcionalidade: 'Passeio', disponibilidade: false, arCondicionado: true, tipoCambio: 'Automático' },
+    { id: 15, placa: 'QRS-5R01', modelo: 'Honda HRV', cor: 'Prata', valorDiaria: 210.00, funcionalidade: 'Passeio', disponibilidade: true, arCondicionado: true, tipoCambio: 'Automático' },
+    { id: 16, placa: 'TUV-6S23', modelo: 'Fiat Strada', cor: 'Branco', valorDiaria: 135.00, funcionalidade: 'Trabalho', disponibilidade: true, arCondicionado: false, tipoCambio: 'Manual' },
+    { id: 17, placa: 'WXY-7T45', modelo: 'Renault Duster', cor: 'Cinza', valorDiaria: 155.00, funcionalidade: 'Utilitário', disponibilidade: true, arCondicionado: true, tipoCambio: 'Manual' },
+    { id: 18, placa: 'ZAB-8U67', modelo: 'Mercedes C200', cor: 'Preto', valorDiaria: 420.00, funcionalidade: 'Passeio', disponibilidade: true, arCondicionado: true, tipoCambio: 'Automático' },
+    { id: 19, placa: 'CDE-9V89', modelo: 'Audi A3', cor: 'Branco', valorDiaria: 380.00, funcionalidade: 'Passeio', disponibilidade: false, arCondicionado: true, tipoCambio: 'Automático' },
+    { id: 20, placa: 'FGH-0W01', modelo: 'Hyundai HB20', cor: 'Vermelho', valorDiaria: 78.00, funcionalidade: 'Passeio', disponibilidade: true, arCondicionado: true, tipoCambio: 'Manual' },
+    { id: 21, placa: 'IJK-1X23', modelo: 'Toyota Yaris', cor: 'Prata', valorDiaria: 95.00, funcionalidade: 'Passeio', disponibilidade: true, arCondicionado: true, tipoCambio: 'Automático' },
+    { id: 22, placa: 'LMN-2Y45', modelo: 'Ford Ranger', cor: 'Preto', valorDiaria: 310.00, funcionalidade: 'Trabalho', disponibilidade: true, arCondicionado: true, tipoCambio: 'Automático' },
+    { id: 23, placa: 'OPQ-3Z67', modelo: 'Chevrolet S10', cor: 'Branco', valorDiaria: 275.00, funcionalidade: 'Trabalho', disponibilidade: false, arCondicionado: true, tipoCambio: 'Automático' },
+    { id: 24, placa: 'RST-4A89', modelo: 'Fiat Toro', cor: 'Bronze', valorDiaria: 225.00, funcionalidade: 'Utilitário', disponibilidade: true, arCondicionado: true, tipoCambio: 'Automático' },
+    { id: 25, placa: 'UVW-5B01', modelo: 'Jeep Renegade', cor: 'Verde', valorDiaria: 195.00, funcionalidade: 'Passeio', disponibilidade: true, arCondicionado: true, tipoCambio: 'Automático' },
   ];
 
   // ─── Configuração de paginação ───
@@ -39,26 +39,26 @@ document.addEventListener('DOMContentLoaded', () => {
   let currentPage = 1;
 
   // ─── Elementos do DOM ───
-  const tableBody    = document.getElementById('veiculosBody');
-  const resultCount  = document.getElementById('resultCount');
-  const emptyState   = document.getElementById('emptyState');
-  const tableEl      = document.getElementById('veiculosTable');
-  const pagination   = document.getElementById('pagination');
+  const tableBody = document.getElementById('veiculosBody');
+  const resultCount = document.getElementById('resultCount');
+  const emptyState = document.getElementById('emptyState');
+  const tableEl = document.getElementById('veiculosTable');
+  const pagination = document.getElementById('pagination');
 
   // Filtros por coluna
-  const filterId     = document.getElementById('filterId');
-  const filterPlaca  = document.getElementById('filterPlaca');
+  const filterId = document.getElementById('filterId');
+  const filterPlaca = document.getElementById('filterPlaca');
   const filterModelo = document.getElementById('filterModelo');
-  const filterCor    = document.getElementById('filterCor');
-  const filterValor  = document.getElementById('filterValor');
-  const filterFunc   = document.getElementById('filterFunc');
-  const filterDisp   = document.getElementById('filterDisp');
-  const filterAr     = document.getElementById('filterAr');
+  const filterCor = document.getElementById('filterCor');
+  const filterValor = document.getElementById('filterValor');
+  const filterFunc = document.getElementById('filterFunc');
+  const filterDisp = document.getElementById('filterDisp');
+  const filterAr = document.getElementById('filterAr');
   const filterCambio = document.getElementById('filterCambio');
 
   // Sidebar mobile
-  const menuToggle     = document.getElementById('menuToggle');
-  const sidebar        = document.getElementById('sidebar');
+  const menuToggle = document.getElementById('menuToggle');
+  const sidebar = document.getElementById('sidebar');
   const sidebarOverlay = document.getElementById('sidebarOverlay');
 
   // Estado de ordenação
@@ -106,14 +106,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // ─── Obter dados filtrados e ordenados ───
   function getFilteredData() {
-    const fId     = filterId.value.trim().toLowerCase();
-    const fPlaca  = filterPlaca.value.trim().toLowerCase();
+    const fId = filterId.value.trim().toLowerCase();
+    const fPlaca = filterPlaca.value.trim().toLowerCase();
     const fModelo = filterModelo.value.trim().toLowerCase();
-    const fCor    = filterCor.value.trim().toLowerCase();
-    const fValor  = filterValor.value.trim();
-    const fFunc   = filterFunc.value.trim().toLowerCase();
-    const fDisp   = filterDisp.value;
-    const fAr     = filterAr.value;
+    const fCor = filterCor.value.trim().toLowerCase();
+    const fValor = filterValor.value.trim();
+    const fFunc = filterFunc.value.trim().toLowerCase();
+    const fDisp = filterDisp.value;
+    const fAr = filterAr.value;
     const fCambio = filterCambio.value;
 
     let filtered = veiculos.filter(v => {
@@ -150,7 +150,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (currentPage > totalPages) currentPage = totalPages;
 
     const start = (currentPage - 1) * ITEMS_PER_PAGE;
-    const end   = start + ITEMS_PER_PAGE;
+    const end = start + ITEMS_PER_PAGE;
     const pageData = filtered.slice(start, end);
 
     // Atualizar contador
@@ -186,6 +186,12 @@ document.addEventListener('DOMContentLoaded', () => {
           </span>
         </td>
         <td><span class="cambio-badge ${v.tipoCambio === 'Automático' ? 'auto' : 'manual'}">${v.tipoCambio}</span></td>
+        <td>
+          <div class="action-buttons">
+            <button class="btn-action btn-edit" title="Editar" onclick="window.location.href='editarVeiculo.html?id=${v.id}&placa=${encodeURIComponent(v.placa)}&modelo=${encodeURIComponent(v.modelo)}&cor=${encodeURIComponent(v.cor)}&valorDiaria=${v.valorDiaria}&funcionalidade=${encodeURIComponent(v.funcionalidade)}&disponibilidade=${v.disponibilidade}&arCondicionado=${v.arCondicionado}&tipoCambio=${encodeURIComponent(v.tipoCambio)}'">✏️</button>
+            <button class="btn-action btn-delete" title="Deletar" onclick="confirmarExclusao(${v.id}, '${v.modelo}')">🗑️</button>
+          </div>
+        </td>
       </tr>
     `).join('');
 
