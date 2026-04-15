@@ -90,7 +90,7 @@ function renderCars(filter) {
               <span class="price-unit">/dia</span>
             </div>
           </div>
-          <button class="btn-rent">Reservar</button>
+          <button class="btn-rent" onclick="window.location.href='html/frota.html'">Reservar</button>
         </div>
       </div>
     </div>
