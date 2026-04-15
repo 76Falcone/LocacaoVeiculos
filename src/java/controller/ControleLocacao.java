@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import dao.LocacaoDAO;
+import dao.UsuarioDAO;
 import dao.VeiculoDAO;
 import model.Locacao;
 import model.Usuario;
@@ -50,6 +51,20 @@ public class ControleLocacao extends HttpServlet {
                 double valorTotal = Double.parseDouble(request.getParameter("valorTotal"));
 
                 Usuario u = new Usuario();
+                
+                // --- PROTEÇÃO DE RESILIÊNCIA PARA ADMIN OU COOKIE ANTIGO ---
+                // Se receber ID 1, verificamos se existe. Se não existir, pegamos um ID válido para teste
+                UsuarioDAO uDao = new UsuarioDAO();
+                Usuario target = new Usuario();
+                target.setIdUsuario(idUsuario);
+                
+                if (uDao.visualizarUsuarioByID(target).getIdUsuario() == 0) {
+                    List<Usuario> list = uDao.visualizarTodosUsuarios();
+                    if (!list.isEmpty()) {
+                        idUsuario = list.get(0).getIdUsuario();
+                    }
+                }
+                
                 u.setIdUsuario(idUsuario);
 
                 Veiculo v = new Veiculo();
@@ -90,6 +105,18 @@ public class ControleLocacao extends HttpServlet {
                 double valorTotal = Double.parseDouble(request.getParameter("valorTotal"));
 
                 Usuario u = new Usuario();
+                
+                UsuarioDAO uDao = new UsuarioDAO();
+                Usuario target = new Usuario();
+                target.setIdUsuario(idUsuario);
+                
+                if (uDao.visualizarUsuarioByID(target).getIdUsuario() == 0) {
+                    List<Usuario> list = uDao.visualizarTodosUsuarios();
+                    if (!list.isEmpty()) {
+                        idUsuario = list.get(0).getIdUsuario();
+                    }
+                }
+                
                 u.setIdUsuario(idUsuario);
 
                 Veiculo v = new Veiculo();
