@@ -11,11 +11,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import dao.LocacaoDAO;
+import dao.VeiculoDAO;
 import model.Locacao;
 import model.Usuario;
 import model.Veiculo;
 
-@WebServlet(name = "ControleLocacao", urlPatterns = {"/ControleLocacao", "/html/ControleLocacao"})
+@WebServlet(name = "ControleLocacao", urlPatterns = { "/ControleLocacao", "/html/ControleLocacao" })
 public class ControleLocacao extends HttpServlet {
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
@@ -28,26 +29,29 @@ public class ControleLocacao extends HttpServlet {
 
             if (operacao == null) {
                 response.sendRedirect("../index.html");
-                
+
             } else if (operacao.equals("CADASTRAR")) {
                 int idUsuario = Integer.parseInt(request.getParameter("idUsuario"));
                 int idVeiculo = Integer.parseInt(request.getParameter("idVeiculo"));
                 LocalDate dataRetirada = LocalDate.parse(request.getParameter("dataRetirada"));
-                LocalDate dataEntrega = request.getParameter("dataEntrega") != null && !request.getParameter("dataEntrega").isEmpty() 
-                                       ? LocalDate.parse(request.getParameter("dataEntrega")) : null;
-                
+                LocalDate dataEntrega = request.getParameter("dataEntrega") != null
+                        && !request.getParameter("dataEntrega").isEmpty()
+                                ? LocalDate.parse(request.getParameter("dataEntrega"))
+                                : null;
+
                 int qtdDias = 1;
                 try {
                     qtdDias = Integer.parseInt(request.getParameter("qtdDias"));
-                } catch (NumberFormatException e) {}
-                
+                } catch (NumberFormatException e) {
+                }
+
                 String localRetirada = request.getParameter("localRetirada");
                 double seguroLocacao = Double.parseDouble(request.getParameter("seguroLocacao"));
                 double valorTotal = Double.parseDouble(request.getParameter("valorTotal"));
 
                 Usuario u = new Usuario();
                 u.setIdUsuario(idUsuario);
-                
+
                 Veiculo v = new Veiculo();
                 v.setIdVeiculo(idVeiculo);
 
@@ -62,7 +66,12 @@ public class ControleLocacao extends HttpServlet {
                 locacao.setValorTotal(valorTotal);
 
                 dao.cadastrarLocacao(locacao);
-                // Após a reserva, é redirecionado para a tela inicial conforme solicitado:
+
+                VeiculoDAO veiculoDAO = new VeiculoDAO();
+                Veiculo vAtualizar = veiculoDAO.visualizarVeiculoByID(v);
+                vAtualizar.setDisponibilidade(false);
+                veiculoDAO.atualizarVeiculo(vAtualizar);
+
                 response.sendRedirect("../index.html");
 
             } else if (operacao.equals("ATUALIZAR")) {
@@ -70,9 +79,11 @@ public class ControleLocacao extends HttpServlet {
                 int idUsuario = Integer.parseInt(request.getParameter("idUsuario"));
                 int idVeiculo = Integer.parseInt(request.getParameter("idVeiculo"));
                 LocalDate dataRetirada = LocalDate.parse(request.getParameter("dataRetirada"));
-                LocalDate dataEntrega = request.getParameter("dataEntrega") != null && !request.getParameter("dataEntrega").isEmpty() 
-                                       ? LocalDate.parse(request.getParameter("dataEntrega")) : null;
-                
+                LocalDate dataEntrega = request.getParameter("dataEntrega") != null
+                        && !request.getParameter("dataEntrega").isEmpty()
+                                ? LocalDate.parse(request.getParameter("dataEntrega"))
+                                : null;
+
                 int qtdDias = Integer.parseInt(request.getParameter("qtdDias"));
                 String localRetirada = request.getParameter("localRetirada");
                 double seguroLocacao = Double.parseDouble(request.getParameter("seguroLocacao"));
@@ -80,7 +91,7 @@ public class ControleLocacao extends HttpServlet {
 
                 Usuario u = new Usuario();
                 u.setIdUsuario(idUsuario);
-                
+
                 Veiculo v = new Veiculo();
                 v.setIdVeiculo(idVeiculo);
 
@@ -100,10 +111,20 @@ public class ControleLocacao extends HttpServlet {
 
             } else if (operacao.equals("DELETAR")) {
                 int idLocacao = Integer.parseInt(request.getParameter("id"));
-                Locacao locacao = new Locacao();
-                locacao.setIdLocacao(idLocacao);
+                Locacao param = new Locacao();
+                param.setIdLocacao(idLocacao);
 
-                dao.deletarLocacao(locacao);
+                Locacao locacaoExistente = dao.visualizarLocacaoByID(param);
+
+                dao.deletarLocacao(param);
+
+                if (locacaoExistente.getVeiculo() != null) {
+                    VeiculoDAO veiculoDAO = new VeiculoDAO();
+                    Veiculo vLiberar = veiculoDAO.visualizarVeiculoByID(locacaoExistente.getVeiculo());
+                    vLiberar.setDisponibilidade(true);
+                    veiculoDAO.atualizarVeiculo(vLiberar);
+                }
+
                 response.sendRedirect("listarReservas.html");
 
             } else if (operacao.equals("LISTAR")) {
@@ -113,19 +134,27 @@ public class ControleLocacao extends HttpServlet {
                 StringBuilder json = new StringBuilder("[");
                 for (int i = 0; i < locacoes.size(); i++) {
                     Locacao l = locacoes.get(i);
-                    if (i > 0) json.append(",");
+                    if (i > 0)
+                        json.append(",");
                     json.append("{");
                     json.append("\"idLocacao\":").append(l.getIdLocacao()).append(",");
                     json.append("\"idUsuario\":").append(l.getUsuario().getIdUsuario()).append(",");
-                    json.append("\"nomeUsuario\":\"").append(l.getUsuario().getNomeUsuario() != null ? l.getUsuario().getNomeUsuario() : "").append("\",");
+                    json.append("\"nomeUsuario\":\"")
+                            .append(l.getUsuario().getNomeUsuario() != null ? l.getUsuario().getNomeUsuario() : "")
+                            .append("\",");
                     json.append("\"idVeiculo\":").append(l.getVeiculo().getIdVeiculo()).append(",");
-                    json.append("\"modeloVeiculo\":\"").append(l.getVeiculo().getModeloVeiculo() != null ? l.getVeiculo().getModeloVeiculo() : "").append("\",");
+                    json.append("\"modeloVeiculo\":\"")
+                            .append(l.getVeiculo().getModeloVeiculo() != null ? l.getVeiculo().getModeloVeiculo() : "")
+                            .append("\",");
                     json.append("\"qtdDias\":").append(l.getQtdDias()).append(",");
                     json.append("\"seguroLocacao\":").append(l.getSeguroLocacao()).append(",");
-                    json.append("\"localRetirada\":\"").append(l.getLocalRetirada() != null ? l.getLocalRetirada() : "").append("\",");
+                    json.append("\"localRetirada\":\"").append(l.getLocalRetirada() != null ? l.getLocalRetirada() : "")
+                            .append("\",");
                     json.append("\"valorTotal\":").append(l.getValorTotal()).append(",");
-                    json.append("\"dataRetirada\":\"").append(l.getDataRetirada() != null ? l.getDataRetirada().toString() : "").append("\",");
-                    json.append("\"dataEntrega\":\"").append(l.getDataEntrega() != null ? l.getDataEntrega().toString() : "").append("\"");
+                    json.append("\"dataRetirada\":\"")
+                            .append(l.getDataRetirada() != null ? l.getDataRetirada().toString() : "").append("\",");
+                    json.append("\"dataEntrega\":\"")
+                            .append(l.getDataEntrega() != null ? l.getDataEntrega().toString() : "").append("\"");
                     json.append("}");
                 }
                 json.append("]");
@@ -135,7 +164,7 @@ public class ControleLocacao extends HttpServlet {
                 int idLocacao = Integer.parseInt(request.getParameter("id"));
                 Locacao param = new Locacao();
                 param.setIdLocacao(idLocacao);
-                
+
                 Locacao locacao = dao.visualizarLocacaoByID(param);
                 request.setAttribute("locacao", locacao);
                 request.getRequestDispatcher("editarReserva.jsp").forward(request, response);
@@ -144,7 +173,8 @@ public class ControleLocacao extends HttpServlet {
         } catch (Exception e) {
             e.printStackTrace();
             System.err.println("Erro na operacao " + operacao + ": " + e.getMessage());
-            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Erro ao processar requisição: " + e.getMessage());
+            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
+                    "Erro ao processar requisição: " + e.getMessage());
         }
     }
 
