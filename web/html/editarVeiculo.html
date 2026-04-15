@@ -29,12 +29,16 @@
 
       <nav class="sidebar-nav">
         <a href="listarVeiculos.html">
-          <span class="nav-icon">🚗</span>
+          <span class="nav-icon">🚘</span>
           Veículos
         </a>
         <a href="listarUsuarios.html">
-          <span class="nav-icon">👥</span>
+          <span class="nav-icon">👤</span>
           Usuários
+        </a>
+        <a href="listarReservas.html">
+          <span class="nav-icon">📋</span>
+          Reservas
         </a>
 
         <span class="sidebar-label" style="padding-left:0; padding-right:0;">Cadastros</span>
@@ -43,11 +47,14 @@
           <span class="nav-icon">➕</span>
           Novo Veículo
         </a>
+        <a href="reserva.html">
+          <span class="nav-icon">📝</span>
+          Nova Reserva
+        </a>
       </nav>
 
       <div class="sidebar-footer">
         <a href="../index.html">
-          <span>🚪</span>
           Sair do painel
         </a>
       </div>
@@ -82,9 +89,9 @@
 
         <!-- Card do formulário -->
         <div class="card form-card">
-          <form id="editarVeiculoForm" action="ControleVeiculo" method="post" novalidate>
-            <input type="hidden" name="op" value="EDITAR">
-            <input type="hidden" id="idVeiculo" name="idVeiculo">
+          <form id="editarVeiculoForm" action="../ControleVeiculo" method="post" novalidate>
+            <input type="hidden" name="op" value="ATUALIZAR">
+            <input type="hidden" id="idVeiculo" name="id">
 
             <!-- Linha 1: Placa e Modelo -->
             <div class="form-row">
