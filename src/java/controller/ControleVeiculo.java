@@ -24,7 +24,7 @@ public class ControleVeiculo extends HttpServlet {
             VeiculoDAO dao = new VeiculoDAO();
 
             if (operacao == null) {
-                response.sendRedirect("html/listarVeiculos.html");
+                response.sendRedirect(request.getContextPath() + "/html/listarVeiculos.html");
 
             } else if (operacao.equals("CADASTRAR")) {
                 String placa = request.getParameter("placa").replaceAll("[^A-Za-z0-9]", ""); // Remove hífen e
@@ -49,7 +49,7 @@ public class ControleVeiculo extends HttpServlet {
                 v.setTipoCambio(cambio);
 
                 dao.cadastrarVeiculo(v);
-                response.sendRedirect("sucessoVeiculo.jsp");
+                response.sendRedirect(request.getContextPath() + "/sucessoVeiculo.jsp");
 
             } else if (operacao != null && (operacao.equals("ATUALIZAR") || operacao.equals("EDITAR"))) {
                 // Aceitar tanto 'id' quanto 'idVeiculo' para compatibilidade
@@ -79,7 +79,7 @@ public class ControleVeiculo extends HttpServlet {
                 v.setTipoCambio(cambio);
 
                 dao.atualizarVeiculo(v);
-                response.sendRedirect("sucessoVeiculo.jsp");
+                response.sendRedirect(request.getContextPath() + "/sucessoVeiculo.jsp");
 
             } else if (operacao.equals("DELETAR")) {
                 int idVeiculo = Integer.parseInt(request.getParameter("id"));
@@ -87,7 +87,7 @@ public class ControleVeiculo extends HttpServlet {
                 v.setIdVeiculo(idVeiculo);
 
                 dao.deletarVeiculo(v);
-                response.sendRedirect("sucessoVeiculo.jsp");
+                response.sendRedirect(request.getContextPath() + "/sucessoVeiculo.jsp");
 
             } else if (operacao.equals("LISTAR")) {
                 List<Veiculo> veiculos = dao.visualizarTodosVeiculos();
