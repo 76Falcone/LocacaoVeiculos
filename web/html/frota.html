@@ -9,6 +9,9 @@
     href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap"
     rel="stylesheet">
   <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/variables.css">
+  <link rel="stylesheet" href="../css/dashboard.css">
+  <link rel="stylesheet" href="../css/listarVeiculos.css">
   <link rel="stylesheet" href="../css/frota.css">
 </head>
 
@@ -41,85 +44,72 @@
           <span>Frota completa</span>
         </div>
         <h1>Frota completa</h1>
-        <p class="result-count" id="resultCount"><strong></strong> veículos disponíveis</p>
+        <p class="result-count" id="resultCount">Carregando...</p>
       </div>
-      <select class="sort-select" id="sortSelect" onchange="sortCars()">
-        <option value="preco-asc">Menor preço</option>
-        <option value="preco-desc">Maior preço</option>
-        <option value="nome">Nome A–Z</option>
-      </select>
     </div>
   </div>
 
-  <div class="fleet-layout">
+  <div class="frota-table-container">
+    <!-- Tabela -->
+    <div class="data-table-wrap">
+      <table class="data-table has-filters" id="veiculosTable">
+        <thead>
+          <tr>
+            <th class="sortable" data-col="id">ID ↕</th>
+            <th class="sortable" data-col="placa">Placa ↕</th>
+            <th class="sortable" data-col="modelo">Modelo ↕</th>
+            <th>Cor</th>
+            <th class="sortable" data-col="valorDiaria">Diária ↕</th>
+            <th>Funcionalidade</th>
+            <th>Disponível</th>
+            <th>Ar Cond.</th>
+            <th>Câmbio</th>
+            <th>Ações</th>
+          </tr>
+          <!-- Linha de filtros por coluna -->
+          <tr class="filter-row">
+            <th><input type="text" class="col-filter" id="filterId" placeholder="ID"></th>
+            <th><input type="text" class="col-filter" id="filterPlaca" placeholder="Placa"></th>
+            <th><input type="text" class="col-filter" id="filterModelo" placeholder="Modelo"></th>
+            <th><input type="text" class="col-filter" id="filterCor" placeholder="Cor"></th>
+            <th><input type="text" class="col-filter" id="filterValor" placeholder="R$"></th>
+            <th><input type="text" class="col-filter" id="filterFunc" placeholder="Função"></th>
+            <th>
+              <select class="col-filter-select" id="filterDisp">
+                <option value="">Todos</option>
+                <option value="true">Disponível</option>
+                <option value="false">Indisponível</option>
+              </select>
+            </th>
+            <th>
+              <select class="col-filter-select" id="filterAr">
+                <option value="">Todos</option>
+                <option value="true">Sim</option>
+                <option value="false">Não</option>
+              </select>
+            </th>
+            <th>
+              <select class="col-filter-select" id="filterCambio">
+                <option value="">Todos</option>
+                <option value="Automático">Auto</option>
+                <option value="Manual">Manual</option>
+              </select>
+            </th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody id="veiculosBody"></tbody>
+      </table>
+    </div>
 
-    <aside class="sidebar">
-      <div class="filter-card">
-        <div class="filter-title">Categoria</div>
-        <div class="filter-pills">
-          <div class="pill active" onclick="setCat(this,'todos')">
-            <span class="pill-left">Todos</span>
-           
-          </div>
-          <div class="pill" onclick="setCat(this,'economico')">
-            <span class="pill-left">Econômico</span>
-           
-          </div>
-          <div class="pill" onclick="setCat(this,'intermediario')">
-            <span class="pill-left">Intermediário</span>
-   
-          </div>
-          <div class="pill" onclick="setCat(this,'suv')">
-            <span class="pill-left">SUV</span>
-  
-          </div>
-          <div class="pill" onclick="setCat(this,'premium')">
-            <span class="pill-left">Premium</span>
-           
-          </div>
-          <div class="pill" onclick="setCat(this,'eletrico')">
-            <span class="pill-left">Elétrico</span>
-           
-          </div>
-        </div>
-      </div>
+    <!-- Estado vazio -->
+    <div class="empty-state" id="emptyState" style="display:none;">
+      <span class="empty-state-icon">🔍</span>
+      <p>Nenhum veículo encontrado com esses filtros.</p>
+    </div>
 
-      <div class="filter-card">
-        <div class="filter-title">Preço / dia</div>
-        <div class="price-range">
-          <div class="range-inputs">
-            <div>
-              <div class="range-label">Mínimo</div>
-              <input class="range-input" type="number" id="priceMin" placeholder="R$ 0" min="0"
-                onchange="applyFilters()">
-            </div>
-            <div>
-              <div class="range-label">Máximo</div>
-              <input class="range-input" type="number" id="priceMax" placeholder="R$ 999" min="0"
-                onchange="applyFilters()">
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="filter-card">
-        <div class="filter-title">Câmbio</div>
-        <div class="check-list">
-          <label class="check-item">
-            <input type="checkbox" value="Automático" checked onchange="applyFilters()"> Automático
-          </label>
-          <label class="check-item">
-            <input type="checkbox" value="Manual" checked onchange="applyFilters()"> Manual
-          </label>
-        </div>
-      </div>
-
-      <button class="btn-clear" onclick="clearFilters()">Limpar filtros</button>
-    </aside>
-
-    <main>
-      <div class="fleet-grid-full" id="carGrid"></div>
-    </main>
+    <!-- Paginação -->
+    <div id="pagination"></div>
   </div>
 
   <footer>
@@ -162,158 +152,234 @@
 
   <script src="../js/script.js"></script>
   <script>
-    let activeCat = 'todos';
-    let allCars = []; // será preenchido via fetch do servidor
+    document.addEventListener('DOMContentLoaded', () => {
 
-    // Mapeia funcionalidade/modelo para categoria de exibição
-    function inferirCategoria(v) {
-      const func = (v.funcionalidade || '').toLowerCase();
-      const modelo = (v.modelo || '').toLowerCase();
-      if (func.includes('elétrico') || func.includes('eletrico') || modelo.includes('elétric')) return 'eletrico';
-      if (func.includes('premium') || func.includes('luxo')) return 'premium';
-      if (func.includes('suv') || func.includes('4x4')) return 'suv';
-      if (func.includes('intermediário') || func.includes('intermediario')) return 'intermediario';
-      return 'economico';
-    }
+      // ─── Dados carregados do backend ───
+      let veiculos = [];
 
-    function inferirLabel(cat) {
-      const labels = {
-        economico: '🚗 Econômico', intermediario: '🛻 Intermediário',
-        suv: '🚙 SUV', premium: '🏎️ Premium', eletrico: '⚡ Elétrico'
-      };
-      return labels[cat] || '🚗 Veículo';
-    }
-
-    // Carrega veículos do banco via servlet
-    function carregarVeiculos() {
-      const grid = document.getElementById('carGrid');
-      grid.innerHTML = '<div class="empty-state"><p>Carregando veículos...</p></div>';
-
+      // Buscar dados do banco de dados
       fetch('../ControleVeiculo?op=LISTAR')
         .then(r => r.json())
-        .then(data => {
-          allCars = data.map(v => ({
-            id:    v.id,
-            name:  v.modelo,
-            price: v.valorDiaria,
-            trans: v.tipoCambio,
-            cat:   inferirCategoria(v),
-            label: inferirLabel(inferirCategoria(v)),
-            km:    'Sob consulta',
-            pass:  5,
-            badge: v.disponibilidade ? null : 'Indisponível',
-            badgeClass: 'badge-sold',
-            disponivel: v.disponibilidade,
-            placa: v.placa,
-            cor:   v.cor,
-            ar:    v.arCondicionado,
-            func:  v.funcionalidade,
-          }));
-          atualizarContadoresFiltros();
-          applyFilters();
-        })
-        .catch(() => {
-          grid.innerHTML = '<div class="empty-state"><p>Não foi possível carregar os veículos. Verifique sua conexão.</p></div>';
-        });
-    }
+        .then(data => { veiculos = data; renderTable(); })
+        .catch(err => { console.error('Erro ao carregar veículos:', err); renderTable(); });
 
-    function atualizarContadoresFiltros() {
-      const cats = ['todos','economico','intermediario','suv','premium','eletrico'];
-      cats.forEach(cat => {
-        const count = cat === 'todos' ? allCars.length : allCars.filter(c => c.cat === cat).length;
-        const pill = document.querySelector(`.pill[onclick*="'${cat}'"] .pill-count`);
-        if (pill) pill.textContent = count;
+      // ─── Configuração de paginação ───
+      const ITEMS_PER_PAGE = 15;
+      let currentPage = 1;
+
+      // ─── Elementos do DOM ───
+      const tableBody = document.getElementById('veiculosBody');
+      const resultCount = document.getElementById('resultCount');
+      const emptyState = document.getElementById('emptyState');
+      const tableEl = document.getElementById('veiculosTable');
+      const pagination = document.getElementById('pagination');
+
+      // Filtros por coluna
+      const filterId = document.getElementById('filterId');
+      const filterPlaca = document.getElementById('filterPlaca');
+      const filterModelo = document.getElementById('filterModelo');
+      const filterCor = document.getElementById('filterCor');
+      const filterValor = document.getElementById('filterValor');
+      const filterFunc = document.getElementById('filterFunc');
+      const filterDisp = document.getElementById('filterDisp');
+      const filterAr = document.getElementById('filterAr');
+      const filterCambio = document.getElementById('filterCambio');
+
+      // Estado de ordenação
+      let sortCol = 'id';
+      let sortAsc = true;
+
+      // ─── Eventos de filtro (resetar para página 1 ao filtrar) ───
+      const allInputFilters = [filterId, filterPlaca, filterModelo, filterCor, filterValor, filterFunc];
+      const allSelectFilters = [filterDisp, filterAr, filterCambio];
+
+      allInputFilters.forEach(input => {
+        input.addEventListener('input', () => { currentPage = 1; renderTable(); });
       });
-    }
 
-    function setCat(el, cat) {
-      document.querySelectorAll('.pill').forEach(p => p.classList.remove('active'));
-      el.classList.add('active');
-      activeCat = cat;
-      applyFilters();
-    }
+      allSelectFilters.forEach(select => {
+        select.addEventListener('change', () => { currentPage = 1; renderTable(); });
+      });
 
-    function applyFilters() {
-      const minP = parseFloat(document.getElementById('priceMin').value) || 0;
-      const maxP = parseFloat(document.getElementById('priceMax').value) || Infinity;
-      const checked = Array.from(document.querySelectorAll('.check-list input:checked')).map(i => i.value);
+      // ─── Ordenação por coluna ───
+      document.querySelectorAll('th.sortable').forEach(th => {
+        th.addEventListener('click', () => {
+          const col = th.dataset.col;
+          if (sortCol === col) {
+            sortAsc = !sortAsc;
+          } else {
+            sortCol = col;
+            sortAsc = true;
+          }
+          renderTable();
+        });
+      });
 
-      let list = activeCat === 'todos' ? allCars : allCars.filter(c => c.cat === activeCat);
-      list = list.filter(c => c.price >= minP && c.price <= maxP && checked.includes(c.trans));
+      // ─── Obter dados filtrados e ordenados ───
+      function getFilteredData() {
+        const fId = filterId.value.trim().toLowerCase();
+        const fPlaca = filterPlaca.value.trim().toLowerCase();
+        const fModelo = filterModelo.value.trim().toLowerCase();
+        const fCor = filterCor.value.trim().toLowerCase();
+        const fValor = filterValor.value.trim();
+        const fFunc = filterFunc.value.trim().toLowerCase();
+        const fDisp = filterDisp.value;
+        const fAr = filterAr.value;
+        const fCambio = filterCambio.value;
 
-      const sort = document.getElementById('sortSelect').value;
-      if (sort === 'preco-asc') list.sort((a, b) => a.price - b.price);
-      else if (sort === 'preco-desc') list.sort((a, b) => b.price - a.price);
-      else list.sort((a, b) => a.name.localeCompare(b.name));
+        let filtered = veiculos.filter(v => {
+          if (fId && !String(v.id).includes(fId)) return false;
+          if (fPlaca && !v.placa.toLowerCase().includes(fPlaca)) return false;
+          if (fModelo && !v.modelo.toLowerCase().includes(fModelo)) return false;
+          if (fCor && !v.cor.toLowerCase().includes(fCor)) return false;
+          if (fValor && !String(v.valorDiaria.toFixed(2)).includes(fValor)) return false;
+          if (fFunc && !v.funcionalidade.toLowerCase().includes(fFunc)) return false;
+          if (fDisp && String(v.disponibilidade) !== fDisp) return false;
+          if (fAr && String(v.arCondicionado) !== fAr) return false;
+          if (fCambio && v.tipoCambio !== fCambio) return false;
+          return true;
+        });
 
-      renderFlota(list);
-    }
+        filtered.sort((a, b) => {
+          let valA = a[sortCol];
+          let valB = b[sortCol];
+          if (typeof valA === 'string') { valA = valA.toLowerCase(); valB = valB.toLowerCase(); }
+          if (valA < valB) return sortAsc ? -1 : 1;
+          if (valA > valB) return sortAsc ? 1 : -1;
+          return 0;
+        });
 
-    function sortCars() { applyFilters(); }
-
-    function clearFilters() {
-      document.getElementById('priceMin').value = '';
-      document.getElementById('priceMax').value = '';
-      document.querySelectorAll('.check-list input').forEach(i => i.checked = true);
-      document.querySelectorAll('.pill').forEach(p => p.classList.remove('active'));
-      document.querySelector('.pill').classList.add('active');
-      activeCat = 'todos';
-      applyFilters();
-    }
-
-    function renderFlota(list) {
-      const grid = document.getElementById('carGrid');
-      document.getElementById('resultCount').innerHTML =
-        `<strong>${list.length}</strong> veículo${list.length !== 1 ? 's' : ''} disponível${list.length !== 1 ? 'is' : ''}`;
-
-      if (list.length === 0) {
-        grid.innerHTML = `<div class="empty-state"><p>Nenhum veículo encontrado com esses filtros.</p></div>`;
-        return;
+        return filtered;
       }
 
-      grid.innerHTML = list.map((car, i) => `
-      <div class="car-card reveal" style="animation-delay:${i * 0.05}s">
-        <div class="car-img-wrap">
-          ${car.badge ? `<span class="car-badge ${car.badgeClass}">${car.badge}</span>` : ''}
-          ${drawCarSVG(car.cat)}
-        </div>
-        <div class="car-info">
-          <div class="car-category">${car.label}</div>
-          <div class="car-name">${car.name}</div>
-          <div class="car-specs">
-            <div class="spec-item">
-              <span class="spec-val">${car.km}</span>
-              <span class="spec-lbl">Quilômetros</span>
-            </div>
-            <div class="spec-item">
-              <span class="spec-val">${car.pass} lug.</span>
-              <span class="spec-lbl">Passageiros</span>
-            </div>
-            <div class="spec-item">
-              <span class="spec-val">${car.trans}</span>
-              <span class="spec-lbl">Câmbio</span>
-            </div>
-          </div>
-          <div class="car-footer">
-            <div class="car-price">
-              <div class="price-from">A partir de</div>
-              <div>
-                <span class="price-val">R$${car.price}</span>
-                <span class="price-unit">/dia</span>
+      // ─── Helper: cor → hex para o dot ───
+      function getColorHex(cor) {
+        const map = {
+          'preto': '#2D2D2D', 'prata': '#C0C0C0', 'branco': '#E8E8E8',
+          'cinza': '#8B8B8B', 'vermelho': '#E63946', 'azul': '#457B9D',
+          'verde': '#2D6A4F', 'bronze': '#CD7F32', 'amarelo': '#F4D35E'
+        };
+        return map[cor.toLowerCase()] || '#A78BFA';
+      }
+
+      // ─── Renderizar tabela com paginação ───
+      function renderTable() {
+        const filtered = getFilteredData();
+        const totalPages = Math.ceil(filtered.length / ITEMS_PER_PAGE) || 1;
+
+        // Corrigir página atual
+        if (currentPage > totalPages) currentPage = totalPages;
+
+        const start = (currentPage - 1) * ITEMS_PER_PAGE;
+        const end = start + ITEMS_PER_PAGE;
+        const pageData = filtered.slice(start, end);
+
+        // Atualizar contador
+        resultCount.innerHTML = `Exibindo <strong>${start + 1}–${Math.min(end, filtered.length)}</strong> de <strong>${filtered.length}</strong> veículo${filtered.length !== 1 ? 's' : ''}`;
+
+        // Renderizar linhas
+        if (filtered.length === 0) {
+          tableBody.innerHTML = '';
+          emptyState.style.display = 'block';
+          pagination.innerHTML = '';
+          resultCount.innerHTML = '<strong>0</strong> veículos encontrados';
+          return;
+        }
+
+        emptyState.style.display = 'none';
+
+        tableBody.innerHTML = pageData.map((v, i) => `
+          <tr class="table-row" style="animation-delay: ${i * 0.03}s">
+            <td><span class="id-badge">${v.id}</span></td>
+            <td><span class="placa-badge">${v.placa}</span></td>
+            <td class="modelo-cell">${v.modelo}</td>
+            <td><span class="cor-dot" style="background:${getColorHex(v.cor)}"></span>${v.cor}</td>
+            <td class="valor-cell">R$ ${v.valorDiaria.toFixed(2)}</td>
+            <td>${v.funcionalidade}</td>
+            <td>
+              <span class="status-badge ${v.disponibilidade ? 'available' : 'unavailable'}">
+                <span class="status-badge-dot"></span>
+                ${v.disponibilidade ? 'Disponível' : 'Indisponível'}
+              </span>
+            </td>
+            <td>
+              <span class="bool-badge ${v.arCondicionado ? 'yes' : 'no'}">
+                ${v.arCondicionado ? '✓ Sim' : '✗ Não'}
+              </span>
+            </td>
+            <td><span class="cambio-badge ${v.tipoCambio === 'Automático' ? 'auto' : 'manual'}">${v.tipoCambio}</span></td>
+            <td>
+              <div class="action-buttons">
+                <button class="btn-action btn-reservar" title="Reservar" onclick="window.location.href='reserva.html?idVeiculo=${v.id}&idUsuario=1&modelo='+encodeURIComponent('${v.modelo}')+'&categoria=economico&preco=${v.valorDiaria}'"
+                  ${!v.disponibilidade ? 'disabled style="opacity:0.4;cursor:not-allowed;"' : ''}>
+                  📋 Reservar
+                </button>
               </div>
-            </div>
-            <button class="btn-rent" onclick="window.location.href='reserva.html?idVeiculo=${car.id}&idUsuario=1&modelo='+encodeURIComponent('${car.name}')+'&categoria=${car.cat}&preco=${car.price}'">Reservar</button>
-          </div>
-        </div>
-      </div>
-    `).join('');
+            </td>
+          </tr>
+        `).join('');
 
-      setTimeout(() => {
-        document.querySelectorAll('.car-card.reveal').forEach(el => el.classList.add('visible'));
-      }, 60);
-    }
+        // Renderizar paginação
+        renderPagination(totalPages, filtered.length);
+      }
 
-    carregarVeiculos();
+      // ─── Renderizar controles de paginação ───
+      function renderPagination(totalPages, totalItems) {
+        if (totalPages <= 1) {
+          pagination.innerHTML = '';
+          return;
+        }
+
+        let html = '<div class="pagination-wrap">';
+
+        // Info
+        html += `<span class="pagination-info">Página <strong>${currentPage}</strong> de <strong>${totalPages}</strong></span>`;
+
+        // Botões
+        html += '<div class="pagination-buttons">';
+
+        // Anterior
+        html += `<button class="page-btn ${currentPage === 1 ? 'disabled' : ''}" data-page="${currentPage - 1}" ${currentPage === 1 ? 'disabled' : ''}>‹ Anterior</button>`;
+
+        // Números
+        const range = getPageRange(currentPage, totalPages);
+        range.forEach(p => {
+          if (p === '...') {
+            html += '<span class="page-ellipsis">…</span>';
+          } else {
+            html += `<button class="page-btn page-num ${p === currentPage ? 'active' : ''}" data-page="${p}">${p}</button>`;
+          }
+        });
+
+        // Próximo
+        html += `<button class="page-btn ${currentPage === totalPages ? 'disabled' : ''}" data-page="${currentPage + 1}" ${currentPage === totalPages ? 'disabled' : ''}>Próximo ›</button>`;
+
+        html += '</div></div>';
+
+        pagination.innerHTML = html;
+
+        // Eventos de clique na paginação
+        pagination.querySelectorAll('.page-btn:not(.disabled)').forEach(btn => {
+          btn.addEventListener('click', () => {
+            currentPage = parseInt(btn.dataset.page);
+            renderTable();
+            document.querySelector('.data-table-wrap').scrollIntoView({ behavior: 'smooth', block: 'start' });
+          });
+        });
+      }
+
+      // ─── Calcular range de páginas visíveis ───
+      function getPageRange(current, total) {
+        if (total <= 7) return Array.from({ length: total }, (_, i) => i + 1);
+
+        if (current <= 3) return [1, 2, 3, 4, '...', total];
+        if (current >= total - 2) return [1, '...', total - 3, total - 2, total - 1, total];
+        return [1, '...', current - 1, current, current + 1, '...', total];
+      }
+
+      // ─── Render inicial ───
+      renderTable();
+    });
   </script>
   <script>
     // Verifica sessão via cookie para alternar botões e exibir nome
