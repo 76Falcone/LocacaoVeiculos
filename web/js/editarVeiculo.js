@@ -41,21 +41,23 @@ document.addEventListener('DOMContentLoaded', () => {
   function carregarDados() {
     const params = new URLSearchParams(window.location.search);
 
-    idInput.value     = params.get('id')              || '';
-    placaInput.value  = params.get('placa')           || '';
-    modeloInput.value = params.get('modelo')          || '';
-    corInput.value    = params.get('cor')             || '';
-    valorInput.value  = params.get('valorDiaria')     || '';
-    funcInput.value   = params.get('funcionalidade')  || '';
+    if (params.has('placa')) {
+      idInput.value     = params.get('id')              || '';
+      placaInput.value  = params.get('placa')           || '';
+      modeloInput.value = params.get('modelo')          || '';
+      corInput.value    = params.get('cor')             || '';
+      valorInput.value  = params.get('valorDiaria')     || '';
+      funcInput.value   = params.get('funcionalidade')  || '';
 
-    const disp = params.get('disponibilidade');
-    if (disp !== null) dispSelect.value = disp;
+      const disp = params.get('disponibilidade');
+      if (disp !== null) dispSelect.value = disp;
 
-    const ar = params.get('arCondicionado');
-    if (ar !== null) arSelect.value = ar;
+      const ar = params.get('arCondicionado');
+      if (ar !== null) arSelect.value = ar;
 
-    const cambio = params.get('tipoCambio');
-    if (cambio) tipoCambioSel.value = cambio;
+      const cambio = params.get('tipoCambio');
+      if (cambio) tipoCambioSel.value = cambio;
+    }
   }
 
   // ─── Máscara de placa ───
