@@ -208,6 +208,43 @@
   color: var(--muted);
 }
 
+/* ─── BOTÕES DE AÇÃO ─── */
+.action-buttons {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.btn-action {
+  width: 32px;
+  height: 32px;
+  border: 1.5px solid var(--border);
+  border-radius: 8px;
+  background: var(--white);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.85rem;
+  transition: all 0.18s ease;
+  padding: 0;
+}
+
+.btn-action:hover {
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-sm);
+}
+
+.btn-edit:hover {
+  border-color: var(--purple);
+  background: var(--purple-pale);
+}
+
+.btn-delete:hover {
+  border-color: var(--error);
+  background: var(--error-bg);
+}
+
 /* ─── RESPONSIVO ─── */
 @media (max-width: 600px) {
   .page-header-row {
