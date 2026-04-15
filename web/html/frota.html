@@ -29,7 +29,8 @@
         <button class="btn-primary" onclick="location.href='login.html'">Login</button>
       </span>
       <span id="authLoggedIn" style="display:none;">
-        <button class="btn-ghost" id="btnPainel" onclick="location.href='listarVeiculos.html'" style="display:none;">Painel Admin</button>
+        <button class="btn-ghost" id="btnPainel" onclick="location.href='listarVeiculos.html'"
+          style="display:none;">Painel Admin</button>
         <button class="btn-primary btn-logout" onclick="location.href='ControleUsuario?op=LOGOUT'">Sair</button>
       </span>
     </div>
@@ -377,21 +378,21 @@
   </script>
   <script>
     // Verifica sessão via cookie para alternar botões e exibir nome
-    (function() {
+    (function () {
       const getCookie = (name) => {
         const match = document.cookie.match(new RegExp('(^| )' + name + '=([^;]+)'));
         return match ? match[2] : null;
       };
-      
+
       const loggedIn = getCookie('usuarioLogado');
-      const isAdmin  = getCookie('role') === 'admin';
+      const isAdmin = getCookie('role') === 'admin';
       const nomeRaw = getCookie('nomeUsuario');
 
       if (loggedIn) {
         document.getElementById('authLoggedOut').style.display = 'none';
         const authLoggedIn = document.getElementById('authLoggedIn');
         authLoggedIn.style.display = '';
-        
+
         if (nomeRaw) {
           const nomeReal = decodeURIComponent(nomeRaw).replace(/\+/g, ' ');
           const primeiroNome = nomeReal.split(' ')[0];
