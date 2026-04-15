@@ -50,6 +50,9 @@ public class ControleUsuario extends HttpServlet {
                     Cookie cookieRole = new Cookie("role", "admin");
                     cookieRole.setPath("/");
                     response.addCookie(cookieRole);
+                    Cookie cookieId = new Cookie("idUsuario", "0");
+                    cookieId.setPath("/");
+                    response.addCookie(cookieId);
 
                     response.sendRedirect(request.getContextPath() + "/html/listarVeiculos.html");
                     return;
@@ -75,6 +78,9 @@ public class ControleUsuario extends HttpServlet {
                     Cookie cookieRole = new Cookie("role", "user");
                     cookieRole.setPath("/");
                     response.addCookie(cookieRole);
+                    Cookie cookieId = new Cookie("idUsuario", String.valueOf(usuarioValido.getIdUsuario()));
+                    cookieId.setPath("/");
+                    response.addCookie(cookieId);
 
                     response.sendRedirect(request.getContextPath() + "/index.html");
                 } else {
@@ -180,6 +186,10 @@ public class ControleUsuario extends HttpServlet {
                 cookieRole.setPath("/");
                 cookieRole.setMaxAge(0);
                 response.addCookie(cookieRole);
+                Cookie cookieId = new Cookie("idUsuario", "");
+                cookieId.setPath("/");
+                cookieId.setMaxAge(0);
+                response.addCookie(cookieId);
 
                 response.sendRedirect(request.getContextPath() + "/index.html");
             }
