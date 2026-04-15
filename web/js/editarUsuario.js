@@ -19,12 +19,14 @@ document.addEventListener('DOMContentLoaded', () => {
   function carregarDados() {
     const params = new URLSearchParams(window.location.search);
 
-    idInput.value      = params.get('id')      || '';
-    nomeInput.value    = params.get('nome')    || '';
-    cpfInput.value     = params.get('cpf')     || '';
-    cnhInput.value     = params.get('cnh')     || '';
-    emailInput.value   = params.get('email')   || '';
-    celularInput.value = params.get('celular') || '';
+    if (params.has('cpf')) {
+      idInput.value      = params.get('id')      || '';
+      nomeInput.value    = params.get('nome')    || '';
+      cpfInput.value     = params.get('cpf')     || '';
+      cnhInput.value     = params.get('cnh')     || '';
+      emailInput.value   = params.get('email')   || '';
+      celularInput.value = params.get('celular') || '';
+    }
   }
 
   // ─── Máscara de CPF ───
