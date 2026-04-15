@@ -16,9 +16,17 @@
     <a href="index.html" style="color: var(--purple); font-weight:600;">Início</a>
     <a href="html/frota.html">Alugar</a>
   </nav>
-  <div class="nav-actions">
-    <button class="btn-ghost" onclick="location.href='html/cadastroUsuario.html'">Cadastrar</button>
-    <button class="btn-primary" onclick="location.href='html/login.html'">Login</button>
+  <div class="nav-actions" id="navActions">
+    <!-- Estado: Deslogado (padrão) -->
+    <span id="authLoggedOut">
+      <button class="btn-ghost" onclick="location.href='html/cadastroUsuario.html'">Cadastrar</button>
+      <button class="btn-primary" onclick="location.href='html/login.html'">Login</button>
+    </span>
+    <!-- Estado: Logado -->
+    <span id="authLoggedIn" style="display:none;">
+      <button class="btn-ghost" id="btnPainel" onclick="location.href='html/listarVeiculos.html'" style="display:none;">⚙️ Painel Admin</button>
+      <button class="btn-primary btn-logout" onclick="location.href='html/ControleUsuario?op=LOGOUT'">Sair</button>
+    </span>
   </div>
 </header>
 
@@ -235,5 +243,19 @@
 </footer>
 
 <script src="js/script.js"></script>
+<script>
+  // Verifica sessão via cookie para alternar botões
+  (function() {
+    const loggedIn = document.cookie.split(';').some(c => c.trim().startsWith('usuarioLogado='));
+    const isAdmin  = document.cookie.split(';').some(c => c.trim() === 'role=admin');
+    if (loggedIn) {
+      document.getElementById('authLoggedOut').style.display = 'none';
+      document.getElementById('authLoggedIn').style.display = '';
+      if (isAdmin) {
+        document.getElementById('btnPainel').style.display = '';
+      }
+    }
+  })();
+</script>
 </body>
 </html>
