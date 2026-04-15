@@ -163,6 +163,68 @@
   <script src="../js/script.js"></script>
   <script>
     let activeCat = 'todos';
+    let allCars = []; // será preenchido via fetch do servidor
+
+    // Mapeia funcionalidade/modelo para categoria de exibição
+    function inferirCategoria(v) {
+      const func = (v.funcionalidade || '').toLowerCase();
+      const modelo = (v.modelo || '').toLowerCase();
+      if (func.includes('elétrico') || func.includes('eletrico') || modelo.includes('elétric')) return 'eletrico';
+      if (func.includes('premium') || func.includes('luxo')) return 'premium';
+      if (func.includes('suv') || func.includes('4x4')) return 'suv';
+      if (func.includes('intermediário') || func.includes('intermediario')) return 'intermediario';
+      return 'economico';
+    }
+
+    function inferirLabel(cat) {
+      const labels = {
+        economico: '💨 Econômico', intermediario: '🚙 Intermediário',
+        suv: '🏔️ SUV', premium: '💎 Premium', eletrico: '⚡ Elétrico'
+      };
+      return labels[cat] || '🚗 Veículo';
+    }
+
+    // Carrega veículos do banco via servlet
+    function carregarVeiculos() {
+      const grid = document.getElementById('carGrid');
+      grid.innerHTML = '<div class="empty-state"><p>Carregando veículos...</p></div>';
+
+      fetch('../ControleVeiculo?op=LISTAR')
+        .then(r => r.json())
+        .then(data => {
+          allCars = data.map(v => ({
+            id:    v.id,
+            name:  v.modelo,
+            price: v.valorDiaria,
+            trans: v.tipoCambio,
+            cat:   inferirCategoria(v),
+            label: inferirLabel(inferirCategoria(v)),
+            km:    'Sob consulta',
+            pass:  5,
+            badge: v.disponibilidade ? null : 'Indisponível',
+            badgeClass: 'badge-sold',
+            disponivel: v.disponibilidade,
+            placa: v.placa,
+            cor:   v.cor,
+            ar:    v.arCondicionado,
+            func:  v.funcionalidade,
+          }));
+          atualizarContadoresFiltros();
+          applyFilters();
+        })
+        .catch(() => {
+          grid.innerHTML = '<div class="empty-state"><p>Não foi possível carregar os veículos. Verifique sua conexão.</p></div>';
+        });
+    }
+
+    function atualizarContadoresFiltros() {
+      const cats = ['todos','economico','intermediario','suv','premium','eletrico'];
+      cats.forEach(cat => {
+        const count = cat === 'todos' ? allCars.length : allCars.filter(c => c.cat === cat).length;
+        const pill = document.querySelector(`.pill[onclick*="'${cat}'"] .pill-count`);
+        if (pill) pill.textContent = count;
+      });
+    }
 
     function setCat(el, cat) {
       document.querySelectorAll('.pill').forEach(p => p.classList.remove('active'));
@@ -240,7 +302,7 @@
                 <span class="price-unit">/dia</span>
               </div>
             </div>
-            <button class="btn-rent" onclick="window.location.href='reserva.html?idVeiculo=${i}&idUsuario=1&modelo='+encodeURIComponent('${car.name}')+'&categoria=${car.cat}&preco=${car.price}'">Reservar</button>
+            <button class="btn-rent" onclick="window.location.href='reserva.html?idVeiculo=${car.id}&idUsuario=1&modelo='+encodeURIComponent('${car.name}')+'&categoria=${car.cat}&preco=${car.price}'">Reservar</button>
           </div>
         </div>
       </div>
@@ -251,7 +313,7 @@
       }, 60);
     }
 
-    applyFilters();
+    carregarVeiculos();
   </script>
   <script>
     // Verifica sessão via cookie para alternar botões e exibir nome
