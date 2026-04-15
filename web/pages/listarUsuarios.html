@@ -84,36 +84,9 @@
           </div>
         </div>
 
-        <!-- Card da tabela -->
-        <div class="card">
-
-          <!-- Barra de busca e filtros -->
-          <div class="search-bar">
-            <div class="search-input-wrap">
-              <span class="search-icon">🔍</span>
-              <input
-                type="text"
-                class="search-input"
-                id="searchInput"
-                placeholder="Buscar por nome, e-mail, CPF..."
-              >
-            </div>
-
-            <select class="filter-select" id="filterField">
-              <option value="todos">Todos os campos</option>
-              <option value="id">ID</option>
-              <option value="nome">Nome</option>
-              <option value="email">E-mail</option>
-              <option value="celular">Telefone</option>
-            </select>
-          </div>
-
-          <!-- Resultado -->
-          <p class="result-info" id="resultInfo"></p>
-
           <!-- Tabela -->
           <div class="data-table-wrap">
-            <table class="data-table" id="usuariosTable">
+            <table class="data-table has-filters" id="usuariosTable">
               <thead>
                 <tr>
                   <th class="sortable" data-col="id">ID ↕</th>
@@ -122,6 +95,15 @@
                   <th>CNH</th>
                   <th class="sortable" data-col="email">E-mail ↕</th>
                   <th>Celular</th>
+                </tr>
+                <!-- Linha de filtros por coluna -->
+                <tr class="filter-row">
+                  <th><input type="text" class="col-filter" id="filterId" placeholder="ID"></th>
+                  <th><input type="text" class="col-filter" id="filterNome" placeholder="Nome"></th>
+                  <th><input type="text" class="col-filter" id="filterCpf" placeholder="CPF"></th>
+                  <th><input type="text" class="col-filter" id="filterCnh" placeholder="CNH"></th>
+                  <th><input type="text" class="col-filter" id="filterEmail" placeholder="E-mail"></th>
+                  <th><input type="text" class="col-filter" id="filterCelular" placeholder="Celular"></th>
                 </tr>
               </thead>
               <tbody id="usuariosBody"></tbody>

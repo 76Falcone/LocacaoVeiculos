@@ -18,13 +18,18 @@ document.addEventListener('DOMContentLoaded', () => {
   ];
 
   // ─── Elementos do DOM ───
-  const searchInput  = document.getElementById('searchInput');
-  const filterField  = document.getElementById('filterField');
   const tableBody    = document.getElementById('usuariosBody');
   const resultCount  = document.getElementById('resultCount');
-  const resultInfo   = document.getElementById('resultInfo');
   const emptyState   = document.getElementById('emptyState');
   const tableEl      = document.getElementById('usuariosTable');
+
+  // Filtros por coluna
+  const filterId      = document.getElementById('filterId');
+  const filterNome    = document.getElementById('filterNome');
+  const filterCpf     = document.getElementById('filterCpf');
+  const filterCnh     = document.getElementById('filterCnh');
+  const filterEmail   = document.getElementById('filterEmail');
+  const filterCelular = document.getElementById('filterCelular');
 
   // Sidebar mobile
   const menuToggle     = document.getElementById('menuToggle');
@@ -48,9 +53,12 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // ─── Eventos de filtro ───
-  searchInput.addEventListener('input', renderTable);
-  filterField.addEventListener('change', renderTable);
+  // ─── Eventos de filtro por coluna ───
+  const allFilters = [filterId, filterNome, filterCpf, filterCnh, filterEmail, filterCelular];
+
+  allFilters.forEach(input => {
+    input.addEventListener('input', renderTable);
+  });
 
   // ─── Ordenação por coluna ───
   document.querySelectorAll('th.sortable').forEach(th => {
@@ -77,32 +85,23 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // ─── Renderizar tabela ───
   function renderTable() {
-    const query     = searchInput.value.trim().toLowerCase();
-    const fieldType = filterField.value;
+    // Pegar valores dos filtros
+    const fId      = filterId.value.trim().toLowerCase();
+    const fNome    = filterNome.value.trim().toLowerCase();
+    const fCpf     = filterCpf.value.trim();
+    const fCnh     = filterCnh.value.trim();
+    const fEmail   = filterEmail.value.trim().toLowerCase();
+    const fCelular = filterCelular.value.trim().replace(/\D/g, '');
 
     // Filtrar
     let filtered = usuarios.filter(u => {
-      if (!query) return true;
-
-      if (fieldType === 'id') {
-        return String(u.id).includes(query);
-      } else if (fieldType === 'nome') {
-        return u.nome.toLowerCase().includes(query);
-      } else if (fieldType === 'email') {
-        return u.email.toLowerCase().includes(query);
-      } else if (fieldType === 'celular') {
-        return u.celular.replace(/\D/g, '').includes(query.replace(/\D/g, ''));
-      } else {
-        // Todos os campos
-        return (
-          String(u.id).includes(query) ||
-          u.nome.toLowerCase().includes(query) ||
-          u.cpf.includes(query) ||
-          u.cnh.includes(query) ||
-          u.email.toLowerCase().includes(query) ||
-          u.celular.replace(/\D/g, '').includes(query.replace(/\D/g, ''))
-        );
-      }
+      if (fId && !String(u.id).includes(fId)) return false;
+      if (fNome && !u.nome.toLowerCase().includes(fNome)) return false;
+      if (fCpf && !u.cpf.includes(fCpf)) return false;
+      if (fCnh && !u.cnh.includes(fCnh)) return false;
+      if (fEmail && !u.email.toLowerCase().includes(fEmail)) return false;
+      if (fCelular && !u.celular.replace(/\D/g, '').includes(fCelular)) return false;
+      return true;
     });
 
     // Ordenar
@@ -120,18 +119,16 @@ document.addEventListener('DOMContentLoaded', () => {
       return 0;
     });
 
-    // Atualizar contadores
+    // Atualizar contador
     resultCount.innerHTML = `<strong>${filtered.length}</strong> usuário${filtered.length !== 1 ? 's' : ''} encontrado${filtered.length !== 1 ? 's' : ''}`;
-    resultInfo.innerHTML = `Exibindo <strong>${filtered.length}</strong> de <strong>${usuarios.length}</strong> usuários`;
 
     // Renderizar
     if (filtered.length === 0) {
-      tableEl.style.display = 'none';
+      tableEl.querySelector('tbody').innerHTML = '';
       emptyState.style.display = 'block';
       return;
     }
 
-    tableEl.style.display = '';
     emptyState.style.display = 'none';
 
     tableBody.innerHTML = filtered.map(u => `
