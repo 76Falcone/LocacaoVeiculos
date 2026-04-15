@@ -1,202 +1,209 @@
 <!DOCTYPE html>
 <html lang="pt-br">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Novare | Frota Completa</title>
-  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap"
+    rel="stylesheet">
   <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/frota.css">
 </head>
+
 <body>
 
-<header class="navbar">
-  <a href="../index.html" class="logo" style="text-decoration:none;">NO<span>VARE</span></a>
-  <nav class="nav-links">
-    <a href="../index.html">Início</a>
-    <a href="frota.html" style="color: var(--purple); font-weight:600;">Frota</a>
-  </nav>
-  <div class="nav-actions">
-    <button class="btn-ghost" onclick="location.href='cadastroUsuario.html'">Cadastrar</button>
-    <button class="btn-primary" onclick="location.href='login.html'">Login</button>
-  </div>
-</header>
-
-<div class="page-header">
-  <div class="page-header-inner">
-    <div>
-      <div class="breadcrumb">
-        <a href="../index.html">Início</a>
-        <span class="breadcrumb-sep">›</span>
-        <span>Frota completa</span>
-      </div>
-      <h1>Frota completa</h1>
-      <p class="result-count" id="resultCount"><strong>18</strong> veículos disponíveis</p>
+  <header class="navbar">
+    <a href="../index.html" class="logo" style="text-decoration:none;">NO<span>VARE</span></a>
+    <nav class="nav-links">
+      <a href="../index.html">Início</a>
+      <a href="frota.html" style="color: var(--purple); font-weight:600;">Frota</a>
+    </nav>
+    <div class="nav-actions">
+      <button class="btn-ghost" onclick="location.href='cadastroUsuario.html'">Cadastrar</button>
+      <button class="btn-primary" onclick="location.href='login.html'">Login</button>
     </div>
-    <select class="sort-select" id="sortSelect" onchange="sortCars()">
-      <option value="preco-asc">Menor preço</option>
-      <option value="preco-desc">Maior preço</option>
-      <option value="nome">Nome A–Z</option>
-    </select>
-  </div>
-</div>
+  </header>
 
-<div class="fleet-layout">
-
-  <aside class="sidebar">
-    <div class="filter-card">
-      <div class="filter-title">Categoria</div>
-      <div class="filter-pills">
-        <div class="pill active" onclick="setCat(this,'todos')">
-          <span class="pill-left">🚗 Todos</span>
-          <span class="pill-count">18</span>
+  <div class="page-header">
+    <div class="page-header-inner">
+      <div>
+        <div class="breadcrumb">
+          <a href="../index.html">Início</a>
+          <span class="breadcrumb-sep">›</span>
+          <span>Frota completa</span>
         </div>
-        <div class="pill" onclick="setCat(this,'economico')">
-          <span class="pill-left">💨 Econômico</span>
-          <span class="pill-count">5</span>
-        </div>
-        <div class="pill" onclick="setCat(this,'intermediario')">
-          <span class="pill-left">🚙 Intermediário</span>
-          <span class="pill-count">5</span>
-        </div>
-        <div class="pill" onclick="setCat(this,'suv')">
-          <span class="pill-left">🏔️ SUV</span>
-          <span class="pill-count">4</span>
-        </div>
-        <div class="pill" onclick="setCat(this,'premium')">
-          <span class="pill-left">💎 Premium</span>
-          <span class="pill-count">2</span>
-        </div>
-        <div class="pill" onclick="setCat(this,'eletrico')">
-          <span class="pill-left">⚡ Elétrico</span>
-          <span class="pill-count">2</span>
-        </div>
+        <h1>Frota completa</h1>
+        <p class="result-count" id="resultCount"><strong>18</strong> veículos disponíveis</p>
       </div>
+      <select class="sort-select" id="sortSelect" onchange="sortCars()">
+        <option value="preco-asc">Menor preço</option>
+        <option value="preco-desc">Maior preço</option>
+        <option value="nome">Nome A–Z</option>
+      </select>
     </div>
+  </div>
 
-    <div class="filter-card">
-      <div class="filter-title">Preço / dia</div>
-      <div class="price-range">
-        <div class="range-inputs">
-          <div>
-            <div class="range-label">Mínimo</div>
-            <input class="range-input" type="number" id="priceMin" placeholder="R$ 0" min="0" onchange="applyFilters()">
+  <div class="fleet-layout">
+
+    <aside class="sidebar">
+      <div class="filter-card">
+        <div class="filter-title">Categoria</div>
+        <div class="filter-pills">
+          <div class="pill active" onclick="setCat(this,'todos')">
+            <span class="pill-left">🚗 Todos</span>
+            <span class="pill-count">18</span>
           </div>
-          <div>
-            <div class="range-label">Máximo</div>
-            <input class="range-input" type="number" id="priceMax" placeholder="R$ 999" min="0" onchange="applyFilters()">
+          <div class="pill" onclick="setCat(this,'economico')">
+            <span class="pill-left">💨 Econômico</span>
+            <span class="pill-count">5</span>
+          </div>
+          <div class="pill" onclick="setCat(this,'intermediario')">
+            <span class="pill-left">🚙 Intermediário</span>
+            <span class="pill-count">5</span>
+          </div>
+          <div class="pill" onclick="setCat(this,'suv')">
+            <span class="pill-left">🏔️ SUV</span>
+            <span class="pill-count">4</span>
+          </div>
+          <div class="pill" onclick="setCat(this,'premium')">
+            <span class="pill-left">💎 Premium</span>
+            <span class="pill-count">2</span>
+          </div>
+          <div class="pill" onclick="setCat(this,'eletrico')">
+            <span class="pill-left">⚡ Elétrico</span>
+            <span class="pill-count">2</span>
           </div>
         </div>
       </div>
-    </div>
 
-    <div class="filter-card">
-      <div class="filter-title">Câmbio</div>
-      <div class="check-list">
-        <label class="check-item">
-          <input type="checkbox" value="Automático" checked onchange="applyFilters()"> Automático
-        </label>
-        <label class="check-item">
-          <input type="checkbox" value="Manual" checked onchange="applyFilters()"> Manual
-        </label>
+      <div class="filter-card">
+        <div class="filter-title">Preço / dia</div>
+        <div class="price-range">
+          <div class="range-inputs">
+            <div>
+              <div class="range-label">Mínimo</div>
+              <input class="range-input" type="number" id="priceMin" placeholder="R$ 0" min="0"
+                onchange="applyFilters()">
+            </div>
+            <div>
+              <div class="range-label">Máximo</div>
+              <input class="range-input" type="number" id="priceMax" placeholder="R$ 999" min="0"
+                onchange="applyFilters()">
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="filter-card">
+        <div class="filter-title">Câmbio</div>
+        <div class="check-list">
+          <label class="check-item">
+            <input type="checkbox" value="Automático" checked onchange="applyFilters()"> Automático
+          </label>
+          <label class="check-item">
+            <input type="checkbox" value="Manual" checked onchange="applyFilters()"> Manual
+          </label>
+        </div>
+      </div>
+
+      <button class="btn-clear" onclick="clearFilters()">Limpar filtros</button>
+    </aside>
+
+    <main>
+      <div class="fleet-grid-full" id="carGrid"></div>
+    </main>
+  </div>
+
+  <footer>
+    <div class="footer-top">
+      <div class="footer-brand">
+        <span class="logo-footer">NO<span>VARE</span></span>
+        <p>Mobilidade inteligente para o Brasil. Alugue com transparência, tecnologia e cuidado.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Serviços</h4>
+        <a href="#">Aluguel diário</a>
+        <a href="#">Assinatura mensal</a>
+        <a href="#">Frota empresarial</a>
+        <a href="#">Aeroportos</a>
+      </div>
+      <div class="footer-col">
+        <h4>Empresa</h4>
+        <a href="#">Sobre nós</a>
+        <a href="#">Blog</a>
+        <a href="#">Trabalhe conosco</a>
+        <a href="#">Imprensa</a>
+      </div>
+      <div class="footer-col">
+        <h4>Ajuda</h4>
+        <a href="#">FAQ</a>
+        <a href="#">Contato</a>
+        <a href="#">Privacidade</a>
+        <a href="#">Termos de uso</a>
       </div>
     </div>
-
-    <button class="btn-clear" onclick="clearFilters()">Limpar filtros</button>
-  </aside>
-
-  <main>
-    <div class="fleet-grid-full" id="carGrid"></div>
-  </main>
-</div>
-
-<footer>
-  <div class="footer-top">
-    <div class="footer-brand">
-      <span class="logo-footer">NO<span>VARE</span></span>
-      <p>Mobilidade inteligente para o Brasil. Alugue com transparência, tecnologia e cuidado.</p>
+    <div class="footer-bottom">
+      <span>© 2025 Novare. Todos os direitos reservados.</span>
+      <div class="footer-badges">
+        <div class="footer-badge">SSL Seguro</div>
+        <div class="footer-badge">CNPJ: 00.000.000/0001-00</div>
+        <div class="footer-badge">RNTRC Autorizado</div>
+      </div>
     </div>
-    <div class="footer-col">
-      <h4>Serviços</h4>
-      <a href="#">Aluguel diário</a>
-      <a href="#">Assinatura mensal</a>
-      <a href="#">Frota empresarial</a>
-      <a href="#">Aeroportos</a>
-    </div>
-    <div class="footer-col">
-      <h4>Empresa</h4>
-      <a href="#">Sobre nós</a>
-      <a href="#">Blog</a>
-      <a href="#">Trabalhe conosco</a>
-      <a href="#">Imprensa</a>
-    </div>
-    <div class="footer-col">
-      <h4>Ajuda</h4>
-      <a href="#">FAQ</a>
-      <a href="#">Contato</a>
-      <a href="#">Privacidade</a>
-      <a href="#">Termos de uso</a>
-    </div>
-  </div>
-  <div class="footer-bottom">
-    <span>© 2025 Novare. Todos os direitos reservados.</span>
-    <div class="footer-badges">
-      <div class="footer-badge">SSL Seguro</div>
-      <div class="footer-badge">CNPJ: 00.000.000/0001-00</div>
-      <div class="footer-badge">RNTRC Autorizado</div>
-    </div>
-  </div>
-</footer>
+  </footer>
 
-<script src="../js/script.js"></script>
-<script>
-  let activeCat = 'todos';
+  <script src="../js/script.js"></script>
+  <script>
+    let activeCat = 'todos';
 
-  function setCat(el, cat) {
-    document.querySelectorAll('.pill').forEach(p => p.classList.remove('active'));
-    el.classList.add('active');
-    activeCat = cat;
-    applyFilters();
-  }
-
-  function applyFilters() {
-    const minP = parseFloat(document.getElementById('priceMin').value) || 0;
-    const maxP = parseFloat(document.getElementById('priceMax').value) || Infinity;
-    const checked = Array.from(document.querySelectorAll('.check-list input:checked')).map(i => i.value);
-
-    let list = activeCat === 'todos' ? allCars : allCars.filter(c => c.cat === activeCat);
-    list = list.filter(c => c.price >= minP && c.price <= maxP && checked.includes(c.trans));
-
-    const sort = document.getElementById('sortSelect').value;
-    if (sort === 'preco-asc') list.sort((a, b) => a.price - b.price);
-    else if (sort === 'preco-desc') list.sort((a, b) => b.price - a.price);
-    else list.sort((a, b) => a.name.localeCompare(b.name));
-
-    renderFlota(list);
-  }
-
-  function sortCars() { applyFilters(); }
-
-  function clearFilters() {
-    document.getElementById('priceMin').value = '';
-    document.getElementById('priceMax').value = '';
-    document.querySelectorAll('.check-list input').forEach(i => i.checked = true);
-    document.querySelectorAll('.pill').forEach(p => p.classList.remove('active'));
-    document.querySelector('.pill').classList.add('active');
-    activeCat = 'todos';
-    applyFilters();
-  }
-
-  function renderFlota(list) {
-    const grid = document.getElementById('carGrid');
-    document.getElementById('resultCount').innerHTML =
-      `<strong>${list.length}</strong> veículo${list.length !== 1 ? 's' : ''} disponível${list.length !== 1 ? 'is' : ''}`;
-
-    if (list.length === 0) {
-      grid.innerHTML = `<div class="empty-state"><p>Nenhum veículo encontrado com esses filtros.</p></div>`;
-      return;
+    function setCat(el, cat) {
+      document.querySelectorAll('.pill').forEach(p => p.classList.remove('active'));
+      el.classList.add('active');
+      activeCat = cat;
+      applyFilters();
     }
 
-    grid.innerHTML = list.map((car, i) => `
+    function applyFilters() {
+      const minP = parseFloat(document.getElementById('priceMin').value) || 0;
+      const maxP = parseFloat(document.getElementById('priceMax').value) || Infinity;
+      const checked = Array.from(document.querySelectorAll('.check-list input:checked')).map(i => i.value);
+
+      let list = activeCat === 'todos' ? allCars : allCars.filter(c => c.cat === activeCat);
+      list = list.filter(c => c.price >= minP && c.price <= maxP && checked.includes(c.trans));
+
+      const sort = document.getElementById('sortSelect').value;
+      if (sort === 'preco-asc') list.sort((a, b) => a.price - b.price);
+      else if (sort === 'preco-desc') list.sort((a, b) => b.price - a.price);
+      else list.sort((a, b) => a.name.localeCompare(b.name));
+
+      renderFlota(list);
+    }
+
+    function sortCars() { applyFilters(); }
+
+    function clearFilters() {
+      document.getElementById('priceMin').value = '';
+      document.getElementById('priceMax').value = '';
+      document.querySelectorAll('.check-list input').forEach(i => i.checked = true);
+      document.querySelectorAll('.pill').forEach(p => p.classList.remove('active'));
+      document.querySelector('.pill').classList.add('active');
+      activeCat = 'todos';
+      applyFilters();
+    }
+
+    function renderFlota(list) {
+      const grid = document.getElementById('carGrid');
+      document.getElementById('resultCount').innerHTML =
+        `<strong>${list.length}</strong> veículo${list.length !== 1 ? 's' : ''} disponível${list.length !== 1 ? 'is' : ''}`;
+
+      if (list.length === 0) {
+        grid.innerHTML = `<div class="empty-state"><p>Nenhum veículo encontrado com esses filtros.</p></div>`;
+        return;
+      }
+
+      grid.innerHTML = list.map((car, i) => `
       <div class="car-card reveal" style="animation-delay:${i * 0.05}s">
         <div class="car-img-wrap">
           ${car.badge ? `<span class="car-badge ${car.badgeClass}">${car.badge}</span>` : ''}
@@ -233,12 +240,13 @@
       </div>
     `).join('');
 
-    setTimeout(() => {
-      document.querySelectorAll('.car-card.reveal').forEach(el => el.classList.add('visible'));
-    }, 60);
-  }
+      setTimeout(() => {
+        document.querySelectorAll('.car-card.reveal').forEach(el => el.classList.add('visible'));
+      }, 60);
+    }
 
-  applyFilters();
-</script>
+    applyFilters();
+  </script>
 </body>
+
 </html>
