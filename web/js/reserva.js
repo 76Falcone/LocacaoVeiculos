@@ -55,10 +55,16 @@ document.addEventListener('DOMContentLoaded', () => {
     const params = new URLSearchParams(window.location.search);
 
     const idVeiculo  = params.get('idVeiculo')  || '';
-    const idUsuario  = params.get('idUsuario')  || '';
+    let   idUsuario  = params.get('idUsuario')  || '';
     const modelo     = params.get('modelo')     || 'Veículo não informado';
     const categoria  = params.get('categoria')  || '';
     const preco      = parseFloat(params.get('preco')) || 0;
+
+    // Fallback: ler idUsuario do cookie de sessão se não veio pela URL
+    if (!idUsuario || idUsuario === '0') {
+      const match = document.cookie.match(new RegExp('(^| )idUsuario=([^;]+)'));
+      idUsuario = match ? match[2] : '';
+    }
 
     // Preenche campos ocultos — NÃO visíveis ao usuário
     idVeiculoInput.value = idVeiculo;
