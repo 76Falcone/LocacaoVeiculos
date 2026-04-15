@@ -1,0 +1,89 @@
+/* ═══════════════════════════════════════════════════════════
+   SUCESSO.CSS — Estilos da página de confirmação (Fiel ao projeto)
+   Novare · Sistema de Gestão de Veículos
+   ═══════════════════════════════════════════════════════════ */
+
+body {
+  background-color: var(--bg-100, #121214);
+  color: var(--text-200, #a1a1aa);
+  font-family: 'DM Sans', sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  margin: 0;
+}
+
+.container {
+  padding: 20px;
+  width: 100%;
+  max-width: 500px;
+}
+
+.card {
+  background-color: var(--bg-200, #18191b);
+  border: 1px solid var(--border-color, #27272a);
+  padding: 40px;
+  border-radius: 12px;
+  text-align: center;
+}
+
+.icon svg {
+  color: var(--primary-color, #d4ff00);
+}
+
+.icon {
+  margin-bottom: 24px;
+}
+
+h1 {
+  color: var(--text-100, #fff);
+  font-family: 'Syne', sans-serif;
+  font-size: 28px;
+  margin-bottom: 12px;
+}
+
+p {
+  margin-bottom: 32px;
+}
+
+.actions {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+}
+
+.actions a {
+  flex: 1;
+  padding: 12px 20px;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: 600;
+  transition: 0.2s ease;
+}
+
+.btn-primary {
+  background-color: var(--primary-color, #d4ff00);
+  color: #000;
+}
+
+.btn-primary:hover {
+  background-color: var(--primary-hover, #c2e600);
+}
+
+.btn-secondary {
+  background-color: transparent;
+  border: 1px solid var(--border-color, #27272a);
+  color: var(--text-100, #fff);
+}
+
+.btn-secondary:hover {
+  background-color: var(--bg-300, #27272a);
+}
+
+/* Responsivo */
+@media (max-width: 480px) {
+  .actions {
+    flex-direction: column;
+  }
+}
