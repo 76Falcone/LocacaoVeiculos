@@ -91,7 +91,7 @@
   letter-spacing: 0.8px;
 }
 
-/* category pills */
+/* categoria */
 .filter-pills {
   display: flex;
   flex-direction: column;
@@ -126,7 +126,7 @@
 }
 .pill.active .pill-count { background: var(--purple-mid); color: var(--purple-dark); }
 
-/* price range */
+/* preço */
 .price-range {
   display: flex;
   flex-direction: column;
@@ -155,7 +155,7 @@
   margin-bottom: 2px;
 }
 
-/* transmission checkboxes */
+/* \checkboxes */
 .check-list {
   display: flex;
   flex-direction: column;
@@ -190,7 +190,7 @@
 }
 .btn-clear:hover { border-color: var(--purple); color: var(--purple); }
 
-/* ─── FLEET GRID ─── */
+/* ─── FLEET ─── */
 .fleet-grid-full {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));

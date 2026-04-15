@@ -1,16 +1,4 @@
-/* ═══════════════════════════════════════════════════════════
-   VARIABLES.CSS — Variáveis complementares para telas internas
-   Novare · Sistema de Gestão de Veículos
-   ═══════════════════════════════════════════════════════════ */
 
-/*
- * Este arquivo centraliza variáveis EXTRAS que não existem no
- * style.css original, mas são necessárias para as telas internas
- * (login, cadastro, painel administrativo).
- *
- * As variáveis principais (--purple, --text, --border, etc.)
- * continuam sendo herdadas do style.css.
- */
 
 :root {
   /* ─── Sombras ─── */
