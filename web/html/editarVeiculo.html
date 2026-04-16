@@ -5,11 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Novare | Editar Veículo</title>
   <meta name="description" content="Edite os dados de um veículo no sistema Novare.">
-
-  <!-- Fontes -->
   <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet">
-
-  <!-- Estilos -->
   <link rel="stylesheet" href="../css/style.css">
   <link rel="stylesheet" href="../css/variables.css">
   <link rel="stylesheet" href="../css/dashboard.css">
@@ -93,7 +89,6 @@
             <input type="hidden" name="op" value="ATUALIZAR">
             <input type="hidden" id="idVeiculo" name="id">
 
-            <!-- Linha 1: Placa e Modelo -->
             <div class="form-row">
               <div class="form-group" id="placaGroup">
                 <label for="placa">Placa</label>
@@ -125,7 +120,6 @@
               </div>
             </div>
 
-            <!-- Linha 2: Cor e Valor Diária -->
             <div class="form-row">
               <div class="form-group" id="corGroup">
                 <label for="cor">Cor</label>
@@ -158,7 +152,6 @@
               </div>
             </div>
 
-            <!-- Linha 3: Funcionalidade -->
             <div class="form-group" id="funcionalidadeGroup">
               <label for="funcionalidade">Funcionalidade</label>
               <div class="input-wrap">
@@ -173,7 +166,6 @@
               <span class="form-error" id="funcionalidadeError"></span>
             </div>
 
-            <!-- Linha 4: Disponibilidade e Ar Condicionado -->
             <div class="form-row">
               <div class="form-group" id="disponibilidadeGroup">
                 <label for="disponibilidade">Disponibilidade</label>
@@ -192,7 +184,6 @@
               </div>
             </div>
 
-            <!-- Linha 5: Tipo de Câmbio -->
             <div class="form-group" id="tipoCambioGroup">
               <label for="tipoCambio">Tipo de Câmbio</label>
               <select id="tipoCambio" name="tipoCambio" class="form-select" required>
