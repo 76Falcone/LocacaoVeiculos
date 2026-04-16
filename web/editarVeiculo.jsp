@@ -102,7 +102,6 @@
             <input type="hidden" name="op" value="ATUALIZAR">
             <input type="hidden" id="idVeiculo" name="id" value="<%= veiculo.getIdVeiculo() %>">
 
-            <!-- Linha 1: Placa e Modelo -->
             <div class="form-row">
               <div class="form-group" id="placaGroup">
                 <label for="placa">Placa</label>
@@ -136,7 +135,6 @@
               </div>
             </div>
 
-            <!-- Linha 2: Cor e Valor Diária -->
             <div class="form-row">
               <div class="form-group" id="corGroup">
                 <label for="cor">Cor</label>
@@ -171,7 +169,6 @@
               </div>
             </div>
 
-            <!-- Linha 3: Funcionalidade -->
             <div class="form-group" id="funcionalidadeGroup">
               <label for="funcionalidade">Funcionalidade</label>
               <div class="input-wrap">
@@ -187,7 +184,6 @@
               <span class="form-error" id="funcionalidadeError"></span>
             </div>
 
-            <!-- Linha 4: Disponibilidade e Ar Condicionado -->
             <div class="form-row">
               <div class="form-group" id="disponibilidadeGroup">
                 <label for="disponibilidade">Disponibilidade</label>
@@ -206,7 +202,6 @@
               </div>
             </div>
 
-            <!-- Linha 5: Tipo de Câmbio -->
             <div class="form-group" id="tipoCambioGroup">
               <label for="tipoCambio">Tipo de Câmbio</label>
               <select id="tipoCambio" name="tipoCambio" class="form-select" required>
@@ -217,7 +212,6 @@
               <span class="form-error" id="tipoCambioError"></span>
             </div>
 
-            <!-- Botão -->
             <button type="submit" class="btn-submit" id="btnSalvar">
               <span class="btn-text">Salvar Alterações</span>
               <span class="btn-loader" aria-hidden="true"></span>
@@ -232,7 +226,6 @@
   <!-- Toast de feedback -->
   <div class="toast" id="toast"></div>
 
-  <!-- Script -->
   <script src="js/editarVeiculo.js"></script>
 </body>
 </html>

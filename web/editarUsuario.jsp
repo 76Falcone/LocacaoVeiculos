@@ -37,7 +37,6 @@
               <p class="cadastro-brand-sub">Altere as informações do usuário cadastrado no sistema.</p>
 
               
-            <!-- Decorações de fundo -->
             <div class="cadastro-brand-circle cadastro-brand-circle-1"></div>
             <div class="cadastro-brand-circle cadastro-brand-circle-2"></div>
           </aside>
