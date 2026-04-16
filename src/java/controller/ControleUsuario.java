@@ -14,6 +14,7 @@ import javax.servlet.http.Cookie;
 import dao.UsuarioDAO;
 import dao.LoginDAO;
 import model.Usuario;
+import model.UsuarioBuilder;
 
 @WebServlet(name = "ControleUsuario", urlPatterns = { "/ControleUsuario", "/html/ControleUsuario" })
 public class ControleUsuario extends HttpServlet {
@@ -112,13 +113,14 @@ public class ControleUsuario extends HttpServlet {
                 String senha = request.getParameter("senha");
                 String celular = request.getParameter("celular");
 
-                Usuario u = new Usuario();
-                u.setNomeUsuario(nome);
-                u.setCpfUsuario(cpf);
-                u.setCnhUsuario(cnh);
-                u.setEmailUsuario(email);
-                u.setSenhaUsuario(senha);
-                u.setCelularUsuario(celular);
+                Usuario u = new UsuarioBuilder()
+                        .comNomeUsuario(nome)
+                        .comCpfUsuario(cpf)
+                        .comCnhUsuario(cnh)
+                        .comEmailUsuario(email)
+                        .comSenhaUsuario(senha)
+                        .comCelularUsuario(celular)
+                        .build();
 
                 dao.cadastrarUsuario(u);
 
@@ -134,22 +136,22 @@ public class ControleUsuario extends HttpServlet {
                 String senha = request.getParameter("senha");
                 String celular = request.getParameter("celular");
 
-                Usuario u = new Usuario();
-                u.setIdUsuario(idUsuario);
-                u.setNomeUsuario(nome);
-                u.setCpfUsuario(cpf);
-                u.setCnhUsuario(cnh);
-                u.setEmailUsuario(email);
-                u.setSenhaUsuario(senha);
-                u.setCelularUsuario(celular);
+                Usuario u = new UsuarioBuilder()
+                        .comId(idUsuario)
+                        .comNomeUsuario(nome)
+                        .comCpfUsuario(cpf)
+                        .comCnhUsuario(cnh)
+                        .comEmailUsuario(email)
+                        .comSenhaUsuario(senha)
+                        .comCelularUsuario(celular)
+                        .build();
 
                 dao.atualizarUsuario(u);
                 response.sendRedirect(request.getContextPath() + "/sucessoUsuario.jsp");
 
             } else if (operacao.equals("DELETAR")) {
                 int idUsuario = Integer.parseInt(request.getParameter("id"));
-                Usuario u = new Usuario();
-                u.setIdUsuario(idUsuario);
+                Usuario u = new UsuarioBuilder().comId(idUsuario).build();
 
                 dao.deletarUsuario(u);
                 response.sendRedirect(request.getContextPath() + "/sucessoUsuario.jsp");
@@ -178,8 +180,7 @@ public class ControleUsuario extends HttpServlet {
 
             } else if (operacao.equals("BUSCAR_POR_ID")) {
                 int idUsuario = Integer.parseInt(request.getParameter("id"));
-                Usuario param = new Usuario();
-                param.setIdUsuario(idUsuario);
+                Usuario param = new UsuarioBuilder().comId(idUsuario).build();
 
                 Usuario usuario = dao.visualizarUsuarioByID(param);
                 request.setAttribute("usuario", usuario);
