@@ -63,11 +63,17 @@ public class LocacaoBuilder {
         this.dataEntrega = dataEntrega;
         return this;
     }
+
+    public LocacaoBuilder comValorTotal(double valorTotal) {
+        this.valorTotal = valorTotal;
+        return this;
+    }
     
     // Metodo build com regras
     public Locacao build() {
         // Valor total | Regra: (Diária do Veículo * Quantidade de Dias) + Valor do Seguro
-        if (veiculo != null && qtdDias > 0) {
+        // Somente calcula se não houver sido explicitamente fornecido e o veiculo tiver um valor de diaria valido
+        if (this.valorTotal == 0.0 && veiculo != null && qtdDias > 0) {
             this.valorTotal = (veiculo.getValorDiaria() * qtdDias) + seguroLocacao;
         }
         // Data de entrega | Regra: DataEntrega = DataRetirada + QtdDias
