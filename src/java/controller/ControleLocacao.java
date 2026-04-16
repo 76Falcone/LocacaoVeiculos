@@ -16,6 +16,9 @@ import dao.VeiculoDAO;
 import model.Locacao;
 import model.Usuario;
 import model.Veiculo;
+import model.LocacaoBuilder;
+import model.UsuarioBuilder;
+import model.VeiculoBuilder;
 
 @WebServlet(name = "ControleLocacao", urlPatterns = { "/ControleLocacao", "/html/ControleLocacao" })
 public class ControleLocacao extends HttpServlet {
@@ -50,13 +53,10 @@ public class ControleLocacao extends HttpServlet {
                 double seguroLocacao = Double.parseDouble(request.getParameter("seguroLocacao"));
                 double valorTotal = Double.parseDouble(request.getParameter("valorTotal"));
 
-                Usuario u = new Usuario();
-                
                 // --- PROTEÇÃO DE RESILIÊNCIA PARA ADMIN OU COOKIE ANTIGO ---
                 // Se receber ID 1, verificamos se existe. Se não existir, pegamos um ID válido para teste
                 UsuarioDAO uDao = new UsuarioDAO();
-                Usuario target = new Usuario();
-                target.setIdUsuario(idUsuario);
+                Usuario target = new UsuarioBuilder().comId(idUsuario).build();
                 
                 if (uDao.visualizarUsuarioByID(target).getIdUsuario() == 0) {
                     List<Usuario> list = uDao.visualizarTodosUsuarios();
@@ -65,20 +65,19 @@ public class ControleLocacao extends HttpServlet {
                     }
                 }
                 
-                u.setIdUsuario(idUsuario);
+                Usuario u = new UsuarioBuilder().comId(idUsuario).build();
+                Veiculo v = new VeiculoBuilder().comIdVeiculo(idVeiculo).build();
 
-                Veiculo v = new Veiculo();
-                v.setIdVeiculo(idVeiculo);
-
-                Locacao locacao = new Locacao();
-                locacao.setUsuario(u);
-                locacao.setVeiculo(v);
-                locacao.setDataRetirada(dataRetirada);
-                locacao.setDataEntrega(dataEntrega);
-                locacao.setQtdDias(qtdDias);
-                locacao.setLocalRetirada(localRetirada);
-                locacao.setSeguroLocacao(seguroLocacao);
-                locacao.setValorTotal(valorTotal);
+                Locacao locacao = new LocacaoBuilder()
+                        .paraUsuario(u)
+                        .comVeiculo(v)
+                        .comDataRetirada(dataRetirada)
+                        .comDataEntrega(dataEntrega)
+                        .comQtdDias(qtdDias)
+                        .comLocalRetirada(localRetirada)
+                        .comSeguro(seguroLocacao)
+                        .comValorTotal(valorTotal)
+                        .build();
 
                 dao.cadastrarLocacao(locacao);
 
@@ -104,11 +103,8 @@ public class ControleLocacao extends HttpServlet {
                 double seguroLocacao = Double.parseDouble(request.getParameter("seguroLocacao"));
                 double valorTotal = Double.parseDouble(request.getParameter("valorTotal"));
 
-                Usuario u = new Usuario();
-                
                 UsuarioDAO uDao = new UsuarioDAO();
-                Usuario target = new Usuario();
-                target.setIdUsuario(idUsuario);
+                Usuario target = new UsuarioBuilder().comId(idUsuario).build();
                 
                 if (uDao.visualizarUsuarioByID(target).getIdUsuario() == 0) {
                     List<Usuario> list = uDao.visualizarTodosUsuarios();
@@ -117,29 +113,27 @@ public class ControleLocacao extends HttpServlet {
                     }
                 }
                 
-                u.setIdUsuario(idUsuario);
+                Usuario u = new UsuarioBuilder().comId(idUsuario).build();
+                Veiculo v = new VeiculoBuilder().comIdVeiculo(idVeiculo).build();
 
-                Veiculo v = new Veiculo();
-                v.setIdVeiculo(idVeiculo);
-
-                Locacao locacao = new Locacao();
-                locacao.setIdLocacao(idLocacao);
-                locacao.setUsuario(u);
-                locacao.setVeiculo(v);
-                locacao.setDataRetirada(dataRetirada);
-                locacao.setDataEntrega(dataEntrega);
-                locacao.setQtdDias(qtdDias);
-                locacao.setLocalRetirada(localRetirada);
-                locacao.setSeguroLocacao(seguroLocacao);
-                locacao.setValorTotal(valorTotal);
+                Locacao locacao = new LocacaoBuilder()
+                        .comId(idLocacao)
+                        .paraUsuario(u)
+                        .comVeiculo(v)
+                        .comDataRetirada(dataRetirada)
+                        .comDataEntrega(dataEntrega)
+                        .comQtdDias(qtdDias)
+                        .comLocalRetirada(localRetirada)
+                        .comSeguro(seguroLocacao)
+                        .comValorTotal(valorTotal)
+                        .build();
 
                 dao.atualizarLocacao(locacao);
                 response.sendRedirect(request.getContextPath() + "/html/listarReservas.html");
 
             } else if (operacao.equals("DELETAR")) {
                 int idLocacao = Integer.parseInt(request.getParameter("id"));
-                Locacao param = new Locacao();
-                param.setIdLocacao(idLocacao);
+                Locacao param = new LocacaoBuilder().comId(idLocacao).build();
 
                 Locacao locacaoExistente = dao.visualizarLocacaoByID(param);
 
@@ -189,8 +183,7 @@ public class ControleLocacao extends HttpServlet {
                 out.flush();
             } else if (operacao.equals("BUSCAR_POR_ID")) {
                 int idLocacao = Integer.parseInt(request.getParameter("id"));
-                Locacao param = new Locacao();
-                param.setIdLocacao(idLocacao);
+                Locacao param = new LocacaoBuilder().comId(idLocacao).build();
 
                 Locacao locacao = dao.visualizarLocacaoByID(param);
                 request.setAttribute("locacao", locacao);
