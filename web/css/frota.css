@@ -85,26 +85,27 @@
 .btn-reservar {
     display: inline-flex;
     align-items: center;
-    gap: 4px;
-    padding: 6px 14px;
-    border: 1.5px solid var(--purple-mid);
-    border-radius: 8px;
-    background: var(--purple-pale);
-    color: var(--purple);
+    justify-content: center;
+    gap: 6px;
+    padding: 10px 22px;
+    border: 1px solid var(--purple);
+    border-radius: 10px;
+    background: linear-gradient(135deg, var(--purple) 0%, var(--purple-dark) 100%);
+    color: var(--white);
     font-family: 'DM Sans', sans-serif;
-    font-size: 0.8rem;
-    font-weight: 600;
+    font-size: 0.95rem;
+    font-weight: 700;
     cursor: pointer;
-    transition: all 0.18s ease;
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
     white-space: nowrap;
+    box-shadow: 0 4px 12px rgba(106, 38, 205, 0.25);
+    letter-spacing: 0.3px;
 }
 
 .btn-reservar:hover:not(:disabled) {
-    background: var(--purple);
-    color: var(--white);
-    border-color: var(--purple);
-    transform: translateY(-1px);
-    box-shadow: 0 4px 12px rgba(106, 38, 205, 0.3);
+    background: linear-gradient(135deg, var(--purple-light) 0%, var(--purple) 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 22px rgba(106, 38, 205, 0.45);
 }
 
 /* ─── RESPONSIVE ─── */
