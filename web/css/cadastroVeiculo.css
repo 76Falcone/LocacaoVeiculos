@@ -4,7 +4,7 @@
   max-width: 680px;
 }
 
-/* ─── FORM GROUP ─── */
+/* ─── FORM ─── */
 .form-group {
   margin-bottom: 1.15rem;
 }
@@ -74,7 +74,7 @@
   box-shadow: 0 0 0 3px rgba(106, 38, 205, 0.08);
 }
 
-/* ─── ESTADO DE ERRO ─── */
+/* ─── ERRO ─── */
 .form-group.has-error .input-wrap input,
 .form-group.has-error .form-select {
   border-color: var(--error);

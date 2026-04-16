@@ -80,7 +80,6 @@
   max-width: 300px;
 }
 
-/* Stats decorativos */
 .cadastro-stats {
   display: flex;
   gap: 1.5rem;
@@ -170,7 +169,7 @@
   margin-bottom: 2rem;
 }
 
-/* ─── FORM GROUP (reutiliza login.css pattern) ─── */
+/* ─── FORM GROUP  ─── */
 .form-group {
   margin-bottom: 1.1rem;
 }
