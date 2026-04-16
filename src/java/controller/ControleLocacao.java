@@ -87,7 +87,7 @@ public class ControleLocacao extends HttpServlet {
                 vAtualizar.setDisponibilidade(false);
                 veiculoDAO.atualizarVeiculo(vAtualizar);
 
-                response.sendRedirect("sucessoReserva.jsp");
+                response.sendRedirect(request.getContextPath() + "/sucessoReserva.jsp");
 
             } else if (operacao.equals("ATUALIZAR")) {
                 int idLocacao = Integer.parseInt(request.getParameter("id"));
@@ -134,7 +134,7 @@ public class ControleLocacao extends HttpServlet {
                 locacao.setValorTotal(valorTotal);
 
                 dao.atualizarLocacao(locacao);
-                response.sendRedirect("listarReservas.html");
+                response.sendRedirect(request.getContextPath() + "/html/listarReservas.html");
 
             } else if (operacao.equals("DELETAR")) {
                 int idLocacao = Integer.parseInt(request.getParameter("id"));
@@ -152,7 +152,7 @@ public class ControleLocacao extends HttpServlet {
                     veiculoDAO.atualizarVeiculo(vLiberar);
                 }
 
-                response.sendRedirect("listarReservas.html");
+                response.sendRedirect(request.getContextPath() + "/html/listarReservas.html");
 
             } else if (operacao.equals("LISTAR")) {
                 List<Locacao> locacoes = dao.visualizarTodasLocacoes();
