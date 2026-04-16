@@ -87,7 +87,7 @@ public class ControleLocacao extends HttpServlet {
                 vAtualizar.setDisponibilidade(false);
                 veiculoDAO.atualizarVeiculo(vAtualizar);
 
-                response.sendRedirect("../index.html");
+                response.sendRedirect("sucessoReserva.jsp");
 
             } else if (operacao.equals("ATUALIZAR")) {
                 int idLocacao = Integer.parseInt(request.getParameter("id"));
