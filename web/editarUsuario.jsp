@@ -11,7 +11,6 @@
         <title>Novare | Editar Usuário</title>
         <meta name="description" content="Edite os dados de um usuário no sistema Novare.">
 
-        <!-- Fontes -->
         <link
           href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap"
           rel="stylesheet">
@@ -37,23 +36,7 @@
               <h2 class="cadastro-brand-title">Atualize os<br><em>dados.</em></h2>
               <p class="cadastro-brand-sub">Altere as informações do usuário cadastrado no sistema.</p>
 
-              <!-- Stats decorativos -->
-              <div class="cadastro-stats">
-                <div class="cadastro-stat">
-                  <span class="cadastro-stat-val">+120k</span>
-                  <span class="cadastro-stat-label">Usuários</span>
-                </div>
-                <div class="cadastro-stat">
-                  <span class="cadastro-stat-val">+50</span>
-                  <span class="cadastro-stat-label">Cidades</span>
-                </div>
-                <div class="cadastro-stat">
-                  <span class="cadastro-stat-val">4.9★</span>
-                  <span class="cadastro-stat-label">Avaliação</span>
-                </div>
-              </div>
-            </div>
-
+              
             <!-- Decorações de fundo -->
             <div class="cadastro-brand-circle cadastro-brand-circle-1"></div>
             <div class="cadastro-brand-circle cadastro-brand-circle-2"></div>
