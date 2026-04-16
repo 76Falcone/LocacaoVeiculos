@@ -20,12 +20,11 @@
 
   <div class="standalone-wrapper"
     style="min-height: 100vh; display: flex; align-items: center; justify-content: center; background: var(--bg); padding: 2rem;">
-    <!-- Área de conteúdo -->
+
     <main class="content-area">
       <h1 class="page-title">Reservar Veículo</h1>
       <p class="page-subtitle">Preencha os dados da locação para confirmar a reserva.</p>
 
-      <!-- Card de resumo do veículo selecionado -->
       <div class="card reserva-resumo-card" id="resumoVeiculo">
         <div class="resumo-icon">🚗</div>
         <div class="resumo-info">
@@ -39,16 +38,14 @@
         </div>
       </div>
 
-      <!-- Card do formulário -->
+      <!-- formulário -->
       <div class="card form-card">
         <form id="reservaForm" action="ControleLocacao" method="post" novalidate>
           <input type="hidden" name="op" value="CADASTRAR">
 
-          <!-- Campos ocultos: preenchidos automaticamente via JS (não visíveis ao usuário) -->
           <input type="hidden" id="idUsuario" name="idUsuario">
           <input type="hidden" id="idVeiculo" name="idVeiculo">
 
-          <!-- Linha 1: Data de Retirada e Data de Entrega -->
           <div class="form-row">
             <div class="form-group" id="dataRetiradaGroup">
               <label for="dataRetirada">Data de Retirada</label>
@@ -67,7 +64,6 @@
             </div>
           </div>
 
-          <!-- Linha 2: Quantidade de Dias (calculado automaticamente) e Local de Retirada -->
           <div class="form-row">
             <div class="form-group" id="qtdDiasGroup">
               <label for="qtdDias">Quantidade de Dias</label>
@@ -87,7 +83,6 @@
             </div>
           </div>
 
-          <!-- Linha 3: Seguro -->
           <div class="form-group" id="seguroLocacaoGroup">
             <label for="seguroLocacao">Seguro da Locação (R$)</label>
             <div class="input-wrap">
@@ -120,7 +115,6 @@
             <input type="hidden" id="valorTotal" name="valorTotal">
           </div>
 
-          <!-- Botão -->
           <button type="submit" class="btn-submit" id="btnReservar">
             <span class="btn-text">Confirmar Reserva</span>
             <span class="btn-loader" aria-hidden="true"></span>
@@ -134,7 +128,6 @@
   <!-- Toast de feedback -->
   <div class="toast" id="toast"></div>
 
-  <!-- Script -->
   <script src="../js/reserva.js"></script>
 </body>
 
