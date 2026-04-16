@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import dao.VeiculoDAO;
 import model.Veiculo;
+import model.VeiculoBuilder;
 
 @WebServlet(name = "ControleVeiculo", urlPatterns = { "/ControleVeiculo", "/html/ControleVeiculo" })
 public class ControleVeiculo extends HttpServlet {
@@ -38,15 +39,16 @@ public class ControleVeiculo extends HttpServlet {
                 String cambio = request.getParameter("tipoCambio"); // Corrigido: era "cambio", mas o HTML envia
                                                                     // "tipoCambio"
 
-                Veiculo v = new Veiculo();
-                v.setPlacaVeiculo(placa);
-                v.setModeloVeiculo(modelo);
-                v.setCorVeiculo(cor);
-                v.setValorDiaria(valorDiaria);
-                v.setFuncionalidadeVeiculo(funcionalidade);
-                v.setArCondicionadoVeiculo(arCondicionado);
-                v.setDisponibilidade(disponibilidade);
-                v.setTipoCambio(cambio);
+                Veiculo v = new VeiculoBuilder()
+                        .comPlacaVeiculo(placa)
+                        .comModeloVeiculo(modelo)
+                        .comCorVeiculo(cor)
+                        .comValorDiaria(valorDiaria)
+                        .comFuncionalidadeVeiculo(funcionalidade)
+                        .comArCondicionadoVeiculo(arCondicionado)
+                        .comDisponibilidade(disponibilidade)
+                        .comTipoCambio(cambio)
+                        .build();
 
                 dao.cadastrarVeiculo(v);
                 response.sendRedirect(request.getContextPath() + "/sucessoVeiculo.jsp");
@@ -67,24 +69,24 @@ public class ControleVeiculo extends HttpServlet {
                 boolean disponibilidade = "true".equals(request.getParameter("disponibilidade"));
                 String cambio = request.getParameter("tipoCambio");
 
-                Veiculo v = new Veiculo();
-                v.setIdVeiculo(idVeiculo);
-                v.setPlacaVeiculo(placa);
-                v.setModeloVeiculo(modelo);
-                v.setCorVeiculo(cor);
-                v.setValorDiaria(valorDiaria);
-                v.setFuncionalidadeVeiculo(funcionalidade);
-                v.setArCondicionadoVeiculo(arCondicionado);
-                v.setDisponibilidade(disponibilidade);
-                v.setTipoCambio(cambio);
+                Veiculo v = new VeiculoBuilder()
+                        .comIdVeiculo(idVeiculo)
+                        .comPlacaVeiculo(placa)
+                        .comModeloVeiculo(modelo)
+                        .comCorVeiculo(cor)
+                        .comValorDiaria(valorDiaria)
+                        .comFuncionalidadeVeiculo(funcionalidade)
+                        .comArCondicionadoVeiculo(arCondicionado)
+                        .comDisponibilidade(disponibilidade)
+                        .comTipoCambio(cambio)
+                        .build();
 
                 dao.atualizarVeiculo(v);
                 response.sendRedirect(request.getContextPath() + "/sucessoVeiculo.jsp");
 
             } else if (operacao.equals("DELETAR")) {
                 int idVeiculo = Integer.parseInt(request.getParameter("id"));
-                Veiculo v = new Veiculo();
-                v.setIdVeiculo(idVeiculo);
+                Veiculo v = new VeiculoBuilder().comIdVeiculo(idVeiculo).build();
 
                 dao.deletarVeiculo(v);
                 response.sendRedirect(request.getContextPath() + "/sucessoVeiculo.jsp");
@@ -116,8 +118,7 @@ public class ControleVeiculo extends HttpServlet {
 
             } else if (operacao.equals("BUSCAR_POR_ID")) {
                 int idVeiculo = Integer.parseInt(request.getParameter("id"));
-                Veiculo param = new Veiculo();
-                param.setIdVeiculo(idVeiculo);
+                Veiculo param = new VeiculoBuilder().comIdVeiculo(idVeiculo).build();
 
                 Veiculo veiculo = dao.visualizarVeiculoByID(param);
                 request.setAttribute("veiculo", veiculo);
