@@ -87,7 +87,8 @@
     align-items: center;
     justify-content: center;
     gap: 6px;
-    width: 100%; /* Ocupa todo o espaço da célula */
+    width: 100%;
+    /* Ocupa todo o espaço da célula */
     height: auto;
     padding: 10px 16px;
     border: 1px solid var(--purple);
