@@ -149,13 +149,13 @@
 
   <script src="../js/script.js"></script>
   <script>
-    document.addEventListener('DOMContentLoaded', () => {
+    // ─── Helper: ler cookie (Global para uso no onclick inline) ───
+    window.getCookieValue = function (name) {
+      const match = document.cookie.match(new RegExp('(^| )' + name + '=([^;]+)'));
+      return match ? match[2] : '';
+    };
 
-      // ─── Helper: ler cookie ───
-      function getCookieValue(name) {
-        const match = document.cookie.match(new RegExp('(^| )' + name + '=([^;]+)'));
-        return match ? match[2] : '';
-      }
+    document.addEventListener('DOMContentLoaded', () => {
 
       // ─── Dados carregados do backend ───
       let veiculos = [];
