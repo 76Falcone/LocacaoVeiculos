@@ -17,6 +17,7 @@ import util.FabricaConexao;
  *
  * @author 76Falcone
  */
+
 public class LocacaoDAO implements ILocacaoDAO {
 
     // Cadastrar Locacao
