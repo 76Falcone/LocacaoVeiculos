@@ -1,27 +1,34 @@
 package controller;
 
+import command.IComando;
+import command.locacao.AtualizarLocacaoComando;
+import command.locacao.BuscarLocacaoPorIdComando;
+import command.locacao.CadastrarLocacaoComando;
+import command.locacao.DeletarLocacaoComando;
+import command.locacao.ListarLocacoesComando;
+
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.time.LocalDate;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;   
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import dao.LocacaoDAO;
-import dao.UsuarioDAO;
-import dao.VeiculoDAO;
-import model.Locacao;
-import model.Usuario;
-import model.Veiculo;
-import model.LocacaoBuilder;
-import model.UsuarioBuilder;
-import model.VeiculoBuilder;
 
 @WebServlet(name = "ControleLocacao", urlPatterns = { "/ControleLocacao", "/html/ControleLocacao" })
 public class ControleLocacao extends HttpServlet {
+
+    private final Map<String, IComando> comandos = new HashMap<>();
+
+    @Override
+    public void init() throws ServletException {
+        comandos.put("CADASTRAR",     new CadastrarLocacaoComando());
+        comandos.put("ATUALIZAR",     new AtualizarLocacaoComando());
+        comandos.put("DELETAR",       new DeletarLocacaoComando());
+        comandos.put("LISTAR",        new ListarLocacoesComando());
+        comandos.put("BUSCAR_POR_ID", new BuscarLocacaoPorIdComando());
+    }
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -29,170 +36,20 @@ public class ControleLocacao extends HttpServlet {
         String operacao = request.getParameter("op");
 
         try {
-            LocacaoDAO dao = new LocacaoDAO();
-
             if (operacao == null) {
                 response.sendRedirect("../index.html");
+                return;
+            }
 
-            } else if (operacao.equals("CADASTRAR")) {
-                int idUsuario = Integer.parseInt(request.getParameter("idUsuario"));
-                int idVeiculo = Integer.parseInt(request.getParameter("idVeiculo"));
-                LocalDate dataRetirada = LocalDate.parse(request.getParameter("dataRetirada"));
-                LocalDate dataEntrega = request.getParameter("dataEntrega") != null
-                        && !request.getParameter("dataEntrega").isEmpty()
-                                ? LocalDate.parse(request.getParameter("dataEntrega"))
-                                : null;
-
-                int qtdDias = 1;
-                try {
-                    qtdDias = Integer.parseInt(request.getParameter("qtdDias"));
-                } catch (NumberFormatException e) {
-                }
-
-                String localRetirada = request.getParameter("localRetirada");
-                double seguroLocacao = Double.parseDouble(request.getParameter("seguroLocacao"));
-                double valorTotal = Double.parseDouble(request.getParameter("valorTotal"));
-
-                // --- PROTEÇÃO DE RESILIÊNCIA PARA ADMIN OU COOKIE ANTIGO ---
-                // Se receber ID 1, verificamos se existe. Se não existir, pegamos um ID válido para teste
-                UsuarioDAO uDao = new UsuarioDAO();
-                Usuario target = new UsuarioBuilder().comId(idUsuario).build();
-                
-                if (uDao.visualizarUsuarioByID(target).getIdUsuario() == 0) {
-                    List<Usuario> list = uDao.visualizarTodosUsuarios();
-                    if (!list.isEmpty()) {
-                        idUsuario = list.get(0).getIdUsuario();
-                    }
-                }
-                
-                Usuario u = new UsuarioBuilder().comId(idUsuario).build();
-                Veiculo v = new VeiculoBuilder().comIdVeiculo(idVeiculo).build();
-
-                Locacao locacao = new LocacaoBuilder()
-                        .paraUsuario(u)
-                        .comVeiculo(v)
-                        .comDataRetirada(dataRetirada)
-                        .comDataEntrega(dataEntrega)
-                        .comQtdDias(qtdDias)
-                        .comLocalRetirada(localRetirada)
-                        .comSeguro(seguroLocacao)
-                        .comValorTotal(valorTotal)
-                        .build();
-
-                dao.cadastrarLocacao(locacao);
-
-                VeiculoDAO veiculoDAO = new VeiculoDAO();
-                Veiculo vAtualizar = veiculoDAO.visualizarVeiculoByID(v);
-                vAtualizar.setDisponibilidade(false);
-                veiculoDAO.atualizarVeiculo(vAtualizar);
-
-                response.sendRedirect(request.getContextPath() + "/sucessoReserva.jsp");
-
-            } else if (operacao.equals("ATUALIZAR")) {
-                int idLocacao = Integer.parseInt(request.getParameter("id"));
-                int idUsuario = Integer.parseInt(request.getParameter("idUsuario"));
-                int idVeiculo = Integer.parseInt(request.getParameter("idVeiculo"));
-                LocalDate dataRetirada = LocalDate.parse(request.getParameter("dataRetirada"));
-                LocalDate dataEntrega = request.getParameter("dataEntrega") != null
-                        && !request.getParameter("dataEntrega").isEmpty()
-                                ? LocalDate.parse(request.getParameter("dataEntrega"))
-                                : null;
-
-                int qtdDias = Integer.parseInt(request.getParameter("qtdDias"));
-                String localRetirada = request.getParameter("localRetirada");
-                double seguroLocacao = Double.parseDouble(request.getParameter("seguroLocacao"));
-                double valorTotal = Double.parseDouble(request.getParameter("valorTotal"));
-
-                UsuarioDAO uDao = new UsuarioDAO();
-                Usuario target = new UsuarioBuilder().comId(idUsuario).build();
-                
-                if (uDao.visualizarUsuarioByID(target).getIdUsuario() == 0) {
-                    List<Usuario> list = uDao.visualizarTodosUsuarios();
-                    if (!list.isEmpty()) {
-                        idUsuario = list.get(0).getIdUsuario();
-                    }
-                }
-                
-                Usuario u = new UsuarioBuilder().comId(idUsuario).build();
-                Veiculo v = new VeiculoBuilder().comIdVeiculo(idVeiculo).build();
-
-                Locacao locacao = new LocacaoBuilder()
-                        .comId(idLocacao)
-                        .paraUsuario(u)
-                        .comVeiculo(v)
-                        .comDataRetirada(dataRetirada)
-                        .comDataEntrega(dataEntrega)
-                        .comQtdDias(qtdDias)
-                        .comLocalRetirada(localRetirada)
-                        .comSeguro(seguroLocacao)
-                        .comValorTotal(valorTotal)
-                        .build();
-
-                dao.atualizarLocacao(locacao);
-                response.sendRedirect(request.getContextPath() + "/html/listarReservas.html");
-
-            } else if (operacao.equals("DELETAR")) {
-                int idLocacao = Integer.parseInt(request.getParameter("id"));
-                Locacao param = new LocacaoBuilder().comId(idLocacao).build();
-
-                Locacao locacaoExistente = dao.visualizarLocacaoByID(param);
-
-                dao.deletarLocacao(param);
-
-                if (locacaoExistente.getVeiculo() != null) {
-                    VeiculoDAO veiculoDAO = new VeiculoDAO();
-                    Veiculo vLiberar = veiculoDAO.visualizarVeiculoByID(locacaoExistente.getVeiculo());
-                    vLiberar.setDisponibilidade(true);
-                    veiculoDAO.atualizarVeiculo(vLiberar);
-                }
-
-                response.sendRedirect(request.getContextPath() + "/html/listarReservas.html");
-
-            } else if (operacao.equals("LISTAR")) {
-                List<Locacao> locacoes = dao.visualizarTodasLocacoes();
-                response.setContentType("application/json;charset=UTF-8");
-                PrintWriter out = response.getWriter();
-                StringBuilder json = new StringBuilder("[");
-                for (int i = 0; i < locacoes.size(); i++) {
-                    Locacao l = locacoes.get(i);
-                    if (i > 0)
-                        json.append(",");
-                    json.append("{");
-                    json.append("\"idLocacao\":").append(l.getIdLocacao()).append(",");
-                    json.append("\"idUsuario\":").append(l.getUsuario().getIdUsuario()).append(",");
-                    json.append("\"nomeUsuario\":\"")
-                            .append(l.getUsuario().getNomeUsuario() != null ? l.getUsuario().getNomeUsuario() : "")
-                            .append("\",");
-                    json.append("\"idVeiculo\":").append(l.getVeiculo().getIdVeiculo()).append(",");
-                    json.append("\"modeloVeiculo\":\"")
-                            .append(l.getVeiculo().getModeloVeiculo() != null ? l.getVeiculo().getModeloVeiculo() : "")
-                            .append("\",");
-                    json.append("\"qtdDias\":").append(l.getQtdDias()).append(",");
-                    json.append("\"seguroLocacao\":").append(l.getSeguroLocacao()).append(",");
-                    json.append("\"localRetirada\":\"").append(l.getLocalRetirada() != null ? l.getLocalRetirada() : "")
-                            .append("\",");
-                    json.append("\"valorTotal\":").append(l.getValorTotal()).append(",");
-                    json.append("\"dataRetirada\":\"")
-                            .append(l.getDataRetirada() != null ? l.getDataRetirada().toString() : "").append("\",");
-                    json.append("\"dataEntrega\":\"")
-                            .append(l.getDataEntrega() != null ? l.getDataEntrega().toString() : "").append("\"");
-                    json.append("}");
-                }
-                json.append("]");
-                out.print(json.toString());
-                out.flush();
-            } else if (operacao.equals("BUSCAR_POR_ID")) {
-                int idLocacao = Integer.parseInt(request.getParameter("id"));
-                Locacao param = new LocacaoBuilder().comId(idLocacao).build();
-
-                Locacao locacao = dao.visualizarLocacaoByID(param);
-                request.setAttribute("locacao", locacao);
-                request.getRequestDispatcher("editarReserva.jsp").forward(request, response);
+            IComando comando = comandos.get(operacao);
+            if (comando != null) {
+                comando.executar(request, response);
+            } else {
+                response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Operação inválida: " + operacao);
             }
 
         } catch (Exception e) {
             e.printStackTrace();
-            System.err.println("Erro na operacao " + operacao + ": " + e.getMessage());
             response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
                     "Erro ao processar requisição: " + e.getMessage());
         }

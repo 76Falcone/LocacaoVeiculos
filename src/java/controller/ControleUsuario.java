@@ -1,23 +1,38 @@
 package controller;
 
+import command.IComando;
+import command.usuario.AtualizarUsuarioComando;
+import command.usuario.BuscarUsuarioPorIdComando;
+import command.usuario.CadastrarUsuarioComando;
+import command.usuario.DeletarUsuarioComando;
+import command.usuario.ListarUsuariosComando;
+import command.usuario.LoginComando;
+import command.usuario.LogoutComando;
+
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-import javax.servlet.http.Cookie;
-
-import dao.UsuarioDAO;
-import dao.LoginDAO;
-import model.Usuario;
-import model.UsuarioBuilder;
 
 @WebServlet(name = "ControleUsuario", urlPatterns = { "/ControleUsuario", "/html/ControleUsuario" })
 public class ControleUsuario extends HttpServlet {
+
+    private final Map<String, IComando> comandos = new HashMap<>();
+
+    @Override
+    public void init() throws ServletException {
+        comandos.put("LOGIN",         new LoginComando());
+        comandos.put("LOGOUT",        new LogoutComando());
+        comandos.put("CADASTRAR",     new CadastrarUsuarioComando());
+        comandos.put("ATUALIZAR",     new AtualizarUsuarioComando());
+        comandos.put("DELETAR",       new DeletarUsuarioComando());
+        comandos.put("LISTAR",        new ListarUsuariosComando());
+        comandos.put("BUSCAR_POR_ID", new BuscarUsuarioPorIdComando());
+    }
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -25,197 +40,20 @@ public class ControleUsuario extends HttpServlet {
         String operacao = request.getParameter("op");
 
         try {
-            UsuarioDAO dao = new UsuarioDAO();
-
             if (operacao == null) {
                 response.sendRedirect(request.getContextPath() + "/html/listarUsuarios.html");
+                return;
+            }
 
-            } else if (operacao.equals("LOGIN")) {
-                String email = request.getParameter("email");
-                String senha = request.getParameter("senha");
-
-                // Verifica credenciais de administrador (hardcoded)
-                if ("admin@gmail.com".equals(email) && "admin123".equals(senha)) {
-                    HttpSession session = request.getSession();
-                    session.setAttribute("usuarioLogado", "admin");
-                    session.setAttribute("nomeUsuario", "Administrador");
-                    session.setAttribute("role", "admin");
-
-                    String adminIdToUse = "1";
-                    List<Usuario> usersExistentes = dao.visualizarTodosUsuarios();
-                    if (usersExistentes != null && !usersExistentes.isEmpty()) {
-                        adminIdToUse = String.valueOf(usersExistentes.get(0).getIdUsuario());
-                    }
-
-                    // Cookies para o frontend detectar o estado de login
-                    Cookie cookieUser = new Cookie("usuarioLogado", "admin");
-                    cookieUser.setPath("/");
-                    response.addCookie(cookieUser);
-                    Cookie cookieName = new Cookie("nomeUsuario", java.net.URLEncoder.encode("Administrador", "UTF-8"));
-                    cookieName.setPath("/");
-                    response.addCookie(cookieName);
-                    Cookie cookieRole = new Cookie("role", "admin");
-                    cookieRole.setPath("/");
-                    response.addCookie(cookieRole);
-                    Cookie cookieId = new Cookie("idUsuario", adminIdToUse);
-                    cookieId.setPath("/");
-                    response.addCookie(cookieId);
-
-                    response.sendRedirect(request.getContextPath() + "/html/listarVeiculos.html");
-                    return;
-                }
-
-                // Verifica no banco de dados (usuário comum)
-                LoginDAO loginDao = new LoginDAO();
-                Usuario usuarioValido = loginDao.validarLogin(email, senha);
-
-                if (usuarioValido != null) {
-                    HttpSession session = request.getSession();
-
-                    String userRole = "user";
-                    if ("falcone0407@gmail.com".equalsIgnoreCase(usuarioValido.getEmailUsuario())) {
-                        userRole = "admin";
-                    }
-
-                    session.setAttribute("usuarioLogado", usuarioValido.getEmailUsuario());
-                    session.setAttribute("nomeUsuario", usuarioValido.getNomeUsuario());
-                    session.setAttribute("role", userRole);
-
-                    // Cookies para o frontend detectar o estado de login
-                    Cookie cookieUser = new Cookie("usuarioLogado", usuarioValido.getEmailUsuario());
-                    cookieUser.setPath("/");
-                    response.addCookie(cookieUser);
-                    Cookie cookieName = new Cookie("nomeUsuario",
-                            java.net.URLEncoder.encode(usuarioValido.getNomeUsuario(), "UTF-8"));
-                    cookieName.setPath("/");
-                    response.addCookie(cookieName);
-                    Cookie cookieRole = new Cookie("role", userRole);
-                    cookieRole.setPath("/");
-                    response.addCookie(cookieRole);
-                    Cookie cookieId = new Cookie("idUsuario", String.valueOf(usuarioValido.getIdUsuario()));
-                    cookieId.setPath("/");
-                    response.addCookie(cookieId);
-
-                    if ("admin".equals(userRole)) {
-                        response.sendRedirect(request.getContextPath() + "/html/listarVeiculos.html");
-                    } else {
-                        response.sendRedirect(request.getContextPath() + "/index.html");
-                    }
-                } else {
-                    response.sendRedirect(request.getContextPath() + "/html/login.html?erro=1");
-                }
-
-            } else if (operacao.equals("CADASTRAR")) {
-                String nome = request.getParameter("nome");
-                String cpf = request.getParameter("cpf").replaceAll("[^0-9]", "");
-                String cnh = request.getParameter("cnh").replaceAll("[^0-9]", "");
-                String email = request.getParameter("email");
-                String senha = request.getParameter("senha");
-                String celular = request.getParameter("celular");
-
-                Usuario u = new UsuarioBuilder()
-                        .comNomeUsuario(nome)
-                        .comCpfUsuario(cpf)
-                        .comCnhUsuario(cnh)
-                        .comEmailUsuario(email)
-                        .comSenhaUsuario(senha)
-                        .comCelularUsuario(celular)
-                        .build();
-
-                dao.cadastrarUsuario(u);
-
-                // Redireciona para o INICIO após se cadastrar
-                response.sendRedirect(request.getContextPath() + "/index.html");
-
-            } else if (operacao.equals("ATUALIZAR")) {
-                int idUsuario = Integer.parseInt(request.getParameter("id"));
-                String nome = request.getParameter("nome");
-                String cpf = request.getParameter("cpf").replaceAll("[^0-9]", "");
-                String cnh = request.getParameter("cnh").replaceAll("[^0-9]", "");
-                String email = request.getParameter("email");
-                String senha = request.getParameter("senha");
-                String celular = request.getParameter("celular");
-
-                Usuario u = new UsuarioBuilder()
-                        .comId(idUsuario)
-                        .comNomeUsuario(nome)
-                        .comCpfUsuario(cpf)
-                        .comCnhUsuario(cnh)
-                        .comEmailUsuario(email)
-                        .comSenhaUsuario(senha)
-                        .comCelularUsuario(celular)
-                        .build();
-
-                dao.atualizarUsuario(u);
-                response.sendRedirect(request.getContextPath() + "/sucessoUsuario.jsp");
-
-            } else if (operacao.equals("DELETAR")) {
-                int idUsuario = Integer.parseInt(request.getParameter("id"));
-                Usuario u = new UsuarioBuilder().comId(idUsuario).build();
-
-                dao.deletarUsuario(u);
-                response.sendRedirect(request.getContextPath() + "/sucessoUsuario.jsp");
-
-            } else if (operacao.equals("LISTAR")) {
-                List<Usuario> usuarios = dao.visualizarTodosUsuarios();
-                response.setContentType("application/json;charset=UTF-8");
-                PrintWriter out = response.getWriter();
-                StringBuilder json = new StringBuilder("[");
-                for (int i = 0; i < usuarios.size(); i++) {
-                    Usuario u = usuarios.get(i);
-                    if (i > 0)
-                        json.append(",");
-                    json.append("{");
-                    json.append("\"id\":").append(u.getIdUsuario()).append(",");
-                    json.append("\"nome\":\"").append(u.getNomeUsuario()).append("\",");
-                    json.append("\"cpf\":\"").append(u.getCpfUsuario()).append("\",");
-                    json.append("\"cnh\":\"").append(u.getCnhUsuario()).append("\",");
-                    json.append("\"email\":\"").append(u.getEmailUsuario()).append("\",");
-                    json.append("\"celular\":\"").append(u.getCelularUsuario()).append("\"");
-                    json.append("}");
-                }
-                json.append("]");
-                out.print(json.toString());
-                out.flush();
-
-            } else if (operacao.equals("BUSCAR_POR_ID")) {
-                int idUsuario = Integer.parseInt(request.getParameter("id"));
-                Usuario param = new UsuarioBuilder().comId(idUsuario).build();
-
-                Usuario usuario = dao.visualizarUsuarioByID(param);
-                request.setAttribute("usuario", usuario);
-                request.getRequestDispatcher("editarUsuario.jsp").forward(request, response);
-
-            } else if (operacao.equals("LOGOUT")) {
-                HttpSession session = request.getSession(false);
-                if (session != null) {
-                    session.invalidate();
-                }
-
-                // Remove cookies do frontend
-                Cookie cookieUser = new Cookie("usuarioLogado", "");
-                cookieUser.setPath("/");
-                cookieUser.setMaxAge(0);
-                response.addCookie(cookieUser);
-                Cookie cookieName = new Cookie("nomeUsuario", "");
-                cookieName.setPath("/");
-                cookieName.setMaxAge(0);
-                response.addCookie(cookieName);
-                Cookie cookieRole = new Cookie("role", "");
-                cookieRole.setPath("/");
-                cookieRole.setMaxAge(0);
-                response.addCookie(cookieRole);
-                Cookie cookieId = new Cookie("idUsuario", "");
-                cookieId.setPath("/");
-                cookieId.setMaxAge(0);
-                response.addCookie(cookieId);
-
-                response.sendRedirect(request.getContextPath() + "/index.html");
+            IComando comando = comandos.get(operacao);
+            if (comando != null) {
+                comando.executar(request, response);
+            } else {
+                response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Operação inválida: " + operacao);
             }
 
         } catch (Exception e) {
             e.printStackTrace();
-            System.err.println("Erro na operacao " + operacao + ": " + e.getMessage());
             response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
                     "Erro ao processar requisição: " + e.getMessage());
         }
