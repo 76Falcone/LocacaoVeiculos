@@ -5,6 +5,7 @@ import command.veiculo.AtualizarVeiculoComando;
 import command.veiculo.BuscarVeiculoPorIdComando;
 import command.veiculo.CadastrarVeiculoComando;
 import command.veiculo.DeletarVeiculoComando;
+import command.veiculo.EditarVeiculoComando;
 import command.veiculo.ListarVeiculosComando;
 
 import java.io.IOException;
@@ -25,7 +26,7 @@ public class ControleVeiculo extends HttpServlet {
     public void init() throws ServletException {
         comandos.put("CADASTRAR",     new CadastrarVeiculoComando());
         comandos.put("ATUALIZAR",     new AtualizarVeiculoComando());
-        comandos.put("EDITAR",        new AtualizarVeiculoComando());
+        comandos.put("EDITAR",        new EditarVeiculoComando());
         comandos.put("DELETAR",       new DeletarVeiculoComando());
         comandos.put("LISTAR",        new ListarVeiculosComando());
         comandos.put("BUSCAR_POR_ID", new BuscarVeiculoPorIdComando());
