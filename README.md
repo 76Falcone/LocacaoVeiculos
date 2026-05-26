@@ -441,5 +441,5 @@ O sistema utiliza **MySQL** com relacionamentos via chaves estrangeiras:
 ---
 
 <div align="center">
-  <sub>Desenvolvido com ☕ Java e dedicação — © 2025 LocacaoVeiculos</sub>
+  <sub>Desenvolvido com ☕ Java e dedicação — © 2026 LocacaoVeiculos</sub>
 </div>
