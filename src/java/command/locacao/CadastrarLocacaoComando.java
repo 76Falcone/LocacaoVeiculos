@@ -54,25 +54,46 @@ public class CadastrarLocacaoComando implements IComando {
         }
 
         Usuario u = new UsuarioBuilder().comId(idUsuario).build();
-        Veiculo v = new VeiculoBuilder().comIdVeiculo(idVeiculo).build();
+        Veiculo vParam = new VeiculoBuilder().comIdVeiculo(idVeiculo).build();
+
+        // Busca o veículo completo no banco para termos o valorDiaria
+        IVeiculoDAO veiculoDAO = DAOFactory.getVeiculoDAO();
+        Veiculo vAtualizar = veiculoDAO.visualizarVeiculoByID(vParam);
 
         Locacao locacao = new LocacaoBuilder()
                 .paraUsuario(u)
-                .comVeiculo(v)
+                .comVeiculo(vAtualizar)
                 .comDataRetirada(dataRetirada)
                 .comDataEntrega(dataEntrega)
                 .comQtdDias(qtdDias)
                 .comLocalRetirada(localRetirada)
-                .comSeguro(seguroLocacao)
-                .comValorTotal(valorTotal)
                 .build();
+
+        // Padrão Decorator
+        model.decorator.ItemLocacao itemLocacao = new model.decorator.LocacaoBase(locacao);
+
+        if (request.getParameter("seguroTerceiros") != null) {
+            itemLocacao = new model.decorator.SeguroTerceiros(itemLocacao, qtdDias);
+        }
+        if (request.getParameter("seguroCoberturaTotal") != null) {
+            itemLocacao = new model.decorator.SeguroCoberturaTotal(itemLocacao, qtdDias);
+        }
+
+        // Caso nenhum dos checkboxes do decorator tenha vindo na requisição,
+        // manter compatibilidade com o cálculo antigo vindo do formulário HTML original.
+        if (request.getParameter("seguroTerceiros") == null && request.getParameter("seguroCoberturaTotal") == null) {
+            locacao.setSeguroLocacao(seguroLocacao);
+            locacao.setValorTotal(valorTotal);
+        } else {
+            locacao.setSeguroLocacao(itemLocacao.getValorSeguro());
+            locacao.setValorTotal(itemLocacao.getValorTotal());
+            System.out.println("Descrição do Aluguel: " + itemLocacao.getDescricao());
+        }
 
         ILocacaoDAO dao = DAOFactory.getLocacaoDAO();
         dao.cadastrarLocacao(locacao);
 
         // Marca o veículo como indisponível
-        IVeiculoDAO veiculoDAO = DAOFactory.getVeiculoDAO();
-        Veiculo vAtualizar = veiculoDAO.visualizarVeiculoByID(v);
         vAtualizar.setDisponibilidade(false);
         veiculoDAO.atualizarVeiculo(vAtualizar);
 
