@@ -102,7 +102,7 @@ O sistema segue o padrão **MVC (Model-View-Controller)** com a camada de Comman
 
 ## 🎨 Design Patterns (GoF)
 
-### 🎀 1. Decorator *(Obrigatório)*
+### 🎀 1. Decorator
 > **Pacote:** `model.decorator`
 
 Permite adicionar comportamentos (seguros) a uma locação de forma dinâmica e composível, sem alterar a classe original.
@@ -428,16 +428,12 @@ O sistema utiliza **MySQL** com relacionamentos via chaves estrangeiras:
         <img src="https://github.com/76Falcone.png" width="80px;" alt="Nicolas Falcone"/><br/>
         <b>Nicolas Falcone</b>
       </a>
-      <br/>
-      <sub>⚙️ Back-End</sub>
     </td>
     <td align="center">
       <a href="https://github.com/76ersGust">
         <img src="https://github.com/76ersGust.png" width="80px;" alt="Gustavo Palmeira"/><br/>
         <b>Gustavo Palmeira</b>
       </a>
-      <br/>
-      <sub>🎨 Front-End</sub>
     </td>
   </tr>
 </table>
