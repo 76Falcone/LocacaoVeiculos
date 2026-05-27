@@ -44,9 +44,9 @@ public class LocacaoDecoratorTest {
 
         ItemLocacao locacaoComSeguro = new SeguroTerceiros(new LocacaoBase(locacao), 5);
 
-        // SeguroTerceiros adiciona R$ 40 por dia -> 40 * 5 = R$ 200
-        assertEquals(200.00, locacaoComSeguro.getValorSeguro(), 0.001);
-        assertEquals(700.00, locacaoComSeguro.getValorTotal(), 0.001);
+        // SeguroTerceiros adiciona R$ 30 por dia -> 30 * 5 = R$ 150
+        assertEquals(150.00, locacaoComSeguro.getValorSeguro(), 0.001);
+        assertEquals(650.00, locacaoComSeguro.getValorTotal(), 0.001);
     }
 
     @Test
