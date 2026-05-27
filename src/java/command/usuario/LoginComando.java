@@ -52,32 +52,34 @@ public class LoginComando implements IComando {
         ILoginDAO loginDao = DAOFactory.getLoginDAO();
         Usuario usuarioValido = loginDao.validarLogin(email, senha);
 
-        if (usuarioValido != null) {
-            HttpSession session = request.getSession();
-
-            String userRole = "user";
-            if ("falcone0407@gmail.com".equalsIgnoreCase(usuarioValido.getEmailUsuario())) {
-                userRole = "admin";
-            }
-
-            session.setAttribute("usuarioLogado", usuarioValido.getEmailUsuario());
-            session.setAttribute("nomeUsuario", usuarioValido.getNomeUsuario());
-            session.setAttribute("role", userRole);
-
-            response.addCookie(buildCookie("usuarioLogado", usuarioValido.getEmailUsuario()));
-            response.addCookie(buildCookie("nomeUsuario",
-                    java.net.URLEncoder.encode(usuarioValido.getNomeUsuario(), "UTF-8")));
-            response.addCookie(buildCookie("role", userRole));
-            response.addCookie(buildCookie("idUsuario", String.valueOf(usuarioValido.getIdUsuario())));
-
-            if ("admin".equals(userRole)) {
-                response.sendRedirect(request.getContextPath() + "/html/listarVeiculos.html");
-            } else {
-                response.sendRedirect(request.getContextPath() + "/index.html");
-            }
-        } else {
+        if (usuarioValido == null) {
             response.sendRedirect(request.getContextPath() + "/html/login.html?erro=1");
+            return;
         }
+
+        HttpSession session = request.getSession();
+
+        String userRole = "user";
+        if ("falcone0407@gmail.com".equalsIgnoreCase(usuarioValido.getEmailUsuario())) {
+            userRole = "admin";
+        }
+
+        session.setAttribute("usuarioLogado", usuarioValido.getEmailUsuario());
+        session.setAttribute("nomeUsuario", usuarioValido.getNomeUsuario());
+        session.setAttribute("role", userRole);
+
+        response.addCookie(buildCookie("usuarioLogado", usuarioValido.getEmailUsuario()));
+        response.addCookie(buildCookie("nomeUsuario",
+                java.net.URLEncoder.encode(usuarioValido.getNomeUsuario(), "UTF-8")));
+        response.addCookie(buildCookie("role", userRole));
+        response.addCookie(buildCookie("idUsuario", String.valueOf(usuarioValido.getIdUsuario())));
+
+        if ("admin".equals(userRole)) {
+            response.sendRedirect(request.getContextPath() + "/html/listarVeiculos.html");
+            return;
+        }
+        
+        response.sendRedirect(request.getContextPath() + "/index.html");
     }
 
     private Cookie buildCookie(String nome, String valor) {
