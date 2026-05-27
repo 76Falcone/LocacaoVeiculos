@@ -47,10 +47,9 @@ public class LocacaoDAO implements ILocacaoDAO {
         comando.setDouble(6, l.getValorTotal());
         comando.setDate(7, Date.valueOf(l.getDataRetirada()));
 
+        comando.setNull(8, java.sql.Types.DATE);
         if (l.getDataEntrega() != null) {
             comando.setDate(8, Date.valueOf(l.getDataEntrega()));
-        } else {
-            comando.setNull(8, java.sql.Types.DATE);
         }
 
         comando.execute();
@@ -81,10 +80,9 @@ public class LocacaoDAO implements ILocacaoDAO {
         comando.setDouble(6, l.getValorTotal());
         comando.setDate(7, Date.valueOf(l.getDataRetirada()));
 
+        comando.setNull(8, java.sql.Types.DATE);
         if (l.getDataEntrega() != null) {
             comando.setDate(8, Date.valueOf(l.getDataEntrega()));
-        } else {
-            comando.setNull(8, java.sql.Types.DATE);
         }
 
         comando.setInt(9, l.getIdLocacao());
