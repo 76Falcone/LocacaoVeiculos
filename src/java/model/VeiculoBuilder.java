@@ -8,7 +8,7 @@ public class VeiculoBuilder {
         
     // Atributos
     private int idVeiculo;
-    private String placaVeiculo;
+    private Placa placaVeiculo;
     private String modeloVeiculo;
     private String corVeiculo;
     private double valorDiaria;
@@ -28,6 +28,11 @@ public class VeiculoBuilder {
     }
     
     public VeiculoBuilder comPlacaVeiculo (String placaVeiculo) {
+        this.placaVeiculo = placaVeiculo != null ? new Placa(placaVeiculo) : null;
+        return this;
+    }
+
+    public VeiculoBuilder comPlacaVeiculo (Placa placaVeiculo) {
         this.placaVeiculo = placaVeiculo;
         return this;
     }
