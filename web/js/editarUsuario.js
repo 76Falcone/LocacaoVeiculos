@@ -13,6 +13,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const cnhInput      = document.getElementById('cnh');
   const emailInput    = document.getElementById('email');
   const celularInput  = document.getElementById('celular');
+  const adminInput    = document.getElementById('isAdmin');
   const btnSalvar     = document.getElementById('btnSalvar');
 
   // ─── Preencher campos com dados da URL ───
@@ -26,6 +27,9 @@ document.addEventListener('DOMContentLoaded', () => {
       cnhInput.value     = params.get('cnh')     || '';
       emailInput.value   = params.get('email')   || '';
       celularInput.value = params.get('celular') || '';
+      if (adminInput) {
+        adminInput.checked = params.get('admin') === 'true';
+      }
     }
   }
 

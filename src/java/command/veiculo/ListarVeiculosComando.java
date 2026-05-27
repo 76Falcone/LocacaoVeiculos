@@ -31,7 +31,7 @@ public class ListarVeiculosComando implements IComando {
             if (i > 0) json.append(",");
             json.append("{");
             json.append("\"id\":").append(v.getIdVeiculo()).append(",");
-            json.append("\"placa\":\"").append(v.getPlacaVeiculo()).append("\",");
+            json.append("\"placa\":\"").append(v.getPlacaVeiculo() != null ? v.getPlacaVeiculo().getValor() : "").append("\",");
             json.append("\"modelo\":\"").append(v.getModeloVeiculo()).append("\",");
             json.append("\"cor\":\"").append(v.getCorVeiculo()).append("\",");
             json.append("\"valorDiaria\":").append(v.getValorDiaria()).append(",");

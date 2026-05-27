@@ -5,6 +5,7 @@ import dao.DAOFactory;
 import dao.IUsuarioDAO;
 import model.Usuario;
 import model.UsuarioBuilder;
+import util.HashUtil;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -25,6 +26,20 @@ public class AtualizarUsuarioComando implements IComando {
         String email = request.getParameter("email");
         String senha = request.getParameter("senha");
         String celular = request.getParameter("celular");
+        boolean isAdmin = "true".equals(request.getParameter("isAdmin"));
+
+        IUsuarioDAO dao = DAOFactory.getUsuarioDAO();
+
+        // Se a senha estiver vazia (ex: vindo da tela HTML que não edita senha),
+        // recuperamos a senha atual do banco de dados para não sobrescrever com nulo/vazio.
+        if (senha == null || senha.trim().isEmpty()) {
+            Usuario usuarioExistente = dao.visualizarUsuarioByID(new UsuarioBuilder().comId(idUsuario).build());
+            if (usuarioExistente != null) {
+                senha = usuarioExistente.getSenhaUsuario(); // já está em hash, mantém
+            }
+        } else {
+            senha = HashUtil.sha256(senha); // Hasheando a nova senha
+        }
 
         Usuario u = new UsuarioBuilder()
                 .comId(idUsuario)
@@ -34,9 +49,9 @@ public class AtualizarUsuarioComando implements IComando {
                 .comEmailUsuario(email)
                 .comSenhaUsuario(senha)
                 .comCelularUsuario(celular)
+                .comAdmin(isAdmin)
                 .build();
 
-        IUsuarioDAO dao = DAOFactory.getUsuarioDAO();
         dao.atualizarUsuario(u);
 
         response.sendRedirect(request.getContextPath() + "/sucessoUsuario.jsp");

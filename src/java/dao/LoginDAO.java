@@ -28,6 +28,7 @@ public class LoginDAO implements ILoginDAO {
             usuarioLogado.setIdUsuario(resultado.getInt("id"));
             usuarioLogado.setNomeUsuario(resultado.getString("nome"));
             usuarioLogado.setEmailUsuario(resultado.getString("email"));
+            usuarioLogado.setAdmin(resultado.getBoolean("userAdmin"));
         }
         con.close();
         return usuarioLogado;

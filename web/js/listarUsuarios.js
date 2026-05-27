@@ -146,7 +146,7 @@ document.addEventListener('DOMContentLoaded', () => {
         <td>
           <div class="user-name-cell">
             <div class="user-avatar-table">${getInitials(u.nome)}</div>
-            <span class="user-name-text">${u.nome}</span>
+            <span class="user-name-text">${u.nome}${u.admin ? ' <span class="badge-admin" style="background: var(--success-bg); color: var(--success); font-size: 10px; padding: 2px 6px; border-radius: 4px; font-weight: bold; border: 1px solid var(--success); margin-left: 8px;">Admin</span>' : ''}</span>
           </div>
         </td>
         <td><span class="cpf-masked" title="Passe o mouse para ver">${u.cpf}</span></td>
@@ -155,7 +155,7 @@ document.addEventListener('DOMContentLoaded', () => {
         <td>${u.celular}</td>
         <td>
           <div class="action-buttons">
-            <button class="btn-action btn-edit" title="Editar" onclick="window.location.href='editarUsuario.html?id=${u.id}&nome=${encodeURIComponent(u.nome)}&cpf=${encodeURIComponent(u.cpf)}&cnh=${encodeURIComponent(u.cnh)}&email=${encodeURIComponent(u.email)}&celular=${encodeURIComponent(u.celular)}'">✏️</button>
+            <button class="btn-action btn-edit" title="Editar" onclick="window.location.href='editarUsuario.html?id=${u.id}&nome=${encodeURIComponent(u.nome)}&cpf=${encodeURIComponent(u.cpf)}&cnh=${encodeURIComponent(u.cnh)}&email=${encodeURIComponent(u.email)}&celular=${encodeURIComponent(u.celular)}&admin=${u.admin}'">✏️</button>
             <button class="btn-action btn-delete" title="Deletar" onclick="confirmarExclusao(${u.id}, '${u.nome}')">🗑️</button>
           </div>
         </td>

@@ -10,6 +10,7 @@ public class Usuario {
     private String emailUsuario;
     private String senhaUsuario;
     private String celularUsuario;
+    private boolean admin;
     
     // Metodos contrutores
     public Usuario() {
@@ -82,5 +83,12 @@ public class Usuario {
     public void setCelularUsuario(String celularUsuario) {
         this.celularUsuario = celularUsuario;
     }
-    
+
+    public boolean isAdmin() {
+        return admin;
+    }
+
+    public void setAdmin(boolean admin) {
+        this.admin = admin;
+    }
 }

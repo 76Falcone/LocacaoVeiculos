@@ -21,13 +21,14 @@ public class UsuarioDAO implements IUsuarioDAO {
     public void cadastrarUsuario(Usuario u) throws ClassNotFoundException, SQLException {
         Connection con = FabricaConexao.getConexao();
         PreparedStatement comando = con.prepareStatement(
-                "insert into usuarios (nome, cpf, cnh, email, senha, celular) VALUES (?, ?, ?, ?, ?, ?)");
+                "insert into usuarios (nome, cpf, cnh, email, senha, celular, userAdmin) VALUES (?, ?, ?, ?, ?, ?, ?)");
         comando.setString(1, u.getNomeUsuario());
         comando.setString(2, u.getCpfUsuario());
         comando.setString(3, u.getCnhUsuario());
         comando.setString(4, u.getEmailUsuario());
         comando.setString(5, u.getSenhaUsuario());
         comando.setString(6, u.getCelularUsuario());
+        comando.setBoolean(7, u.isAdmin());
         comando.execute();
         con.close();
     }
@@ -47,14 +48,15 @@ public class UsuarioDAO implements IUsuarioDAO {
     public void atualizarUsuario(Usuario u) throws ClassNotFoundException, SQLException {
         Connection con = FabricaConexao.getConexao();
         PreparedStatement comando = con.prepareStatement(
-                "update usuarios set nome = ?, cpf = ?, cnh = ?, email = ?, senha = ?, celular = ? where id = ?");
+                "update usuarios set nome = ?, cpf = ?, cnh = ?, email = ?, senha = ?, celular = ?, userAdmin = ? where id = ?");
         comando.setString(1, u.getNomeUsuario());
         comando.setString(2, u.getCpfUsuario());
         comando.setString(3, u.getCnhUsuario());
         comando.setString(4, u.getEmailUsuario());
         comando.setString(5, u.getSenhaUsuario());
         comando.setString(6, u.getCelularUsuario());
-        comando.setInt(7, u.getIdUsuario());
+        comando.setBoolean(7, u.isAdmin());
+        comando.setInt(8, u.getIdUsuario());
         comando.execute();
         con.close();
     }
@@ -76,6 +78,7 @@ public class UsuarioDAO implements IUsuarioDAO {
             user.setEmailUsuario(rs.getString("email"));
             user.setSenhaUsuario(rs.getString("senha"));
             user.setCelularUsuario(rs.getString("celular"));
+            user.setAdmin(rs.getBoolean("userAdmin"));
         }
         con.close();
         return user;
@@ -98,6 +101,7 @@ public class UsuarioDAO implements IUsuarioDAO {
             user.setEmailUsuario(rs.getString("email"));
             user.setSenhaUsuario(rs.getString("senha"));
             user.setCelularUsuario(rs.getString("celular"));
+            user.setAdmin(rs.getBoolean("userAdmin"));
             listaUsuario.add(user);
         }
         con.close();

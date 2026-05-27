@@ -35,7 +35,8 @@ public class ListarUsuariosComando implements IComando {
             json.append("\"cpf\":\"").append(u.getCpfUsuario()).append("\",");
             json.append("\"cnh\":\"").append(u.getCnhUsuario()).append("\",");
             json.append("\"email\":\"").append(u.getEmailUsuario()).append("\",");
-            json.append("\"celular\":\"").append(u.getCelularUsuario()).append("\"");
+            json.append("\"celular\":\"").append(u.getCelularUsuario()).append("\",");
+            json.append("\"admin\":").append(u.isAdmin());
             json.append("}");
         }
         json.append("]");

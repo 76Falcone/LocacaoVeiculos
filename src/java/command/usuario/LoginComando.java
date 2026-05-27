@@ -5,6 +5,7 @@ import dao.DAOFactory;
 import dao.ILoginDAO;
 import dao.IUsuarioDAO;
 import model.Usuario;
+import util.HashUtil;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.Cookie;
@@ -22,35 +23,12 @@ public class LoginComando implements IComando {
             throws ServletException, IOException, Exception {
 
         String email = request.getParameter("email");
-        String senha = request.getParameter("senha");
-
-        IUsuarioDAO dao = DAOFactory.getUsuarioDAO();
-
-        // Credenciais fixas de administrador
-        if ("admin@gmail.com".equals(email) && "admin123".equals(senha)) {
-            HttpSession session = request.getSession();
-            session.setAttribute("usuarioLogado", "admin");
-            session.setAttribute("nomeUsuario", "Administrador");
-            session.setAttribute("role", "admin");
-
-            String adminIdToUse = "1";
-            List<Usuario> usersExistentes = dao.visualizarTodosUsuarios();
-            if (usersExistentes != null && !usersExistentes.isEmpty()) {
-                adminIdToUse = String.valueOf(usersExistentes.get(0).getIdUsuario());
-            }
-
-            response.addCookie(buildCookie("usuarioLogado", "admin"));
-            response.addCookie(buildCookie("nomeUsuario", java.net.URLEncoder.encode("Administrador", "UTF-8")));
-            response.addCookie(buildCookie("role", "admin"));
-            response.addCookie(buildCookie("idUsuario", adminIdToUse));
-
-            response.sendRedirect(request.getContextPath() + "/html/listarVeiculos.html");
-            return;
-        }
+        String senhaRaw = request.getParameter("senha");
+        String senhaHash = HashUtil.sha256(senhaRaw); // Hasheando antes de comparar
 
         // Verifica no banco de dados
         ILoginDAO loginDao = DAOFactory.getLoginDAO();
-        Usuario usuarioValido = loginDao.validarLogin(email, senha);
+        Usuario usuarioValido = loginDao.validarLogin(email, senhaHash);
 
         if (usuarioValido == null) {
             response.sendRedirect(request.getContextPath() + "/html/login.html?erro=1");
@@ -59,10 +37,7 @@ public class LoginComando implements IComando {
 
         HttpSession session = request.getSession();
 
-        String userRole = "user";
-        if ("falcone0407@gmail.com".equalsIgnoreCase(usuarioValido.getEmailUsuario())) {
-            userRole = "admin";
-        }
+        String userRole = usuarioValido.isAdmin() ? "admin" : "user";
 
         session.setAttribute("usuarioLogado", usuarioValido.getEmailUsuario());
         session.setAttribute("nomeUsuario", usuarioValido.getNomeUsuario());

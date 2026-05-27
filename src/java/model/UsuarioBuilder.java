@@ -14,6 +14,7 @@ public class UsuarioBuilder {
     private String emailUsuario;
     private String senhaUsuario;
     private String celularUsuario;
+    private boolean admin;
     
     // Construtor vazio
     public UsuarioBuilder() {
@@ -55,9 +56,16 @@ public class UsuarioBuilder {
         return this;
     }
     
+    public UsuarioBuilder comAdmin(boolean admin) {
+        this.admin = admin;
+        return this;
+    }
+    
     // Metodo builder
     public Usuario build() {
-        return new Usuario (idUsuario, nomeUsuario, cpfUsuario, 
+        Usuario u = new Usuario (idUsuario, nomeUsuario, cpfUsuario, 
                 cnhUsuario, emailUsuario, senhaUsuario, celularUsuario);    
+        u.setAdmin(admin);
+        return u;
     }
 }

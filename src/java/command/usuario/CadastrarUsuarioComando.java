@@ -5,6 +5,7 @@ import dao.DAOFactory;
 import dao.IUsuarioDAO;
 import model.Usuario;
 import model.UsuarioBuilder;
+import util.HashUtil;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -22,7 +23,8 @@ public class CadastrarUsuarioComando implements IComando {
         String cpf = request.getParameter("cpf").replaceAll("[^0-9]", "");
         String cnh = request.getParameter("cnh").replaceAll("[^0-9]", "");
         String email = request.getParameter("email");
-        String senha = request.getParameter("senha");
+        String senhaRaw = request.getParameter("senha");
+        String senha = HashUtil.sha256(senhaRaw); // Hasheando a senha antes de salvar
         String celular = request.getParameter("celular");
 
         Usuario u = new UsuarioBuilder()
