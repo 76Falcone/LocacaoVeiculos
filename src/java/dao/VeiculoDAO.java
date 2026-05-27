@@ -22,7 +22,7 @@ public class VeiculoDAO implements IVeiculoDAO {
         Connection con = FabricaConexao.getConexao();
         PreparedStatement comando = con.prepareStatement(
                 "insert into veiculos (placa, modelo, cor, valorDiaria, funcionalidade, disponibilidade, arCondicionado, cambio) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
-        comando.setString(1, v.getPlacaVeiculo());
+        comando.setString(1, v.getPlacaVeiculo() != null ? v.getPlacaVeiculo().getValor() : null);
         comando.setString(2, v.getModeloVeiculo());
         comando.setString(3, v.getCorVeiculo());
         comando.setDouble(4, v.getValorDiaria());
@@ -50,7 +50,7 @@ public class VeiculoDAO implements IVeiculoDAO {
         Connection con = FabricaConexao.getConexao();
         PreparedStatement comando = con.prepareStatement(
                 "update veiculos set placa = ?, modelo = ?, cor = ?, valorDiaria = ?, funcionalidade = ?, disponibilidade = ?, arCondicionado = ?, cambio = ? where id = ?");
-        comando.setString(1, v.getPlacaVeiculo());
+        comando.setString(1, v.getPlacaVeiculo() != null ? v.getPlacaVeiculo().getValor() : null);
         comando.setString(2, v.getModeloVeiculo());
         comando.setString(3, v.getCorVeiculo());
         comando.setDouble(4, v.getValorDiaria());
@@ -73,7 +73,7 @@ public class VeiculoDAO implements IVeiculoDAO {
         Veiculo produtoVcl = new Veiculo();
         if (rs.next()) {
             produtoVcl.setIdVeiculo(rs.getInt("id"));
-            produtoVcl.setPlacaVeiculo(rs.getString("placa"));
+            produtoVcl.setPlacaVeiculo(rs.getString("placa") != null ? new model.Placa(rs.getString("placa")) : null);
             produtoVcl.setModeloVeiculo(rs.getString("modelo"));
             produtoVcl.setCorVeiculo(rs.getString("cor"));
             produtoVcl.setValorDiaria(rs.getDouble("valorDiaria"));
@@ -98,7 +98,7 @@ public class VeiculoDAO implements IVeiculoDAO {
             Veiculo v = new Veiculo();
 
             v.setIdVeiculo(rs.getInt("id"));
-            v.setPlacaVeiculo(rs.getString("placa"));
+            v.setPlacaVeiculo(rs.getString("placa") != null ? new model.Placa(rs.getString("placa")) : null);
             v.setModeloVeiculo(rs.getString("modelo"));
             v.setCorVeiculo(rs.getString("cor"));
             v.setValorDiaria(rs.getDouble("valorDiaria"));
