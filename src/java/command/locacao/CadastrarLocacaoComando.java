@@ -12,12 +12,13 @@ import model.UsuarioBuilder;
 import model.Veiculo;
 import model.VeiculoBuilder;
 
+import service.LocacaoService;
+
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.time.LocalDate;
-import java.util.List;
 
 // Command: cadastra uma nova locação e marca o veículo como indisponível
 public class CadastrarLocacaoComando implements IComando {
@@ -43,59 +44,22 @@ public class CadastrarLocacaoComando implements IComando {
         double seguroLocacao = Double.parseDouble(request.getParameter("seguroLocacao"));
         double valorTotal = Double.parseDouble(request.getParameter("valorTotal"));
 
-        // Valida se o usuário existe no banco antes de persistir
-        IUsuarioDAO uDao = DAOFactory.getUsuarioDAO();
-        Usuario target = new UsuarioBuilder().comId(idUsuario).build();
-        if (uDao.visualizarUsuarioByID(target).getIdUsuario() == 0) {
-            List<Usuario> list = uDao.visualizarTodosUsuarios();
-            if (!list.isEmpty()) {
-                idUsuario = list.get(0).getIdUsuario();
-            }
-        }
+        boolean aplicarSeguroTerceiros = request.getParameter("seguroTerceiros") != null;
+        boolean aplicarSeguroCoberturaTotal = request.getParameter("seguroCoberturaTotal") != null;
 
-        Usuario u = new UsuarioBuilder().comId(idUsuario).build();
-        Veiculo vParam = new VeiculoBuilder().comIdVeiculo(idVeiculo).build();
-
-        // Busca o veículo completo no banco para termos o valorDiaria
-        IVeiculoDAO veiculoDAO = DAOFactory.getVeiculoDAO();
-        Veiculo vAtualizar = veiculoDAO.visualizarVeiculoByID(vParam);
-
-        Locacao locacao = new LocacaoBuilder()
-                .paraUsuario(u)
-                .comVeiculo(vAtualizar)
-                .comDataRetirada(dataRetirada)
-                .comDataEntrega(dataEntrega)
-                .comQtdDias(qtdDias)
-                .comLocalRetirada(localRetirada)
-                .build();
-
-        // Padrão Decorator
-        model.decorator.ItemLocacao itemLocacao = new model.decorator.LocacaoBase(locacao);
-
-        if (request.getParameter("seguroTerceiros") != null) {
-            itemLocacao = new model.decorator.SeguroTerceiros(itemLocacao, qtdDias);
-        }
-        if (request.getParameter("seguroCoberturaTotal") != null) {
-            itemLocacao = new model.decorator.SeguroCoberturaTotal(itemLocacao, qtdDias);
-        }
-
-        // Caso nenhum dos checkboxes do decorator tenha vindo na requisição,
-        // manter compatibilidade com o cálculo antigo vindo do formulário HTML original.
-        if (request.getParameter("seguroTerceiros") == null && request.getParameter("seguroCoberturaTotal") == null) {
-            locacao.setSeguroLocacao(seguroLocacao);
-            locacao.setValorTotal(valorTotal);
-        } else {
-            locacao.setSeguroLocacao(itemLocacao.getValorSeguro());
-            locacao.setValorTotal(itemLocacao.getValorTotal());
-            System.out.println("Descrição do Aluguel: " + itemLocacao.getDescricao());
-        }
-
-        ILocacaoDAO dao = DAOFactory.getLocacaoDAO();
-        dao.cadastrarLocacao(locacao);
-
-        // Marca o veículo como indisponível
-        vAtualizar.setDisponibilidade(false);
-        veiculoDAO.atualizarVeiculo(vAtualizar);
+        LocacaoService service = new LocacaoService();
+        service.realizarLocacao(
+                idUsuario,
+                idVeiculo,
+                dataRetirada,
+                dataEntrega,
+                qtdDias,
+                localRetirada,
+                seguroLocacao,
+                valorTotal,
+                aplicarSeguroTerceiros,
+                aplicarSeguroCoberturaTotal
+        );
 
         response.sendRedirect(request.getContextPath() + "/sucessoReserva.jsp");
     }

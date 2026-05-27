@@ -19,6 +19,19 @@ import util.FabricaConexao;
  */
 
 public class LocacaoDAO implements ILocacaoDAO {
+    
+    private final IUsuarioDAO usuarioDAO;
+    private final IVeiculoDAO veiculoDAO;
+
+    public LocacaoDAO() {
+        this.usuarioDAO = DAOFactory.getUsuarioDAO();
+        this.veiculoDAO = DAOFactory.getVeiculoDAO();
+    }
+
+    public LocacaoDAO(IUsuarioDAO usuarioDAO, IVeiculoDAO veiculoDAO) {
+        this.usuarioDAO = usuarioDAO;
+        this.veiculoDAO = veiculoDAO;
+    }
 
     // Cadastrar Locacao
     @Override
@@ -102,16 +115,14 @@ public class LocacaoDAO implements ILocacaoDAO {
             if (dataEntrega != null) locacao.setDataEntrega(dataEntrega.toLocalDate());
 
             // Busca o usuario pela FK
-            UsuarioDAO uDAO = new UsuarioDAO();
             Usuario uParam = new Usuario();
             uParam.setIdUsuario(rs.getInt("id_usuario"));
-            locacao.setUsuario(uDAO.visualizarUsuarioByID(uParam));
+            locacao.setUsuario(usuarioDAO.visualizarUsuarioByID(uParam));
 
             // Busca o veiculo pela FK
-            VeiculoDAO vDAO = new VeiculoDAO();
             Veiculo vParam = new Veiculo();
             vParam.setIdVeiculo(rs.getInt("id_veiculo"));
-            locacao.setVeiculo(vDAO.visualizarVeiculoByID(vParam));
+            locacao.setVeiculo(veiculoDAO.visualizarVeiculoByID(vParam));
         }
         con.close();
         return locacao;
@@ -125,8 +136,6 @@ public class LocacaoDAO implements ILocacaoDAO {
         ResultSet rs = comando.executeQuery();
 
         List<Locacao> listaLocacao = new ArrayList<Locacao>();
-        UsuarioDAO uDAO = new UsuarioDAO();
-        VeiculoDAO vDAO = new VeiculoDAO();
 
         while (rs.next()) {
             Locacao locacao = new Locacao();
@@ -145,12 +154,12 @@ public class LocacaoDAO implements ILocacaoDAO {
             // Busca o usuario pela FK
             Usuario uParam = new Usuario();
             uParam.setIdUsuario(rs.getInt("id_usuario"));
-            locacao.setUsuario(uDAO.visualizarUsuarioByID(uParam));
+            locacao.setUsuario(usuarioDAO.visualizarUsuarioByID(uParam));
 
             // Busca o veiculo pela FK
             Veiculo vParam = new Veiculo();
             vParam.setIdVeiculo(rs.getInt("id_veiculo"));
-            locacao.setVeiculo(vDAO.visualizarVeiculoByID(vParam));
+            locacao.setVeiculo(veiculoDAO.visualizarVeiculoByID(vParam));
 
             listaLocacao.add(locacao);
         }

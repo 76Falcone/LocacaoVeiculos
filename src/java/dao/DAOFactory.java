@@ -12,7 +12,7 @@ public class DAOFactory {
     }
 
     public static ILocacaoDAO getLocacaoDAO() {
-        return new LocacaoDAO();
+        return new LocacaoDAO(getUsuarioDAO(), getVeiculoDAO());
     }
 
     public static ILoginDAO getLoginDAO() {
