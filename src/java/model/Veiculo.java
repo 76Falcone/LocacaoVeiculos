@@ -4,7 +4,7 @@ public class Veiculo {
     
     // Atributos
     private int idVeiculo;
-    private String placaVeiculo;
+    private Placa placaVeiculo;
     private String modeloVeiculo;
     private String corVeiculo;
     private double valorDiaria;
@@ -18,6 +18,18 @@ public class Veiculo {
     }
 
     public Veiculo(int idVeiculo, String placaVeiculo, String modeloVeiculo, String corVeiculo, double valorDiaria, String funcionalidadeVeiculo, boolean disponibilidade, boolean arCondicionadoVeiculo, String tipoCambio) {
+        this.idVeiculo = idVeiculo;
+        this.placaVeiculo = placaVeiculo != null ? new Placa(placaVeiculo) : null;
+        this.modeloVeiculo = modeloVeiculo;
+        this.corVeiculo = corVeiculo;
+        this.valorDiaria = valorDiaria;
+        this.funcionalidadeVeiculo = funcionalidadeVeiculo;
+        this.disponibilidade = disponibilidade;
+        this.arCondicionadoVeiculo = arCondicionadoVeiculo;
+        this.tipoCambio = tipoCambio;
+    }
+
+    public Veiculo(int idVeiculo, Placa placaVeiculo, String modeloVeiculo, String corVeiculo, double valorDiaria, String funcionalidadeVeiculo, boolean disponibilidade, boolean arCondicionadoVeiculo, String tipoCambio) {
         this.idVeiculo = idVeiculo;
         this.placaVeiculo = placaVeiculo;
         this.modeloVeiculo = modeloVeiculo;
@@ -39,12 +51,16 @@ public class Veiculo {
         this.idVeiculo = idVeiculo;
     }
 
-    public String getPlacaVeiculo() {
+    public Placa getPlacaVeiculo() {
         return placaVeiculo;
     }
 
-    public void setPlacaVeiculo(String placaVeiculo) {
+    public void setPlacaVeiculo(Placa placaVeiculo) {
         this.placaVeiculo = placaVeiculo;
+    }
+
+    public void setPlacaVeiculo(String placaVeiculo) {
+        this.placaVeiculo = placaVeiculo != null ? new Placa(placaVeiculo) : null;
     }
 
     public String getModeloVeiculo() {
