@@ -88,11 +88,15 @@ public class LocacaoService {
         if (!aplicarSeguroTerceiros && !aplicarSeguroCoberturaTotal) {
             locacao.setSeguroLocacao(seguroLocacaoFallback);
             locacao.setValorTotal(valorTotalFallback);
-        } else {
-            locacao.setSeguroLocacao(itemLocacao.getValorSeguro());
-            locacao.setValorTotal(itemLocacao.getValorTotal());
-            System.out.println("Descrição do Aluguel: " + itemLocacao.getDescricao());
+            locacaoDAO.cadastrarLocacao(locacao);
+            vAtualizar.setDisponibilidade(false);
+            veiculoDAO.atualizarVeiculo(vAtualizar);
+            return;
         }
+
+        locacao.setSeguroLocacao(itemLocacao.getValorSeguro());
+        locacao.setValorTotal(itemLocacao.getValorTotal());
+        System.out.println("Descrição do Aluguel: " + itemLocacao.getDescricao());
 
         locacaoDAO.cadastrarLocacao(locacao);
 
