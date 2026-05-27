@@ -46,11 +46,11 @@ public class ControleUsuario extends HttpServlet {
             }
 
             IComando comando = comandos.get(operacao);
-            if (comando != null) {
-                comando.executar(request, response);
-            } else {
+            if (comando == null) {
                 response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Operação inválida: " + operacao);
+                return;
             }
+            comando.executar(request, response);
 
         } catch (Exception e) {
             e.printStackTrace();
