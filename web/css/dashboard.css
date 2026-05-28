@@ -219,6 +219,11 @@
   flex: 1;
 }
 
+.content-area-centered {
+  max-width: 680px;
+  margin: 0 auto;
+}
+
 /* Cabeçalho da página (título + subtítulo) */
 .page-title {
   font-family: 'Syne', sans-serif;
