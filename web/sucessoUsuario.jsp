@@ -6,10 +6,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Novare | Operação Concluída</title>
   <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/style.css?v=2">
+  <link rel="stylesheet" href="css/variables.css?v=2">
   <link rel="stylesheet" href="css/sucesso.css">
 </head>
 <body>
+  <!-- Botão Dark Mode Flutuante -->
+  <button class="btn-dark-toggle" id="darkToggle" aria-label="Ativar modo escuro" title="Modo escuro" style="position: fixed; top: 20px; right: 20px; z-index: 1000;">🌙</button>
+
   <div class="container">
     <div class="card">
       <div class="icon">
@@ -26,5 +30,6 @@
       </div>
     </div>
   </div>
+  <script src="js/darkmode.js?v=2"></script>
 </body>
 </html>

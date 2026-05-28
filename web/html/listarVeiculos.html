@@ -6,8 +6,8 @@
   <title>Novare | Veículos Cadastrados</title>
   <meta name="description" content="Visualize todos os veículos cadastrados no sistema Novare.">
   <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="../css/style.css">
-  <link rel="stylesheet" href="../css/variables.css">
+  <link rel="stylesheet" href="../css/style.css?v=2">
+  <link rel="stylesheet" href="../css/variables.css?v=2">
   <link rel="stylesheet" href="../css/dashboard.css">
   <link rel="stylesheet" href="../css/listarVeiculos.css">
 </head>
@@ -73,6 +73,7 @@
           </div>
         </div>
         <div class="topbar-user">
+          <button class="btn-dark-toggle" id="darkToggle" aria-label="Ativar modo escuro" title="Modo escuro">🌙</button>
           <div class="topbar-user-avatar">AD</div>
           <span class="topbar-user-name">Admin</span>
         </div>
@@ -156,6 +157,7 @@
   </div>
 
   <!-- Script -->
+  <script src="../js/darkmode.js?v=2"></script>
   <script src="../js/listarVeiculos.js"></script>
 </body>
 </html>

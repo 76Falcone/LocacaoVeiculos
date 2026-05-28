@@ -5,7 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Novare | Aluguel de Carros</title>
   <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/style.css?v=2">
+  <link rel="stylesheet" href="css/variables.css?v=2">
 </head>
 <body>
 
@@ -17,6 +18,7 @@
     <a href="html/frota.html">Alugar</a>
   </nav>
   <div class="nav-actions" id="navActions">
+    <button class="btn-dark-toggle" id="darkToggle" aria-label="Ativar modo escuro" title="Modo escuro">🌙</button>
     <!-- Estado: Deslogado (padrão) -->
     <span id="authLoggedOut">
       <button class="btn-ghost" onclick="location.href='html/cadastroUsuario.html'">Cadastrar</button>
@@ -242,6 +244,7 @@
   </div>
 </footer>
 
+<script src="js/darkmode.js?v=2"></script>
 <script src="js/script.js"></script>
 <script>
   // Verifica sessão via cookie para alternar botões e exibir nome

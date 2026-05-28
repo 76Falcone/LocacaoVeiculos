@@ -27,3 +27,31 @@
   --input-h:     46px;
   --input-radius: 10px;
 }
+
+/* ══════════════════════════════════════
+   DARK MODE — [data-theme="dark"]
+   ══════════════════════════════════════ */
+:root[data-theme="dark"],
+html[data-theme="dark"],
+[data-theme="dark"] {
+  --purple:       #A78BFA;
+  --purple-light: #C4B5FD;
+  --purple-dark:  #7C3AED;
+  --purple-xdark: #1E1333;
+  --purple-pale:  #1E1733;
+  --purple-mid:   #2E2250;
+  --white:        #131020;
+  --off-white:    #1A1530;
+  --light:        #1A1530;
+  --border:       #2E2250;
+  --text:         #EDE9FE;
+  --muted:        #9D8EC4;
+
+  --shadow-sm:  0 2px 8px rgba(0, 0, 0, 0.3);
+  --shadow-md:  0 8px 24px rgba(0, 0, 0, 0.4);
+  --shadow-lg:  0 16px 40px rgba(0, 0, 0, 0.5);
+
+  --success-bg: #052e16;
+  --error-bg:   #2d0a0a;
+  --warning-bg: #2d1d00;
+}

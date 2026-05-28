@@ -1,13 +1,18 @@
+/* ═══════════════════════════════════════════════════════════
+   SUCESSO.CSS — Temas e estilos para telas de sucesso/retorno
+   Novare · Sistema de Gestão de Veículos
+   ═══════════════════════════════════════════════════════════ */
 
 body {
-  background-color: var(--bg-100, #121214);
-  color: var(--text-200, #a1a1aa);
+  background-color: var(--light);
+  color: var(--text);
   font-family: 'DM Sans', sans-serif;
   display: flex;
   justify-content: center;
   align-items: center;
   min-height: 100vh;
   margin: 0;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 .container {
@@ -17,15 +22,17 @@ body {
 }
 
 .card {
-  background-color: var(--bg-200, #18191b);
-  border: 1px solid var(--border-color, #27272a);
+  background-color: var(--white);
+  border: 1px solid var(--border);
   padding: 40px;
-  border-radius: 12px;
+  border-radius: 16px;
   text-align: center;
+  box-shadow: var(--shadow-md);
+  transition: background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
 .icon svg {
-  color: var(--primary-color, #5818b8 );
+  color: var(--purple);
 }
 
 .icon {
@@ -33,13 +40,14 @@ body {
 }
 
 h1 {
-  color: var(--text-100, #fff);
+  color: var(--text);
   font-family: 'Syne', sans-serif;
   font-size: 28px;
   margin-bottom: 12px;
 }
 
 p {
+  color: var(--muted);
   margin-bottom: 32px;
 }
 
@@ -55,26 +63,28 @@ p {
   border-radius: 8px;
   text-decoration: none;
   font-weight: 600;
-  transition: 0.2s ease;
+  transition: all 0.2s ease;
 }
 
 .btn-primary {
-  background-color: var(--primary-color, #5818b8 );
-  color: #000;
+  background-color: var(--purple);
+  color: var(--white) !important;
 }
 
 .btn-primary:hover {
-  background-color: var(--primary-hover, #5818b8 );
+  background-color: var(--purple-light);
+  transform: translateY(-1px);
 }
 
 .btn-secondary {
   background-color: transparent;
-  border: 1px solid var(--border-color, #27272a);
-  color: var(--text-100, #fff);
+  border: 1px solid var(--border);
+  color: var(--text);
 }
 
 .btn-secondary:hover {
-  background-color: var(--bg-300, #27272a);
+  background-color: var(--purple-pale);
+  transform: translateY(-1px);
 }
 
 /* Responsivo */

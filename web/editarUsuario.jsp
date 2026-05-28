@@ -16,12 +16,15 @@
           rel="stylesheet">
 
         <!-- Estilos ajustados -->
-        <link rel="stylesheet" href="css/style.css">
-        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/style.css?v=2">
+        <link rel="stylesheet" href="css/variables.css?v=2">
         <link rel="stylesheet" href="css/cadastroUsuario.css">
       </head>
 
       <body class="cadastro-page">
+
+        <!-- Botão Dark Mode Flutuante -->
+        <button class="btn-dark-toggle" id="darkToggle" aria-label="Ativar modo escuro" title="Modo escuro" style="position: fixed; top: 20px; right: 20px; z-index: 1000;">🌙</button>
 
         <!-- ─── CONTAINER PRINCIPAL ─── -->
         <main class="cadastro-container">
@@ -131,6 +134,7 @@
         </main>
 
         <!-- Script -->
+        <script src="js/darkmode.js?v=2"></script>
         <script src="js/editarUsuario.js"></script>
       </body>
 

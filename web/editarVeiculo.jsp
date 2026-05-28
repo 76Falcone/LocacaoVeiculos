@@ -19,8 +19,8 @@
   <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet">
 
   <!-- Estilos ajustados para a raiz do contexto de JSPs -->
-  <link rel="stylesheet" href="css/style.css">
-  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/style.css?v=2">
+  <link rel="stylesheet" href="css/variables.css?v=2">
   <link rel="stylesheet" href="css/dashboard.css">
   <link rel="stylesheet" href="css/cadastroVeiculo.css">
 </head>
@@ -86,6 +86,7 @@
           </div>
         </div>
         <div class="topbar-user">
+          <button class="btn-dark-toggle" id="darkToggle" aria-label="Ativar modo escuro" title="Modo escuro">🌙</button>
           <div class="topbar-user-avatar">AD</div>
           <span class="topbar-user-name">Admin</span>
         </div>
@@ -226,6 +227,7 @@
   <!-- Toast de feedback -->
   <div class="toast" id="toast"></div>
 
+  <script src="js/darkmode.js?v=2"></script>
   <script src="js/editarVeiculo.js"></script>
 </body>
 </html>

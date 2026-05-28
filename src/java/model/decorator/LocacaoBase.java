@@ -11,7 +11,9 @@ public class LocacaoBase implements ItemLocacao {
 
     @Override
     public String getDescricao() {
-        return "Aluguel do veículo " + (locacao.getVeiculo().getModeloVeiculo() != null ? locacao.getVeiculo().getModeloVeiculo() : "ID " + locacao.getVeiculo().getIdVeiculo());
+        return "Aluguel do veículo "
+                + (locacao.getVeiculo().getModeloVeiculo() != null ? locacao.getVeiculo().getModeloVeiculo()
+                        : "ID " + locacao.getVeiculo().getIdVeiculo());
     }
 
     @Override
