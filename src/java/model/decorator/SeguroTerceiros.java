@@ -1,27 +1,26 @@
 package model.decorator;
 
 public class SeguroTerceiros extends SeguroDecorator {
-    // Valor fixo de exemplo por dia, ou total. Aqui vamos considerar um valor diário.
-    private static final double VALOR_DIARIO_SEGURO = 30.00;
-    private int qtdDias;
 
-    public SeguroTerceiros(ItemLocacao itemDecorado, int qtdDias) {
+    // Taxa de 10% sobre o valor base da locação (diária × dias)
+    private static final double TAXA_SEGURO = 0.10;
+
+    public SeguroTerceiros(ItemLocacao itemDecorado) {
         super(itemDecorado);
-        this.qtdDias = qtdDias;
     }
 
     @Override
     public String getDescricao() {
-        return itemDecorado.getDescricao() + " + Seguro de Terceiros";
+        return itemDecorado.getDescricao() + " + Seguro de Terceiros (10%)";
     }
 
     @Override
     public double getValorSeguro() {
-        return itemDecorado.getValorSeguro() + (VALOR_DIARIO_SEGURO * qtdDias);
+        return itemDecorado.getValorTotal() * TAXA_SEGURO;
     }
 
     @Override
     public double getValorTotal() {
-        return itemDecorado.getValorTotal() + (VALOR_DIARIO_SEGURO * qtdDias);
+        return itemDecorado.getValorTotal() + getValorSeguro();
     }
 }

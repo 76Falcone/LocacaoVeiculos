@@ -77,10 +77,10 @@ public class LocacaoService {
         ItemLocacao itemLocacao = new LocacaoBase(locacao);
 
         if (aplicarSeguroTerceiros) {
-            itemLocacao = new SeguroTerceiros(itemLocacao, qtdDias);
+            itemLocacao = new SeguroTerceiros(itemLocacao);
         }
         if (aplicarSeguroCoberturaTotal) {
-            itemLocacao = new SeguroCoberturaTotal(itemLocacao, qtdDias);
+            itemLocacao = new SeguroCoberturaTotal(itemLocacao);
         }
 
         // Caso nenhum dos checkboxes do decorator tenha vindo na requisição,
