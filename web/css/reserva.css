@@ -263,7 +263,107 @@
     flex-wrap: wrap;
   }
 
+
   .resumo-preco {
     text-align: left;
+  }
+}
+
+/* ─── CARDS DE SEGURO ─── */
+.seguro-opcoes {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
+  margin-top: 0.25rem;
+}
+
+.seguro-card {
+  display: block;
+  cursor: pointer;
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-lg);
+  background: var(--white);
+  transition: var(--transition);
+  position: relative;
+}
+
+.seguro-card input[type="checkbox"] {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.seguro-card-body {
+  padding: 1rem 1.1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.seguro-card-header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.seguro-card-icon {
+  font-size: 1.1rem;
+}
+
+.seguro-card-titulo {
+  font-family: 'Syne', sans-serif;
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: var(--text);
+  flex: 1;
+}
+
+.seguro-card-taxa {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--purple);
+  background: var(--purple-pale);
+  padding: 0.1rem 0.45rem;
+  border-radius: 999px;
+  letter-spacing: 0.3px;
+}
+
+.seguro-card-desc {
+  font-size: 0.78rem;
+  color: var(--muted);
+  line-height: 1.4;
+}
+
+.seguro-card-valor {
+  font-family: 'Syne', sans-serif;
+  font-size: 1rem;
+  font-weight: 800;
+  color: var(--text);
+  margin-top: 0.2rem;
+}
+
+.seguro-card:hover {
+  border-color: var(--purple-mid);
+  background: var(--purple-pale);
+}
+
+.seguro-card.selecionado {
+  border-color: var(--purple);
+  background: var(--purple-pale);
+  box-shadow: 0 0 0 3px rgba(106, 38, 205, 0.08);
+}
+
+.seguro-card.selecionado .seguro-card-titulo {
+  color: var(--purple);
+}
+
+.seguro-card.selecionado .seguro-card-valor {
+  color: var(--purple);
+}
+
+@media (max-width: 600px) {
+  .seguro-opcoes {
+    grid-template-columns: 1fr;
   }
 }

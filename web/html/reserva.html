@@ -83,13 +83,37 @@
             </div>
           </div>
 
+          <!-- Opções de Seguro via Decorator -->
           <div class="form-group" id="seguroLocacaoGroup">
-            <label for="seguroLocacao">Seguro da Locação (R$)</label>
-            <div class="input-wrap">
-              <input type="number" id="seguroLocacao" name="seguroLocacao" placeholder="0.00" step="0.01" min="0"
-                required>
+            <label>Seguro da Locação</label>
+            <div class="seguro-opcoes">
+              <label class="seguro-card" id="cardSeguroTerceiros">
+                <input type="checkbox" id="seguroTerceiros" name="seguroTerceiros" value="seguroTerceiros">
+                <div class="seguro-card-body">
+                  <div class="seguro-card-header">
+                    <span class="seguro-card-titulo">Seguro Terceiros</span>
+                    <span class="seguro-card-taxa">+10%</span>
+                  </div>
+                  <div class="seguro-card-desc">Cobre danos causados a terceiros durante a locação.</div>
+                  <div class="seguro-card-valor" id="valorSeguroTerceiros">R$ 0,00</div>
+                </div>
+              </label>
+
+              <label class="seguro-card" id="cardSeguroCoberturaTotal">
+                <input type="checkbox" id="seguroCoberturaTotal" name="seguroCoberturaTotal" value="seguroCoberturaTotal">
+                <div class="seguro-card-body">
+                  <div class="seguro-card-header">
+                    <span class="seguro-card-titulo">Cobertura Total</span>
+                    <span class="seguro-card-taxa">+15%</span>
+                  </div>
+                  <div class="seguro-card-desc">Cobertura completa, sem franquia. Você dirige, a gente cuida.</div>
+                  <div class="seguro-card-valor" id="valorSeguroCoberturaTotal">R$ 0,00</div>
+                </div>
+              </label>
             </div>
             <span class="form-error" id="seguroLocacaoError"></span>
+            <!-- Campo oculto: valor do seguro calculado pelo JS, enviado ao backend -->
+            <input type="hidden" id="seguroLocacao" name="seguroLocacao" value="0">
           </div>
 
           <div class="reserva-total-card" id="totalCard">

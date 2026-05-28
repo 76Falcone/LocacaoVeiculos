@@ -13,10 +13,22 @@ document.addEventListener('DOMContentLoaded', () => {
   const dataEntregaInput   = document.getElementById('dataEntrega');
   const qtdDiasInput       = document.getElementById('qtdDias');
   const localRetiradaInput = document.getElementById('localRetirada');
-  const seguroLocacaoInput = document.getElementById('seguroLocacao');
+  const seguroLocacaoInput = document.getElementById('seguroLocacao');   // hidden
   const valorTotalInput    = document.getElementById('valorTotal');
   const btnReservar        = document.getElementById('btnReservar');
   const toast              = document.getElementById('toast');
+
+  // Checkboxes de seguro
+  const chkTerceiros      = document.getElementById('seguroTerceiros');
+  const chkCoberturaTotal = document.getElementById('seguroCoberturaTotal');
+  const cardTerceiros     = document.getElementById('cardSeguroTerceiros');
+  const cardCobertura     = document.getElementById('cardSeguroCoberturaTotal');
+  const valTerceirosEl    = document.getElementById('valorSeguroTerceiros');
+  const valCoberturaEl    = document.getElementById('valorSeguroCoberturaTotal');
+
+  // Taxas dos decorators
+  const TAXA_TERCEIROS      = 0.10;
+  const TAXA_COBERTURA      = 0.15;
 
   // Elementos do resumo
   const resumoModelo   = document.getElementById('resumoModelo');
@@ -110,17 +122,38 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // ─── Atualizar card de valor total ───
   function atualizarTotal() {
-    const dias   = parseInt(qtdDiasInput.value) || 0;
-    const seguro = parseFloat(seguroLocacaoInput.value) || 0;
-    const total  = (valorDiaria * dias) + seguro;
+    const dias     = parseInt(qtdDiasInput.value) || 0;
+    const valorBase = valorDiaria * dias;
 
+    // Calcula seguro de cada camada (mesma lógica dos Decorators Java)
+    let seguroTerceiros = 0;
+    let seguroCobertura = 0;
+
+    if (chkTerceiros.checked) {
+      seguroTerceiros = valorBase * TAXA_TERCEIROS;
+    }
+    // Cobertura total incide sobre o subtotal já com terceiros (como no Decorator encadeado)
+    const baseComTerceiros = valorBase + seguroTerceiros;
+    if (chkCoberturaTotal.checked) {
+      seguroCobertura = baseComTerceiros * TAXA_COBERTURA;
+    }
+
+    const totalSeguroCalculado = seguroTerceiros + seguroCobertura;
+    const total = baseComTerceiros + seguroCobertura;
+
+    // Exibe valores em cada card de seguro
+    valTerceirosEl.textContent = `R$ ${seguroTerceiros.toFixed(2).replace('.', ',')}`;
+    valCoberturaEl.textContent = `R$ ${seguroCobertura.toFixed(2).replace('.', ',')}`;
+
+    // Atualiza resumo
     totalDiaria.textContent = `R$ ${valorDiaria.toFixed(2).replace('.', ',')}`;
     totalDias.textContent   = `${dias} dia${dias !== 1 ? 's' : ''}`;
-    totalSeguro.textContent = `R$ ${seguro.toFixed(2).replace('.', ',')}`;
+    totalSeguro.textContent = `R$ ${totalSeguroCalculado.toFixed(2).replace('.', ',')}`;
     totalValor.textContent  = `R$ ${total.toFixed(2).replace('.', ',')}`;
 
-    // Atualiza campo oculto valorTotal para envio ao backend
-    valorTotalInput.value = total.toFixed(2);
+    // Preenche campos ocultos para o backend
+    seguroLocacaoInput.value = totalSeguroCalculado.toFixed(2);
+    valorTotalInput.value    = total.toFixed(2);
   }
 
   // ─── Eventos ───
@@ -144,11 +177,15 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  seguroLocacaoInput.addEventListener('input', () => {
+  // Checkboxes de seguro — atualiza visual e totais
+  chkTerceiros.addEventListener('change', () => {
+    cardTerceiros.classList.toggle('selecionado', chkTerceiros.checked);
     atualizarTotal();
-    if (document.getElementById('seguroLocacaoGroup').classList.contains('has-error')) {
-      clearError('seguroLocacaoGroup', 'seguroLocacaoError');
-    }
+  });
+
+  chkCoberturaTotal.addEventListener('change', () => {
+    cardCobertura.classList.toggle('selecionado', chkCoberturaTotal.checked);
+    atualizarTotal();
   });
 
   // ─── Submissão do formulário ───
@@ -160,7 +197,6 @@ document.addEventListener('DOMContentLoaded', () => {
       validateDataEntrega(),
       validateQtdDias(),
       validateLocalRetirada(),
-      validateSeguro(),
     ];
 
     if (results.includes(false)) {
@@ -230,11 +266,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function validateSeguro() {
-    const val = parseFloat(seguroLocacaoInput.value);
-    if (isNaN(val) || val < 0) {
-      setError('seguroLocacaoGroup', 'seguroLocacaoError', 'Informe um valor de seguro válido (mínimo R$ 0,00).');
-      return false;
-    }
+    // Seguro é sempre válido (pode ser R$ 0 se nenhum seguro for selecionado)
     clearError('seguroLocacaoGroup', 'seguroLocacaoError');
     return true;
   }
