@@ -46,11 +46,48 @@
   document.addEventListener('DOMContentLoaded', () => {
     // Verifica se variables.css está vinculado na página
     const links = Array.from(document.querySelectorAll('link[rel="stylesheet"]'));
-    const hasVariables = links.some(link => link.getAttribute('href').includes('variables.css'));
+    const hasVariables = links.some(link => {
+      const href = link.getAttribute('href');
+      return href && href.includes('variables.css');
+    });
     if (!hasVariables) {
       console.error('[DarkMode] ERRO: O arquivo "variables.css" não está vinculado na tag <head> desta página! O modo escuro não funcionará.');
     } else {
       console.log('[DarkMode] Sucesso: "variables.css" está corretamente vinculado.');
+    }
+
+    // --- Atualização do Nome do Usuário Logado ---
+    const getCookie = (name) => {
+      const match = document.cookie.match(new RegExp('(^| )' + name + '=([^;]+)'));
+      return match ? match[2] : null;
+    };
+
+    const nomeRaw = getCookie('nomeUsuario');
+    if (nomeRaw) {
+      try {
+        const nomeReal = decodeURIComponent(nomeRaw).replace(/\+/g, ' ');
+        
+        // Atualiza o texto do nome
+        const userNameEl = document.querySelector('.topbar-user-name');
+        if (userNameEl) {
+          userNameEl.textContent = nomeReal;
+        }
+
+        // Atualiza as iniciais no avatar
+        const userAvatarEl = document.querySelector('.topbar-user-avatar');
+        if (userAvatarEl) {
+          const parts = nomeReal.trim().split(/\s+/);
+          let initials = 'AD';
+          if (parts.length >= 2) {
+            initials = (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
+          } else if (parts.length === 1 && parts[0].length > 0) {
+            initials = parts[0].slice(0, Math.min(2, parts[0].length)).toUpperCase();
+          }
+          userAvatarEl.textContent = initials;
+        }
+      } catch (err) {
+        console.warn('[DarkMode] Erro ao decodificar cookie nomeUsuario:', err);
+      }
     }
 
     // Atualiza botões já existentes no DOM
