@@ -21,8 +21,8 @@
   <!-- Estilos ajustados para a raiz do contexto de JSPs -->
   <link rel="stylesheet" href="css/style.css?v=2">
   <link rel="stylesheet" href="css/variables.css?v=2">
-  <link rel="stylesheet" href="css/dashboard.css">
-  <link rel="stylesheet" href="css/cadastroVeiculo.css">
+  <link rel="stylesheet" href="css/dashboard.css?v=2">
+  <link rel="stylesheet" href="css/cadastroVeiculo.css?v=2">
 </head>
 <body>
 
@@ -94,8 +94,9 @@
 
       <!-- Área de conteúdo -->
       <main class="content-area">
-        <h1 class="page-title">Editar Veículo</h1>
-        <p class="page-subtitle">Altere os dados do veículo e salve as mudanças.</p>
+        <div class="content-area-centered">
+          <h1 class="page-title">Editar Veículo</h1>
+          <p class="page-subtitle">Altere os dados do veículo e salve as mudanças.</p>
 
         <!-- Card do formulário -->
         <div class="card form-card">
@@ -218,6 +219,7 @@
               <span class="btn-loader" aria-hidden="true"></span>
             </button>
           </form>
+        </div>
         </div>
       </main>
 
