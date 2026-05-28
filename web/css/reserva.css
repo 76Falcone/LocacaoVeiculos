@@ -3,6 +3,13 @@
   max-width: 680px;
 }
 
+/* Centraliza o conteúdo da página de reserva */
+.standalone-wrapper .content-area {
+  width: 100%;
+  max-width: 760px;
+  margin: 0 auto;
+}
+
 /* ─── FORM GROUP ─── */
 .form-group {
   margin-bottom: 1.15rem;
