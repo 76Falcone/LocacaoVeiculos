@@ -143,4 +143,15 @@ document.addEventListener('DOMContentLoaded', () => {
     group.classList.remove('has-error');
     error.textContent = '';
   }
+
+  // ─── Tratar parâmetros de erro na URL (ex: erro=1 do login, erro=2 do filtro de segurança) ───
+  const urlParams = new URLSearchParams(window.location.search);
+  const erroParam = urlParams.get('erro');
+  if (erroParam) {
+    if (erroParam === '1') {
+      setError('senhaGroup', 'senhaError', 'E-mail ou senha incorretos.');
+    } else if (erroParam === '2') {
+      setError('emailGroup', 'emailError', 'Acesso restrito. Faça login para continuar.');
+    }
+  }
 });
