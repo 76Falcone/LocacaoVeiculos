@@ -1,11 +1,16 @@
 /* ═══════════════════════════════════════════════════════════
    RESERVA.JS — Lógica da tela de reserva de veículo
    Novare · Sistema de Gestão de Veículos
+
+   Seguros carregados dinamicamente via GET /ControleTipoSeguro
+   Lógica de cálculo:
+     • valor < 1  → percentual sobre o total das diárias (ex: 0.10 = +10%)
+     • valor >= 1 → valor fixo em R$ (ex: 100.00 = +R$ 100,00)
    ═══════════════════════════════════════════════════════════ */
 
 document.addEventListener('DOMContentLoaded', () => {
 
-  // ─── Elementos do DOM ───
+  // ─── Elementos do DOM ───────────────────────────────────────
   const form               = document.getElementById('reservaForm');
   const idUsuarioInput     = document.getElementById('idUsuario');
   const idVeiculoInput     = document.getElementById('idVeiculo');
@@ -13,22 +18,14 @@ document.addEventListener('DOMContentLoaded', () => {
   const dataEntregaInput   = document.getElementById('dataEntrega');
   const qtdDiasInput       = document.getElementById('qtdDias');
   const localRetiradaInput = document.getElementById('localRetirada');
-  const seguroLocacaoInput = document.getElementById('seguroLocacao');   // hidden
+  const seguroLocacaoInput = document.getElementById('seguroLocacao'); // hidden
   const valorTotalInput    = document.getElementById('valorTotal');
   const btnReservar        = document.getElementById('btnReservar');
   const toast              = document.getElementById('toast');
 
-  // Checkboxes de seguro
-  const chkTerceiros      = document.getElementById('seguroTerceiros');
-  const chkCoberturaTotal = document.getElementById('seguroCoberturaTotal');
-  const cardTerceiros     = document.getElementById('cardSeguroTerceiros');
-  const cardCobertura     = document.getElementById('cardSeguroCoberturaTotal');
-  const valTerceirosEl    = document.getElementById('valorSeguroTerceiros');
-  const valCoberturaEl    = document.getElementById('valorSeguroCoberturaTotal');
-
-  // Taxas dos decorators
-  const TAXA_TERCEIROS      = 0.10;
-  const TAXA_COBERTURA      = 0.15;
+  // Área de seguros dinâmica
+  const seguroOpcoes  = document.getElementById('seguroOpcoes');
+  const seguroLoading = document.getElementById('seguroLoading');
 
   // Elementos do resumo
   const resumoModelo   = document.getElementById('resumoModelo');
@@ -46,57 +43,126 @@ document.addEventListener('DOMContentLoaded', () => {
   const sidebar        = document.getElementById('sidebar');
   const sidebarOverlay = document.getElementById('sidebarOverlay');
 
-  // Valor da diária (vindo da URL ou mockado)
+  // Estado da aplicação
   let valorDiaria = 0;
+  let segurosDisponiveis = []; // lista de {id, tipo, valor} vindos do banco
 
-  // ─── Sidebar mobile toggle ───
+  // ─── Sidebar mobile toggle ───────────────────────────────────
   if (menuToggle) {
     menuToggle.addEventListener('click', () => {
       sidebar.classList.toggle('open');
       sidebarOverlay.classList.toggle('active');
     });
-
     sidebarOverlay.addEventListener('click', () => {
       sidebar.classList.remove('open');
       sidebarOverlay.classList.remove('active');
     });
   }
 
-  // ─── Ler parâmetros da URL e preencher campos ocultos ───
+  // ─── Carregar parâmetros da URL ──────────────────────────────
   function carregarParametrosURL() {
     const params = new URLSearchParams(window.location.search);
 
-    const idVeiculo  = params.get('idVeiculo')  || '';
-    let   idUsuario  = params.get('idUsuario')  || '';
-    const modelo     = params.get('modelo')     || 'Veículo não informado';
-    const categoria  = params.get('categoria')  || '';
-    const preco      = parseFloat(params.get('preco')) || 0;
+    const idVeiculo = params.get('idVeiculo') || '';
+    let   idUsuario = params.get('idUsuario') || '';
+    const modelo    = params.get('modelo')    || 'Veículo não informado';
+    const categoria = params.get('categoria') || '';
+    const preco     = parseFloat(params.get('preco')) || 0;
 
-    // Fallback: ler idUsuario do cookie de sessão se não veio pela URL
+    // Fallback: ler idUsuario do cookie de sessão
     if (!idUsuario || idUsuario === '0') {
       const match = document.cookie.match(new RegExp('(^| )idUsuario=([^;]+)'));
       idUsuario = match ? match[2] : '';
     }
 
-    // Preenche campos ocultos — NÃO visíveis ao usuário
     idVeiculoInput.value = idVeiculo;
     idUsuarioInput.value = idUsuario;
 
-    // Atualiza card de resumo
-    resumoModelo.textContent = modelo;
+    resumoModelo.textContent   = modelo;
     resumoDetalhes.textContent = categoria ? `Categoria: ${categoria}` : '';
 
     valorDiaria = preco;
-    if (preco > 0) {
-      resumoDiaria.textContent = `R$ ${preco.toFixed(2).replace('.', ',')}`;
-    } else {
-      resumoDiaria.textContent = '—';
-    }
+    resumoDiaria.textContent = preco > 0
+      ? `R$ ${fmt(preco)}`
+      : '—';
 
     atualizarTotal();
   }
 
-  // ─── Calcular qtdDias automaticamente ───
+  // ─── Buscar seguros do banco (/ControleTipoSeguro) ───────────
+  function carregarSeguros() {
+    fetch('ControleTipoSeguro')
+      .then(res => {
+        if (!res.ok) throw new Error('Status HTTP ' + res.status);
+        return res.json();
+      })
+      .then(seguros => {
+        segurosDisponiveis = seguros;
+        renderizarCardsSeguro(seguros);
+      })
+      .catch(err => {
+        console.error('Erro ao carregar seguros:', err);
+        if (seguroLoading) {
+          seguroLoading.innerHTML = '⚠️ Não foi possível carregar as opções de seguro.';
+        }
+      });
+  }
+
+  // ─── Gerar descrição legível para cada tipo de seguro ────────
+  function descricaoSeguro(tipo) {
+    const descricoes = {
+      'Terceiros':          'Cobre danos causados a terceiros durante a locação.',
+      'Pane Elétrica':      'Assistência em caso de pane elétrica no veículo.',
+      'Vidros e Espelhos':  'Cobre quebra de vidros, retrovisores e espelhos.',
+      'Pneu':               'Cobre furos e danos nos pneus durante a locação.',
+    };
+    return descricoes[tipo] || 'Proteção adicional para a sua locação.';
+  }
+
+  // ─── Renderizar cards de seguro dinamicamente ────────────────
+  function renderizarCardsSeguro(seguros) {
+    // Remove spinner
+    if (seguroLoading) seguroLoading.remove();
+
+    seguros.forEach(seguro => {
+      const isPercentual = seguro.valor < 1;
+      const taxaLabel    = isPercentual
+        ? `+${Math.round(seguro.valor * 100)}%`
+        : `+R$ ${fmt(seguro.valor)}`;
+
+      const cardId     = `cardSeguro_${seguro.id}`;
+      const checkId    = `chkSeguro_${seguro.id}`;
+      const valorElId  = `valorSeguro_${seguro.id}`;
+
+      const label = document.createElement('label');
+      label.className = 'seguro-card';
+      label.id        = cardId;
+      label.innerHTML = `
+        <input type="checkbox" id="${checkId}" name="seguroId" value="${seguro.id}">
+        <div class="seguro-card-body">
+          <div class="seguro-card-header">
+            <span class="seguro-card-titulo">${seguro.tipo}</span>
+            <span class="seguro-card-taxa">${taxaLabel}</span>
+          </div>
+          <div class="seguro-card-desc">${descricaoSeguro(seguro.tipo)}</div>
+          <div class="seguro-card-valor" id="${valorElId}">R$ 0,00</div>
+        </div>
+      `;
+
+      // Evento de seleção
+      const chk = label.querySelector(`#${checkId}`);
+      chk.addEventListener('change', () => {
+        label.classList.toggle('selecionado', chk.checked);
+        atualizarTotal();
+      });
+
+      seguroOpcoes.appendChild(label);
+    });
+
+    atualizarTotal(); // Recalcula após renderizar
+  }
+
+  // ─── Calcular qtdDias automaticamente ───────────────────────
   function calcularDias() {
     const dataRet = dataRetiradaInput.value;
     const dataEnt = dataEntregaInput.value;
@@ -107,88 +173,88 @@ document.addEventListener('DOMContentLoaded', () => {
       return;
     }
 
-    const ret = new Date(dataRet);
-    const ent = new Date(dataEnt);
+    const ret  = new Date(dataRet);
+    const ent  = new Date(dataEnt);
     const diff = Math.ceil((ent - ret) / (1000 * 60 * 60 * 24));
 
-    if (diff > 0) {
-      qtdDiasInput.value = diff;
-    } else {
-      qtdDiasInput.value = '';
-    }
-
+    qtdDiasInput.value = diff > 0 ? diff : '';
     atualizarTotal();
   }
 
-  // ─── Atualizar card de valor total ───
+  // ─── Atualizar card de valor total ──────────────────────────
   function atualizarTotal() {
-    const dias     = parseInt(qtdDiasInput.value) || 0;
-    const valorBase = valorDiaria * dias;
+    const dias      = parseInt(qtdDiasInput.value) || 0;
+    const valorBase = valorDiaria * dias; // diária × dias (base sem seguro)
 
-    // Calcula seguro de cada camada (mesma lógica dos Decorators Java)
-    let seguroTerceiros = 0;
-    let seguroCobertura = 0;
+    // Variáveis para o total encadeado (lógica Decorator)
+    let totalAcumulado  = valorBase;
+    let totalSeguroAcum = 0;
 
-    if (chkTerceiros.checked) {
-      seguroTerceiros = valorBase * TAXA_TERCEIROS;
-    }
-    // Cobertura total incide sobre o subtotal já com terceiros (como no Decorator encadeado)
-    const baseComTerceiros = valorBase + seguroTerceiros;
-    if (chkCoberturaTotal.checked) {
-      seguroCobertura = baseComTerceiros * TAXA_COBERTURA;
-    }
+    segurosDisponiveis.forEach(seguro => {
+      const chk   = document.getElementById(`chkSeguro_${seguro.id}`);
+      const valEl = document.getElementById(`valorSeguro_${seguro.id}`);
+      const isChecked = chk && chk.checked;
 
-    const totalSeguroCalculado = seguroTerceiros + seguroCobertura;
-    const total = baseComTerceiros + seguroCobertura;
+      // ── Calcula valor de exibição no card (sempre visível) ──
+      // Para fixos: sempre R$ X,00 independente de dias
+      // Para percentuais: baseDias × taxa (ou zero se sem datas)
+      let valorExibicao;
+      if (seguro.valor < 1) {
+        valorExibicao = valorBase * seguro.valor;
+      } else {
+        valorExibicao = seguro.valor; // fixo: sempre mostra o preço
+      }
+      if (valEl) valEl.textContent = `R$ ${fmt(valorExibicao)}`;
 
-    // Exibe valores em cada card de seguro
-    valTerceirosEl.textContent = `R$ ${seguroTerceiros.toFixed(2).replace('.', ',')}`;
-    valCoberturaEl.textContent = `R$ ${seguroCobertura.toFixed(2).replace('.', ',')}`;
+      // ── Só acumula no total se estiver selecionado ──
+      if (!isChecked) return;
 
-    // Atualiza resumo
-    totalDiaria.textContent = `R$ ${valorDiaria.toFixed(2).replace('.', ',')}`;
+      let valorParaTotal;
+      if (seguro.valor < 1) {
+        // Percentual encadeado (Decorator): incide sobre o acumulado até agora
+        valorParaTotal = totalAcumulado * seguro.valor;
+      } else {
+        valorParaTotal = seguro.valor;
+      }
+
+      totalAcumulado  += valorParaTotal;
+      totalSeguroAcum += valorParaTotal;
+    });
+
+    const total = totalAcumulado; // diárias + seguros selecionados
+
+    // Atualiza resumo de baixo
+    totalDiaria.textContent = `R$ ${fmt(valorDiaria)}`;
     totalDias.textContent   = `${dias} dia${dias !== 1 ? 's' : ''}`;
-    totalSeguro.textContent = `R$ ${totalSeguroCalculado.toFixed(2).replace('.', ',')}`;
-    totalValor.textContent  = `R$ ${total.toFixed(2).replace('.', ',')}`;
+    totalSeguro.textContent = `R$ ${fmt(totalSeguroAcum)}`;
+    totalValor.textContent  = `R$ ${fmt(total)}`;
 
     // Preenche campos ocultos para o backend
-    seguroLocacaoInput.value = totalSeguroCalculado.toFixed(2);
+    seguroLocacaoInput.value = totalSeguroAcum.toFixed(2);
     valorTotalInput.value    = total.toFixed(2);
   }
 
-  // ─── Eventos ───
+  // ─── Utilitário: formata número como moeda BR ────────────────
+  function fmt(n) {
+    return n.toFixed(2).replace('.', ',');
+  }
+
+  // ─── Eventos ────────────────────────────────────────────────
   dataRetiradaInput.addEventListener('change', () => {
     calcularDias();
-    if (document.getElementById('dataRetiradaGroup').classList.contains('has-error')) {
-      clearError('dataRetiradaGroup', 'dataRetiradaError');
-    }
+    clearError('dataRetiradaGroup', 'dataRetiradaError');
   });
 
   dataEntregaInput.addEventListener('change', () => {
     calcularDias();
-    if (document.getElementById('dataEntregaGroup').classList.contains('has-error')) {
-      clearError('dataEntregaGroup', 'dataEntregaError');
-    }
+    clearError('dataEntregaGroup', 'dataEntregaError');
   });
 
   localRetiradaInput.addEventListener('input', () => {
-    if (document.getElementById('localRetiradaGroup').classList.contains('has-error')) {
-      clearError('localRetiradaGroup', 'localRetiradaError');
-    }
+    clearError('localRetiradaGroup', 'localRetiradaError');
   });
 
-  // Checkboxes de seguro — atualiza visual e totais
-  chkTerceiros.addEventListener('change', () => {
-    cardTerceiros.classList.toggle('selecionado', chkTerceiros.checked);
-    atualizarTotal();
-  });
-
-  chkCoberturaTotal.addEventListener('change', () => {
-    cardCobertura.classList.toggle('selecionado', chkCoberturaTotal.checked);
-    atualizarTotal();
-  });
-
-  // ─── Submissão do formulário ───
+  // ─── Submissão do formulário ─────────────────────────────────
   form.addEventListener('submit', (e) => {
     e.preventDefault();
 
@@ -199,20 +265,15 @@ document.addEventListener('DOMContentLoaded', () => {
       validateLocalRetirada(),
     ];
 
-    if (results.includes(false)) {
-      return;
-    }
+    if (results.includes(false)) return;
 
-    // Loading
     btnReservar.classList.add('loading');
     btnReservar.disabled = true;
 
-    setTimeout(() => {
-      form.submit();
-    }, 600);
+    setTimeout(() => { form.submit(); }, 600);
   });
 
-  // ─── Funções de validação ───
+  // ─── Funções de validação ────────────────────────────────────
 
   function validateDataRetirada() {
     const val = dataRetiradaInput.value;
@@ -265,13 +326,7 @@ document.addEventListener('DOMContentLoaded', () => {
     return true;
   }
 
-  function validateSeguro() {
-    // Seguro é sempre válido (pode ser R$ 0 se nenhum seguro for selecionado)
-    clearError('seguroLocacaoGroup', 'seguroLocacaoError');
-    return true;
-  }
-
-  // ─── Helpers ───
+  // ─── Helpers ─────────────────────────────────────────────────
 
   function setError(groupId, errorId, message) {
     document.getElementById(groupId).classList.add('has-error');
@@ -283,19 +338,13 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById(errorId).textContent = '';
   }
 
-  /**
-   * Exibe notificação toast
-   * @param {string} message - Mensagem
-   * @param {string} type - 'success' ou 'error'
-   */
   function showToast(message, type) {
     toast.textContent = message;
-    toast.className = 'toast ' + type + ' show';
-    setTimeout(() => {
-      toast.classList.remove('show');
-    }, 3000);
+    toast.className   = 'toast ' + type + ' show';
+    setTimeout(() => { toast.classList.remove('show'); }, 3000);
   }
 
-  // ─── Inicialização ───
+  // ─── Inicialização ───────────────────────────────────────────
   carregarParametrosURL();
+  carregarSeguros();         // Busca seguros do banco e monta os cards
 });
