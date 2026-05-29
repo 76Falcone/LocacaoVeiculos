@@ -18,4 +18,8 @@ public class DAOFactory {
     public static ILoginDAO getLoginDAO() {
         return new LoginDAO();
     }
+
+    public static ITipoSeguroDAO getTipoSeguroDAO() {
+        return new TipoSeguroDAO();
+    }
 }
