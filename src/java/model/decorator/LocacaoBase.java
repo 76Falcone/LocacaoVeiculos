@@ -1,4 +1,4 @@
-    package model.decorator;
+package model.decorator;
 
 import model.Locacao;
 
