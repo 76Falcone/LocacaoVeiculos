@@ -59,6 +59,7 @@ public class SecurityFilter implements Filter {
             // Páginas restritas a administradores
             if (path.contains("listarVeiculos.html") || path.contains("listarUsuarios.html") || 
                 path.contains("listarReservas.html") || path.contains("cadastroVeiculo.html") || 
+                path.contains("listarSeguros.html") ||
                 path.contains("editarVeiculo.jsp") || path.contains("editarUsuario.jsp") || 
                 path.contains("sucessoVeiculo.jsp") || path.contains("sucessoUsuario.jsp")) {
                 needsLogin = true;
@@ -95,6 +96,13 @@ public class SecurityFilter implements Filter {
                 }
                 if ("BUSCAR_POR_ID".equals(op) || "ATUALIZAR".equals(op)) {
                     needsLogin = true;
+                }
+            }
+            // Controle de Tipos de Seguro
+            if (path.contains("ControleTipoSeguro")) {
+                if ("CADASTRAR".equals(op) || "ATUALIZAR".equals(op) || "DELETAR".equals(op)) {
+                    needsLogin = true;
+                    needsAdmin = true;
                 }
             }
         }
