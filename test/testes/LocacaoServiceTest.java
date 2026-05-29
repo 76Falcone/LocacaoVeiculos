@@ -108,8 +108,8 @@ public class LocacaoServiceTest {
         Locacao salva = locacoesSalvas.get(0);
         assertEquals(1, salva.getUsuario().getIdUsuario());
         assertEquals(1, salva.getVeiculo().getIdVeiculo());
-        assertEquals(150.0, salva.getSeguroLocacao(), 0.001); // 5 dias * R$ 30/dia
-        assertEquals(650.0, salva.getValorTotal(), 0.001); // (5 dias * R$ 100/dia) + R$ 150 de seguro
+        assertEquals(50.0, salva.getSeguroLocacao(), 0.001); // SeguroTerceiros adiciona 10% sobre o valor base (R$ 500) -> R$ 50
+        assertEquals(550.0, salva.getValorTotal(), 0.001); // (5 dias * R$ 100/dia) + R$ 50 de seguro
         assertFalse(mockVeiculoDAO.visualizarVeiculoByID(null).isDisponibilidade()); // Veículo deve ficar indisponível
     }
 }
