@@ -1,0 +1,387 @@
+/* ═══════════════════════════════════════════════════════════
+   MINHASLOCACOES.CSS — Estilo da página de locações do usuário
+   Novare · Sistema de Gestão de Veículos
+   ═══════════════════════════════════════════════════════════ */
+
+/* ─── CONTAINER PRINCIPAL ─── */
+.ml-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 100px 5% 4rem;
+  min-height: calc(100vh - 200px);
+}
+
+/* ─── CABEÇALHO DA PÁGINA ─── */
+.ml-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+}
+
+.ml-breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.78rem;
+  color: var(--muted);
+  margin-bottom: 0.5rem;
+}
+
+.ml-breadcrumb a {
+  color: var(--muted);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.ml-breadcrumb a:hover { color: var(--purple); }
+
+.ml-sep { opacity: 0.5; }
+
+.ml-title {
+  font-family: 'Syne', sans-serif;
+  font-size: clamp(1.6rem, 3vw, 2.2rem);
+  font-weight: 800;
+  color: var(--text);
+  letter-spacing: -0.8px;
+  line-height: 1.1;
+}
+
+.ml-subtitle {
+  color: var(--muted);
+  font-size: 0.88rem;
+  margin-top: 4px;
+}
+
+/* ─── BOTÃO NOVA RESERVA ─── */
+.btn-nova-reserva {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--purple);
+  color: var(--white);
+  border: none;
+  padding: 0.65rem 1.4rem;
+  border-radius: 10px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.88rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-decoration: none;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.btn-nova-reserva:hover {
+  background: var(--purple-light);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(106, 38, 205, 0.25);
+}
+
+/* ─── AUTH WALL (usuário não logado) ─── */
+.ml-auth-wall {
+  text-align: center;
+  padding: 5rem 2rem;
+  background: var(--off-white);
+  border: 1.5px solid var(--border);
+  border-radius: 20px;
+  margin-top: 2rem;
+}
+
+.ml-auth-icon {
+  font-size: 3.5rem;
+  margin-bottom: 1rem;
+}
+
+.ml-auth-wall h2 {
+  font-family: 'Syne', sans-serif;
+  font-size: 1.4rem;
+  font-weight: 800;
+  color: var(--text);
+  margin-bottom: 0.5rem;
+}
+
+.ml-auth-wall p {
+  color: var(--muted);
+  font-size: 0.95rem;
+  margin-bottom: 1.5rem;
+}
+
+.ml-auth-buttons {
+  display: flex;
+  gap: 0.8rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+/* ─── CARDS DE ESTATÍSTICAS ─── */
+.ml-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.ml-stat-card {
+  background: var(--off-white);
+  border: 1.5px solid var(--border);
+  border-radius: 14px;
+  padding: 1.2rem 1.4rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  transition: all 0.25s ease;
+}
+
+.ml-stat-card:hover {
+  border-color: var(--purple);
+  box-shadow: 0 4px 20px rgba(106, 38, 205, 0.08);
+  transform: translateY(-2px);
+}
+
+.ml-stat-icon {
+  font-size: 1.8rem;
+  flex-shrink: 0;
+}
+
+.ml-stat-value {
+  display: block;
+  font-family: 'Syne', sans-serif;
+  font-size: 1.3rem;
+  font-weight: 800;
+  color: var(--purple);
+  line-height: 1.1;
+}
+
+.ml-stat-label {
+  display: block;
+  font-size: 0.73rem;
+  color: var(--muted);
+  font-weight: 400;
+  margin-top: 2px;
+}
+
+/* ─── TABELA DE LOCAÇÕES ─── */
+.ml-table-wrap {
+  background: var(--off-white);
+  border: 1.5px solid var(--border);
+  border-radius: 14px;
+  overflow: hidden;
+  overflow-x: auto;
+  margin-bottom: 1rem;
+}
+
+.ml-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.88rem;
+}
+
+.ml-table thead th {
+  background: var(--light);
+  color: var(--muted);
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  padding: 0.8rem 1rem;
+  text-align: left;
+  white-space: nowrap;
+  border-bottom: 2px solid var(--border);
+}
+
+.ml-table tbody tr {
+  border-bottom: 1px solid var(--border);
+  transition: background 0.15s ease;
+  animation: mlFadeIn 0.3s ease both;
+}
+
+.ml-table tbody tr:last-child { border-bottom: none; }
+
+.ml-table tbody tr:hover { background: var(--light); }
+
+.ml-table td {
+  padding: 0.85rem 1rem;
+  color: var(--text);
+  vertical-align: middle;
+  white-space: nowrap;
+}
+
+@keyframes mlFadeIn {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ─── COLUNA ORDENÁVEL ─── */
+.ml-sortable {
+  cursor: pointer;
+  user-select: none;
+}
+
+.ml-sortable:hover { color: var(--purple); }
+
+/* ─── FILTROS POR COLUNA ─── */
+.ml-filter-row th {
+  padding: 0.35rem 0.5rem 0.5rem;
+  background: var(--light);
+  border-bottom: 2px solid var(--border);
+}
+
+.ml-filter {
+  width: 100%;
+  height: 30px;
+  padding: 0 0.5rem;
+  border: 1.5px solid var(--border);
+  border-radius: 6px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.77rem;
+  color: var(--text);
+  background: var(--white);
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  box-sizing: border-box;
+}
+
+.ml-filter::placeholder { color: #C4B5E0; }
+
+.ml-filter:focus {
+  border-color: var(--purple);
+  box-shadow: 0 0 0 2px rgba(106, 38, 205, 0.08);
+}
+
+/* ─── BADGES ─── */
+.ml-id-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 28px;
+  padding: 2px 8px;
+  background: var(--purple-pale);
+  color: var(--purple);
+  font-weight: 700;
+  font-size: 0.78rem;
+  border-radius: 6px;
+}
+
+.ml-modelo {
+  font-weight: 600;
+  color: var(--text);
+}
+
+.ml-valor {
+  font-weight: 700;
+  color: var(--purple);
+}
+
+.ml-seguro-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 3px 10px;
+  border-radius: 100px;
+  font-size: 0.74rem;
+  font-weight: 600;
+}
+
+.ml-seguro-badge.com-seguro {
+  background: var(--success-bg);
+  color: var(--success);
+}
+
+.ml-seguro-badge.sem-seguro {
+  background: var(--light);
+  color: var(--muted);
+}
+
+/* ─── ESTADO VAZIO ─── */
+.ml-empty {
+  text-align: center;
+  padding: 4rem 2rem;
+  background: var(--off-white);
+  border: 1.5px solid var(--border);
+  border-radius: 14px;
+  margin-top: 1.5rem;
+}
+
+.ml-empty-icon { font-size: 3rem; display: block; margin-bottom: 1rem; }
+
+.ml-empty h3 {
+  font-family: 'Syne', sans-serif;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 0.4rem;
+}
+
+.ml-empty p { color: var(--muted); font-size: 0.88rem; }
+
+/* ─── PAGINAÇÃO ─── */
+.ml-pagination-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 0 0.5rem;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.ml-pagination-info {
+  font-size: 0.82rem;
+  color: var(--muted);
+}
+
+.ml-pagination-info strong { color: var(--text); }
+
+.ml-pagination-buttons {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.ml-page-btn {
+  height: 36px;
+  min-width: 36px;
+  padding: 0 10px;
+  border: 1.5px solid var(--border);
+  border-radius: 8px;
+  background: var(--white);
+  color: var(--text);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.82rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.18s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.ml-page-btn:hover:not(.disabled):not(.active) {
+  border-color: var(--purple);
+  color: var(--purple);
+  background: var(--purple-pale);
+}
+
+.ml-page-btn.active {
+  background: var(--purple);
+  border-color: var(--purple);
+  color: var(--white);
+  font-weight: 700;
+  box-shadow: 0 2px 8px rgba(106, 38, 205, 0.25);
+}
+
+.ml-page-btn.disabled { opacity: 0.35; cursor: not-allowed; }
+
+/* ─── RESPONSIVO ─── */
+@media (max-width: 700px) {
+  .ml-header { flex-direction: column; }
+  .btn-nova-reserva { width: 100%; justify-content: center; }
+  .ml-stats { grid-template-columns: 1fr 1fr; }
+  .ml-pagination-wrap { flex-direction: column; align-items: center; }
+}
+
+@media (max-width: 420px) {
+  .ml-stats { grid-template-columns: 1fr; }
+}
