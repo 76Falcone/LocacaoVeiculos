@@ -9,8 +9,10 @@ import model.Veiculo;
 import model.VeiculoBuilder;
 import model.decorator.ItemLocacao;
 import model.decorator.LocacaoBase;
-import model.decorator.SeguroCoberturaTotal;
 import model.decorator.SeguroTerceiros;
+import model.decorator.SeguroPaneEletrica;
+import model.decorator.SeguroDinamico;
+import model.TipoSeguro;
 
 public class LocacaoDecoratorTest {
 
@@ -42,7 +44,9 @@ public class LocacaoDecoratorTest {
                 .comQtdDias(5)
                 .build();
 
-        ItemLocacao locacaoComSeguro = new SeguroTerceiros(new LocacaoBase(locacao));
+        // SeguroTerceiros(itemDecorado, idSeguro, descricaoSeguro, taxa)
+        // taxa = 0.10 = 10%
+        ItemLocacao locacaoComSeguro = new SeguroTerceiros(new LocacaoBase(locacao), 1, "Terceiros", 0.10);
 
         // SeguroTerceiros adiciona 10% sobre o valor base (R$ 500) -> R$ 50
         assertEquals(50.00, locacaoComSeguro.getValorSeguro(), 0.001);
@@ -50,7 +54,7 @@ public class LocacaoDecoratorTest {
     }
 
     @Test
-    public void testLocacaoComSeguroCoberturaTotal() {
+    public void testLocacaoComSeguroPaneEletrica() {
         Veiculo veiculo = new VeiculoBuilder()
                 .comValorDiaria(100.00)
                 .build();
@@ -60,9 +64,49 @@ public class LocacaoDecoratorTest {
                 .comQtdDias(5)
                 .build();
 
-        ItemLocacao locacaoComSeguro = new SeguroCoberturaTotal(new LocacaoBase(locacao));
+        // SeguroPaneEletrica(itemDecorado, idSeguro, valorFixo)
+        ItemLocacao locacaoComSeguro = new SeguroPaneEletrica(new LocacaoBase(locacao), 2, 50.00);
 
-        // SeguroCoberturaTotal adiciona 15% sobre o valor base (R$ 500) -> R$ 75
+        // SeguroPaneEletrica adiciona valor fixo de R$ 50
+        assertEquals(50.00, locacaoComSeguro.getValorSeguro(), 0.001);
+        assertEquals(550.00, locacaoComSeguro.getValorTotal(), 0.001);
+    }
+
+    @Test
+    public void testLocacaoComSeguroDinamicoFixo() {
+        Veiculo veiculo = new VeiculoBuilder()
+                .comValorDiaria(100.00)
+                .build();
+
+        Locacao locacao = new LocacaoBuilder()
+                .comVeiculo(veiculo)
+                .comQtdDias(5)
+                .build();
+
+        // Seguro cadastrado dinamicamente no banco: valor >= 1.0 (Fixo)
+        TipoSeguro ts = new TipoSeguro(5, "Seguro Incêndio", 80.00);
+        ItemLocacao locacaoComSeguro = new SeguroDinamico(new LocacaoBase(locacao), ts);
+
+        assertEquals(80.00, locacaoComSeguro.getValorSeguro(), 0.001);
+        assertEquals(580.00, locacaoComSeguro.getValorTotal(), 0.001);
+    }
+
+    @Test
+    public void testLocacaoComSeguroDinamicoPercentual() {
+        Veiculo veiculo = new VeiculoBuilder()
+                .comValorDiaria(100.00)
+                .build();
+
+        Locacao locacao = new LocacaoBuilder()
+                .comVeiculo(veiculo)
+                .comQtdDias(5)
+                .build();
+
+        // Seguro cadastrado dinamicamente no banco: valor < 1.0 (Percentual)
+        TipoSeguro ts = new TipoSeguro(6, "Seguro Especial", 0.15);
+        ItemLocacao locacaoComSeguro = new SeguroDinamico(new LocacaoBase(locacao), ts);
+
+        // 15% sobre o valor base de R$ 500 = R$ 75
         assertEquals(75.00, locacaoComSeguro.getValorSeguro(), 0.001);
         assertEquals(575.00, locacaoComSeguro.getValorTotal(), 0.001);
     }
