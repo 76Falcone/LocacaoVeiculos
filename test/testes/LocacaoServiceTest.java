@@ -6,11 +6,13 @@ import static org.junit.Assert.*;
 import dao.ILocacaoDAO;
 import dao.IUsuarioDAO;
 import dao.IVeiculoDAO;
+import dao.ITipoSeguroDAO;
 import model.Locacao;
 import model.Usuario;
 import model.UsuarioBuilder;
 import model.Veiculo;
 import model.VeiculoBuilder;
+import model.TipoSeguro;
 import service.LocacaoService;
 
 import java.sql.SQLException;
@@ -70,6 +72,28 @@ public class LocacaoServiceTest {
             }
         };
 
+        ITipoSeguroDAO mockTipoSeguroDAO = new ITipoSeguroDAO() {
+            @Override
+            public List<TipoSeguro> listarTodosSeguros() throws ClassNotFoundException, SQLException {
+                List<TipoSeguro> list = new ArrayList<>();
+                list.add(new TipoSeguro(1, "Terceiros", 0.10));
+                return list;
+            }
+            @Override
+            public TipoSeguro buscarPorId(int id) throws ClassNotFoundException, SQLException {
+                if (id == 1) {
+                    return new TipoSeguro(1, "Terceiros", 0.10);
+                }
+                return null;
+            }
+            @Override
+            public void cadastrarTipoSeguro(TipoSeguro ts) throws ClassNotFoundException, SQLException {}
+            @Override
+            public void atualizarTipoSeguro(TipoSeguro ts) throws ClassNotFoundException, SQLException {}
+            @Override
+            public void deletarTipoSeguro(int id) throws ClassNotFoundException, SQLException {}
+        };
+
         List<Locacao> locacoesSalvas = new ArrayList<>();
         ILocacaoDAO mockLocacaoDAO = new ILocacaoDAO() {
             @Override
@@ -87,9 +111,9 @@ public class LocacaoServiceTest {
         };
 
         // Instancia o serviço injetando os mocks (DIP)
-        LocacaoService service = new LocacaoService(mockLocacaoDAO, mockUsuarioDAO, mockVeiculoDAO);
+        LocacaoService service = new LocacaoService(mockLocacaoDAO, mockUsuarioDAO, mockVeiculoDAO, mockTipoSeguroDAO);
 
-        // Executa a locação com Seguro de Terceiros (+R$ 40/dia)
+        // Executa a locação com o ID do Seguro de Terceiros (+10% -> R$ 50)
         service.realizarLocacao(
                 1,
                 1,
@@ -97,10 +121,7 @@ public class LocacaoServiceTest {
                 LocalDate.now().plusDays(5),
                 5,
                 "Aeroporto",
-                0.0,
-                0.0,
-                true, // seguroTerceiros
-                false // seguroCoberturaTotal
+                new int[]{1}
         );
 
         // Verificações
