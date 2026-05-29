@@ -12,61 +12,8 @@
     return match ? match[2] : null;
   };
 
-  // Verifica se o usuário está logado/cadastrado
-  const isUserRegistered = () => {
-    return !!getCookie('usuarioLogado');
-  };
-
-  // Exibe toast animado personalizado informando que o tema escuro é exclusivo
-  function showLockedToast() {
-    let toast = document.getElementById('novare-lock-toast');
-    if (!toast) {
-      toast = document.createElement('div');
-      toast.id = 'novare-lock-toast';
-      toast.style.cssText = `
-        position: fixed;
-        bottom: 24px;
-        left: 50%;
-        transform: translateX(-50%) translateY(100px);
-        background: #1A0E3D;
-        color: #FAF8FF;
-        padding: 12px 24px;
-        border-radius: 12px;
-        font-family: 'DM Sans', sans-serif;
-        font-size: 0.9rem;
-        font-weight: 500;
-        box-shadow: 0 8px 32px rgba(106,38,205,0.25);
-        border: 1.5px solid #6A26CD;
-        z-index: 10000;
-        transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.3s ease;
-        opacity: 0;
-        display: flex;
-        align-items: center;
-        gap: 8px;
-        pointer-events: none;
-      `;
-      toast.innerHTML = `<span>🔒</span> <span>O tema escuro é exclusivo para usuários cadastrados!</span>`;
-      document.body.appendChild(toast);
-    }
-    
-    // Mostra o toast
-    setTimeout(() => {
-      toast.style.transform = 'translateX(-50%) translateY(0)';
-      toast.style.opacity = '1';
-    }, 50);
-
-    // Esconde o toast após 3.5 segundos
-    setTimeout(() => {
-      toast.style.transform = 'translateX(-50%) translateY(100px)';
-      toast.style.opacity = '0';
-    }, 3500);
-  }
-
   // Aplica o tema antes do render para evitar flash
   function applyTheme(theme) {
-    if (!isUserRegistered()) {
-      theme = 'light';
-    }
     console.log('[DarkMode] Aplicando tema:', theme);
     document.documentElement.setAttribute('data-theme', theme);
     try {
@@ -78,9 +25,6 @@
   }
 
   function getTheme() {
-    if (!isUserRegistered()) {
-      return 'light'; // Força tema claro se não estiver cadastrado/logado
-    }
     let saved = null;
     try {
       saved = localStorage.getItem(STORAGE_KEY);
@@ -88,28 +32,19 @@
       console.warn('[DarkMode] Storage do tema indisponível:', e);
     }
     if (saved) return saved;
-    // Respeita preferência do sistema
-    return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+    // Padrão do sistema agora é o tema escuro (dark)
+    return 'dark';
   }
 
   function updateAllButtons(theme) {
     const buttons = document.querySelectorAll('.btn-dark-toggle');
-    const registered = isUserRegistered();
-    console.log(`[DarkMode] Atualizando ${buttons.length} botões de toggle para o tema:`, theme, `Cadastrado: ${registered}`);
+    console.log(`[DarkMode] Atualizando ${buttons.length} botões de toggle para o tema:`, theme);
     buttons.forEach(btn => {
-      if (!registered) {
-        btn.setAttribute('aria-label', 'Tema escuro indisponível');
-        btn.setAttribute('title', 'Cadastre-se para liberar o tema escuro');
-        btn.innerHTML = '🔒';
-        btn.style.opacity = '0.7';
-        btn.style.cursor = 'not-allowed';
-      } else {
-        btn.setAttribute('aria-label', theme === 'dark' ? 'Ativar modo claro' : 'Ativar modo escuro');
-        btn.setAttribute('title',      theme === 'dark' ? 'Modo claro' : 'Modo escuro');
-        btn.innerHTML = theme === 'dark' ? '☀️' : '🌙';
-        btn.style.opacity = '';
-        btn.style.cursor = '';
-      }
+      btn.setAttribute('aria-label', theme === 'dark' ? 'Ativar modo claro' : 'Ativar modo escuro');
+      btn.setAttribute('title',      theme === 'dark' ? 'Modo claro' : 'Modo escuro');
+      btn.innerHTML = theme === 'dark' ? '☀️' : '🌙';
+      btn.style.opacity = '';
+      btn.style.cursor = '';
     });
   }
 
@@ -166,11 +101,7 @@
       const btn = e.target.closest('.btn-dark-toggle');
       if (btn) {
         console.log('[DarkMode] Botão clicado!');
-        if (!isUserRegistered()) {
-          showLockedToast();
-          return;
-        }
-        const current = document.documentElement.getAttribute('data-theme') || 'light';
+        const current = document.documentElement.getAttribute('data-theme') || 'dark';
         const nextTheme = current === 'dark' ? 'light' : 'dark';
         applyTheme(nextTheme);
       }
