@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="pt-br" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Novare | Minhas Locações</title>
+  <meta name="description" content="Visualize todas as suas locações de veículos na Novare.">
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style.css?v=2">
+  <link rel="stylesheet" href="../css/variables.css?v=2">
+  <link rel="stylesheet" href="../css/minhasLocacoes.css">
+</head>
+<body>
+
+  <!-- ─── NAVBAR ─── -->
+  <header class="navbar">
+    <a href="../index.html" class="logo" style="text-decoration:none;">NO<span>VARE</span></a>
+    <nav class="nav-links">
+      <a href="../index.html">Início</a>
+      <a href="frota.html">Frota</a>
+      <a href="minhasLocacoes.html" style="color: var(--purple); font-weight:600;">Minhas Locações</a>
+    </nav>
+    <div class="nav-actions">
+      <button class="btn-dark-toggle" id="darkToggle" aria-label="Ativar modo escuro" title="Modo escuro">🌙</button>
+      <span id="authLoggedOut">
+        <button class="btn-ghost" onclick="location.href='cadastroUsuario.html'">Cadastrar</button>
+        <button class="btn-primary" onclick="location.href='login.html'">Login</button>
+      </span>
+      <span id="authLoggedIn" style="display:none;">
+        <button class="btn-ghost" id="btnPainel" onclick="location.href='listarVeiculos.html'" style="display:none;">⚙️ Painel Admin</button>
+        <button class="btn-primary btn-logout" onclick="location.href='ControleUsuario?op=LOGOUT'">Sair</button>
+      </span>
+    </div>
+  </header>
+
+  <!-- ─── CONTAINER PRINCIPAL ─── -->
+  <div class="ml-container">
+
+    <!-- Cabeçalho da Página -->
+    <div class="ml-header">
+      <div class="ml-header-left">
+        <div class="ml-breadcrumb">
+          <a href="../index.html">Início</a>
+          <span class="ml-sep">›</span>
+          <span>Minhas Locações</span>
+        </div>
+        <h1 class="ml-title">Minhas Locações</h1>
+        <p class="ml-subtitle" id="resultCount">Carregando suas reservas...</p>
+      </div>
+      <a href="frota.html" class="btn-nova-reserva">
+        <span>＋</span> Nova Reserva
+      </a>
+    </div>
+
+    <!-- ─── ESTADO: Não logado ─── -->
+    <div class="ml-auth-wall" id="authWall" style="display:none;">
+      <div class="ml-auth-icon">🔐</div>
+      <h2>Acesso restrito</h2>
+      <p>Faça login para visualizar suas locações de veículos.</p>
+      <div class="ml-auth-buttons">
+        <button class="btn-primary" onclick="location.href='login.html'">Fazer Login</button>
+        <button class="btn-ghost" onclick="location.href='cadastroUsuario.html'">Criar Conta</button>
+      </div>
+    </div>
+
+    <!-- ─── CONTEÚDO (só exibido se logado) ─── -->
+    <div id="mainContent" style="display:none;">
+
+      <!-- Cards de Resumo -->
+      <div class="ml-stats" id="statsArea">
+        <div class="ml-stat-card">
+          <span class="ml-stat-icon">📋</span>
+          <div>
+            <span class="ml-stat-value" id="statTotal">0</span>
+            <span class="ml-stat-label">Total de Locações</span>
+          </div>
+        </div>
+        <div class="ml-stat-card">
+          <span class="ml-stat-icon">💰</span>
+          <div>
+            <span class="ml-stat-value" id="statGasto">R$ 0,00</span>
+            <span class="ml-stat-label">Total Gasto</span>
+          </div>
+        </div>
+        <div class="ml-stat-card">
+          <span class="ml-stat-icon">📅</span>
+          <div>
+            <span class="ml-stat-value" id="statDias">0</span>
+            <span class="ml-stat-label">Dias Locados</span>
+          </div>
+        </div>
+        <div class="ml-stat-card">
+          <span class="ml-stat-icon">🚘</span>
+          <div>
+            <span class="ml-stat-value" id="statVeiculos">0</span>
+            <span class="ml-stat-label">Veículos Diferentes</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tabela de Locações -->
+      <div class="ml-table-wrap">
+        <table class="ml-table" id="locacoesTable">
+          <thead>
+            <tr>
+              <th class="ml-sortable" data-col="idLocacao">ID ↕</th>
+              <th class="ml-sortable" data-col="modeloVeiculo">Veículo ↕</th>
+              <th class="ml-sortable" data-col="qtdDias">Dias ↕</th>
+              <th>Local de Retirada</th>
+              <th class="ml-sortable" data-col="dataRetirada">Retirada ↕</th>
+              <th class="ml-sortable" data-col="dataEntrega">Entrega ↕</th>
+              <th>Seguro</th>
+              <th class="ml-sortable" data-col="valorTotal">Total ↕</th>
+            </tr>
+            <tr class="ml-filter-row">
+              <th><input type="text" class="ml-filter" id="filterId" placeholder="ID"></th>
+              <th><input type="text" class="ml-filter" id="filterVeiculo" placeholder="Veículo"></th>
+              <th><input type="text" class="ml-filter" id="filterDias" placeholder="Dias"></th>
+              <th><input type="text" class="ml-filter" id="filterLocal" placeholder="Local"></th>
+              <th><input type="text" class="ml-filter" id="filterRetirada" placeholder="Data"></th>
+              <th><input type="text" class="ml-filter" id="filterEntrega" placeholder="Data"></th>
+              <th></th>
+              <th><input type="text" class="ml-filter" id="filterTotal" placeholder="R$"></th>
+            </tr>
+          </thead>
+          <tbody id="locacoesBody"></tbody>
+        </table>
+      </div>
+
+      <!-- Estado Vazio -->
+      <div class="ml-empty" id="emptyState" style="display:none;">
+        <span class="ml-empty-icon">🚗</span>
+        <h3>Nenhuma locação encontrada</h3>
+        <p>Você ainda não realizou nenhuma locação de veículo.</p>
+        <a href="frota.html" class="btn-primary" style="margin-top:1rem; display:inline-block; text-decoration:none;">Ver Frota Disponível</a>
+      </div>
+
+      <!-- Paginação -->
+      <div id="pagination"></div>
+
+    </div><!-- /mainContent -->
+  </div><!-- /ml-container -->
+
+  <!-- ─── FOOTER ─── -->
+  <footer>
+    <div class="footer-top">
+      <div class="footer-brand">
+        <span class="logo-footer">NO<span>VARE</span></span>
+        <p>Mobilidade inteligente para o Brasil. Alugue com transparência, tecnologia e cuidado.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Serviços</h4>
+        <a href="#">Aluguel diário</a>
+        <a href="#">Assinatura mensal</a>
+        <a href="#">Frota empresarial</a>
+      </div>
+      <div class="footer-col">
+        <h4>Empresa</h4>
+        <a href="#">Sobre nós</a>
+        <a href="#">Blog</a>
+        <a href="#">Trabalhe conosco</a>
+      </div>
+      <div class="footer-col">
+        <h4>Ajuda</h4>
+        <a href="#">FAQ</a>
+        <a href="#">Contato</a>
+        <a href="#">Privacidade</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2025 Novare. Todos os direitos reservados.</span>
+      <div class="footer-badges">
+        <div class="footer-badge">SSL Seguro</div>
+        <div class="footer-badge">CNPJ: 00.000.000/0001-00</div>
+        <div class="footer-badge">RNTRC Autorizado</div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="../js/darkmode.js?v=2"></script>
+  <script src="../js/minhasLocacoes.js"></script>
+  <!-- Sessão: alterna botões de auth na navbar -->
+  <script>
+    (function () {
+      const getCookie = (name) => {
+        const match = document.cookie.match(new RegExp('(^| )' + name + '=([^;]+)'));
+        return match ? match[2] : null;
+      };
+      const loggedIn = getCookie('usuarioLogado');
+      const isAdmin  = getCookie('role') === 'admin';
+      const nomeRaw  = getCookie('nomeUsuario');
+
+      if (loggedIn) {
+        document.getElementById('authLoggedOut').style.display = 'none';
+        const authLoggedIn = document.getElementById('authLoggedIn');
+        authLoggedIn.style.display = '';
+
+        if (nomeRaw) {
+          const nomeReal    = decodeURIComponent(nomeRaw).replace(/\+/g, ' ');
+          const primeiroNome = nomeReal.split(' ')[0];
+          const spanNome    = document.createElement('span');
+          spanNome.style.cssText = 'margin-right:16px;color:var(--muted);font-weight:500;';
+          spanNome.innerHTML = `Olá, <strong>${primeiroNome}</strong>`;
+          authLoggedIn.insertBefore(spanNome, authLoggedIn.firstChild);
+        }
+
+        if (isAdmin) document.getElementById('btnPainel').style.display = '';
+      }
+    })();
+  </script>
+</body>
+</html>
