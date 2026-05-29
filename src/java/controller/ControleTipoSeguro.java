@@ -1,12 +1,18 @@
 package controller;
 
+import command.IComando;
+import command.seguro.CadastrarTipoSeguroComando;
+import command.seguro.AtualizarTipoSeguroComando;
+import command.seguro.DeletarTipoSeguroComando;
 import dao.DAOFactory;
 import dao.ITipoSeguroDAO;
 import model.TipoSeguro;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -14,24 +20,45 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * Servlet que expõe os tipos de seguro do banco como JSON.
- * Usado pelo front-end para montar os cards de seguro dinamicamente.
- *
- * GET /ControleTipoSeguro
- * Retorna: [{"id":1,"tipo":"Terceiros","valor":0.10}, ...]
+ * Servlet que expõe e gerencia os tipos de seguro.
+ * Suporta o CRUD administrativo (CADASTRAR, ATUALIZAR, DELETAR) via padrão Command,
+ * e responde por padrão com listagem JSON para o formulário de reservas.
  *
  * @author 76Falcone
  */
 @WebServlet(name = "ControleTipoSeguro", urlPatterns = {"/ControleTipoSeguro", "/html/ControleTipoSeguro"})
 public class ControleTipoSeguro extends HttpServlet {
 
-    @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+    private final Map<String, IComando> comandos = new HashMap<>();
 
+    @Override
+    public void init() throws ServletException {
+        comandos.put("CADASTRAR", new CadastrarTipoSeguroComando());
+        comandos.put("ATUALIZAR", new AtualizarTipoSeguroComando());
+        comandos.put("DELETAR",   new DeletarTipoSeguroComando());
+    }
+
+    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        
+        String op = request.getParameter("op");
+
+        // Se houver comando mapeado, delega a execução
+        if (op != null && comandos.containsKey(op)) {
+            try {
+                comandos.get(op).executar(request, response);
+            } catch (Exception e) {
+                e.printStackTrace();
+                request.setAttribute("mensagem", "Erro ao processar operação de seguro: " + e.getMessage());
+                request.getRequestDispatcher("/erro.jsp").forward(request, response);
+            }
+            return;
+        }
+
+        // Caso contrário, executa o comportamento padrão: Listagem JSON para o front-end
         response.setContentType("application/json;charset=UTF-8");
         response.setHeader("Access-Control-Allow-Origin", "*");
-
+        
         PrintWriter out = response.getWriter();
 
         try {
@@ -61,6 +88,18 @@ public class ControleTipoSeguro extends HttpServlet {
         }
 
         out.flush();
+    }
+
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        processRequest(request, response);
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        processRequest(request, response);
     }
 
     /** Escapa caracteres especiais para JSON seguro. */
