@@ -3,7 +3,7 @@
     <% Usuario usuario=(Usuario) request.getAttribute("usuario"); if (usuario==null) {
       response.sendRedirect("html/listarUsuarios.html"); return; } %>
       <!DOCTYPE html>
-      <html lang="pt-br">
+      <html lang="pt-br" data-theme="dark">
 
       <head>
         <meta charset="UTF-8">
