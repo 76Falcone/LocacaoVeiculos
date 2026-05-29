@@ -54,4 +54,37 @@ public class TipoSeguroDAO implements ITipoSeguroDAO {
         con.close();
         return ts;
     }
+
+    /** Cadastra um novo tipo de seguro. */
+    @Override
+    public void cadastrarTipoSeguro(TipoSeguro ts) throws ClassNotFoundException, SQLException {
+        Connection con = FabricaConexao.getConexao();
+        PreparedStatement cmd = con.prepareStatement("INSERT INTO tipo_seguro (tipo, valor) VALUES (?, ?)");
+        cmd.setString(1, ts.getTipo());
+        cmd.setDouble(2, ts.getValor());
+        cmd.execute();
+        con.close();
+    }
+
+    /** Atualiza um tipo de seguro existente. */
+    @Override
+    public void atualizarTipoSeguro(TipoSeguro ts) throws ClassNotFoundException, SQLException {
+        Connection con = FabricaConexao.getConexao();
+        PreparedStatement cmd = con.prepareStatement("UPDATE tipo_seguro SET tipo = ?, valor = ? WHERE id = ?");
+        cmd.setString(1, ts.getTipo());
+        cmd.setDouble(2, ts.getValor());
+        cmd.setInt(3, ts.getId());
+        cmd.execute();
+        con.close();
+    }
+
+    /** Exclui um tipo de seguro pelo ID. */
+    @Override
+    public void deletarTipoSeguro(int id) throws ClassNotFoundException, SQLException {
+        Connection con = FabricaConexao.getConexao();
+        PreparedStatement cmd = con.prepareStatement("DELETE FROM tipo_seguro WHERE id = ?");
+        cmd.setInt(1, id);
+        cmd.execute();
+        con.close();
+    }
 }
