@@ -6,6 +6,7 @@ import command.locacao.BuscarLocacaoPorIdComando;
 import command.locacao.CadastrarLocacaoComando;
 import command.locacao.DeletarLocacaoComando;
 import command.locacao.ListarLocacoesComando;
+import command.locacao.ListarLocacoesPorUsuarioComando;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -27,7 +28,8 @@ public class ControleLocacao extends HttpServlet {
         comandos.put("ATUALIZAR",     new AtualizarLocacaoComando());
         comandos.put("DELETAR",       new DeletarLocacaoComando());
         comandos.put("LISTAR",        new ListarLocacoesComando());
-        comandos.put("BUSCAR_POR_ID", new BuscarLocacaoPorIdComando());
+        comandos.put("BUSCAR_POR_ID",    new BuscarLocacaoPorIdComando());
+        comandos.put("LISTAR_MINHAS",    new ListarLocacoesPorUsuarioComando());
     }
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
@@ -50,8 +52,8 @@ public class ControleLocacao extends HttpServlet {
 
         } catch (Exception e) {
             e.printStackTrace();
-            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
-                    "Erro ao processar requisição: " + e.getMessage());
+            request.setAttribute("mensagem", e.getMessage());
+            request.getRequestDispatcher("/erro.jsp").forward(request, response);
         }
     }
 
