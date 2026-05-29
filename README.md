@@ -234,7 +234,7 @@ Crie o banco de dados e as tabelas executando o script SQL:
 CREATE DATABASE projLocacao CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 USE projLocacao;
 
-CREATE TABLE usuarios (
+CREATE TABLE usuario (
     id         INT AUTO_INCREMENT PRIMARY KEY,
     nome       VARCHAR(100) NOT NULL,
     email      VARCHAR(100) NOT NULL UNIQUE,
@@ -243,7 +243,7 @@ CREATE TABLE usuarios (
     senha      VARCHAR(255) NOT NULL
 );
 
-CREATE TABLE veiculos (
+CREATE TABLE veiculo (
     id                   INT AUTO_INCREMENT PRIMARY KEY,
     placa                VARCHAR(10)  NOT NULL UNIQUE,
     modelo               VARCHAR(80)  NOT NULL,
@@ -271,8 +271,8 @@ CREATE TABLE locacao (
     valorTotal     DECIMAL(10,2) NOT NULL,
     data_retirada  DATE NOT NULL,
     data_entrega   DATE,
-    FOREIGN KEY (id_usuario) REFERENCES usuarios(id),
-    FOREIGN KEY (id_veiculo) REFERENCES veiculos(id)
+    FOREIGN KEY (id_usuario) REFERENCES usuario(id),
+    FOREIGN KEY (id_veiculo) REFERENCES veiculo(id)
 );
 ```
 
