@@ -112,21 +112,29 @@ Permite adicionar comportamentos (seguros) a uma locação de forma dinâmica e 
 ItemLocacao
  ├── LocacaoBase          (Concrete Component)
  └── SeguroDecorator      (Decorator Abstrato)
-      ├── SeguroTerceiros           (+R$ 40/dia)
-      └── SeguroCoberturaTotal      (+R$ 80/dia)
+      ├── SeguroTerceiros           (Percentual lido do banco, ex: +10%)
+      ├── SeguroPaneEletrica        (Valor fixo lido do banco, ex: +R$ 50)
+      ├── SeguroVidrosEspelhos      (Valor fixo lido do banco, ex: +R$ 30)
+      ├── SeguroPneu                (Valor fixo lido do banco, ex: +R$ 20)
+      └── SeguroDinamico            (Fallback dinâmico para novos seguros do banco)
 ```
 
-**Uso prático em `CadastrarLocacaoComando`:**
+**Uso prático em `LocacaoService`:**
 ```java
-ItemLocacao item = new LocacaoBase(locacao);
-
-if (request.getParameter("seguroTerceiros") != null)
-    item = new SeguroTerceiros(item, qtdDias);
-
-if (request.getParameter("seguroCoberturaTotal") != null)
-    item = new SeguroCoberturaTotal(item, qtdDias);
-
-locacao.setValorTotal(item.getValorTotal());
+ItemLocacao itemLocacao = new LocacaoBase(locacao);
+for (int idSeguro : idsSeguros) {
+    TipoSeguro ts = tipoSeguroDAO.buscarPorId(idSeguro);
+    switch (ts.getTipo()) {
+        case "Terceiros":
+            itemLocacao = new SeguroTerceiros(itemLocacao, ts.getId(), ts.getTipo(), ts.getValor());
+            break;
+        // ... outros casos específicos ...
+        default:
+            // Qualquer novo seguro cadastrado no banco é suportado dinamicamente!
+            itemLocacao = new SeguroDinamico(itemLocacao, ts);
+            break;
+    }
+}
 ```
 
 ---
@@ -140,7 +148,8 @@ Cada operação de negócio é encapsulada em uma classe concreta que implementa
 |---|---|
 | Veículo | `Cadastrar`, `Atualizar`, `Editar`, `Deletar`, `Listar`, `BuscarPorId` |
 | Usuário | `Cadastrar`, `Atualizar`, `Deletar`, `Listar`, `BuscarPorId`, `Login`, `Logout` |
-| Locação | `Cadastrar`, `Atualizar`, `Deletar`, `Listar`, `BuscarPorId` |
+| Locação | `Cadastrar`, `Atualizar`, `Deletar`, `Listar`, `BuscarPorId`, `ListarMinhas` |
+| Seguro  | `Cadastrar`, `Atualizar`, `Deletar` (retorna JSON por padrão) |
 
 ---
 
@@ -246,6 +255,18 @@ CREATE TABLE veiculo (
     tipoCambio           VARCHAR(20)
 );
 
+CREATE TABLE tipo_seguro (
+    id    INT AUTO_INCREMENT PRIMARY KEY,
+    tipo  VARCHAR(100) NOT NULL UNIQUE,
+    valor DECIMAL(10,2) NOT NULL
+);
+
+INSERT INTO tipo_seguro (tipo, valor) VALUES 
+('Terceiros', 0.10),
+('Pane Elétrica', 50.00),
+('Vidros e Espelhos', 30.00),
+('Pneu', 20.00);
+
 CREATE TABLE locacao (
     id             INT AUTO_INCREMENT PRIMARY KEY,
     id_usuario     INT NOT NULL,
@@ -296,57 +317,71 @@ LocacaoVeiculos/
 │   │   ├── IComando.java           # Interface do Command
 │   │   ├── locacao/                # Commands de Locação (CRUD + extras)
 │   │   ├── usuario/                # Commands de Usuário (CRUD + Login/Logout)
-│   │   └── veiculo/                # Commands de Veículo (CRUD + Editar)
+│   │   ├── veiculo/                # Commands de Veículo (CRUD + Editar)
+│   │   └── seguro/                 # Commands de Seguros (Cadastrar, Atualizar, Deletar)
 │   │
-│   ├── controller/                 # Servlets (Invokers do padrão Command)
+│   ├── controller/                 # Servlets (Invokers) e Filtros
 │   │   ├── ControleLocacao.java
 │   │   ├── ControleUsuario.java
-│   │   └── ControleVeiculo.java
+│   │   ├── ControleVeiculo.java
+│   │   ├── ControleTipoSeguro.java
+│   │   ├── EncodingFilter.java     # Filtro global de encoding UTF-8
+│   │   └── SecurityFilter.java     # Filtro global de controle de acesso
 │   │
 │   ├── dao/                        # Data Access Objects
 │   │   ├── DAOFactory.java         # Padrão Factory Method (GoF)
-│   │   ├── ILocacaoDAO.java        # Interface (princípio SOLID - I e D)
+│   │   ├── ILocacaoDAO.java        
 │   │   ├── IUsuarioDAO.java
 │   │   ├── IVeiculoDAO.java
 │   │   ├── ILoginDAO.java
+│   │   ├── ITipoSeguroDAO.java
 │   │   ├── LocacaoDAO.java
 │   │   ├── UsuarioDAO.java
 │   │   ├── VeiculoDAO.java
-│   │   └── LoginDAO.java
+│   │   ├── LoginDAO.java
+│   │   └── TipoSeguroDAO.java
 │   │
 │   ├── model/                      # Entidades de domínio
 │   │   ├── Locacao.java
-│   │   ├── LocacaoBuilder.java     # Padrão Builder (GoF)
+│   │   ├── LocacaoBuilder.java     
 │   │   ├── Usuario.java
-│   │   ├── UsuarioBuilder.java     # Padrão Builder (GoF)
+│   │   ├── UsuarioBuilder.java     
 │   │   ├── Veiculo.java
-│   │   ├── VeiculoBuilder.java     # Padrão Builder (GoF)
+│   │   ├── VeiculoBuilder.java     
+│   │   ├── TipoSeguro.java
 │   │   └── decorator/              # Padrão Decorator (GoF) ★
 │   │       ├── ItemLocacao.java    # Interface Component
 │   │       ├── LocacaoBase.java    # Concrete Component
 │   │       ├── SeguroDecorator.java       # Decorator Abstrato
 │   │       ├── SeguroTerceiros.java       # Concrete Decorator
-│   │       └── SeguroCoberturaTotal.java  # Concrete Decorator
+│   │       ├── SeguroPaneEletrica.java
+│   │       ├── SeguroVidrosEspelhos.java
+│   │       ├── SeguroPneu.java
+│   │       └── SeguroDinamico.java        # Fallback dinâmico para novos seguros
 │   │
 │   └── util/                       # Utilitários
 │       ├── FabricaConexao.java     # Fábrica de conexão JDBC
 │       └── ModeloConexao.java      # Template seguro (sem credenciais)
 │
 └── web/                            # Frontend
-    ├── index.html                  # Página inicial / Login
+    ├── index.html                  # Página inicial / Redirecionamento
+    ├── erro.jsp                    # Tela de erros geral customizada
+    ├── sucessoReserva.jsp
+    ├── sucessoUsuario.jsp
+    ├── sucessoVeiculo.jsp
     ├── html/                       # Páginas do sistema
     │   ├── frota.html              # Catálogo de veículos disponíveis
     │   ├── reserva.html            # Formulário de reserva
-    │   ├── listarReservas.html     # Listagem de locações
+    │   ├── minhasLocacoes.html     # Histórico de reservas do usuário
+    │   ├── listarReservas.html     # Listagem de locações (admin)
     │   ├── listarVeiculos.html     # Painel de veículos (admin)
     │   ├── listarUsuarios.html     # Painel de usuários (admin)
-    │   ├── cadastroVeiculo.html    # Cadastro de veículo
-    │   ├── cadastroUsuario.html    # Cadastro de usuário
-    │   ├── editarVeiculo.html      # Edição de veículo
-    │   ├── editarReserva.html      # Edição de reserva
-    │   └── login.html              # Página de login
-    ├── css/                        # Folhas de estilo
-    └── js/                         # Scripts JavaScript
+    │   ├── listarSeguros.html      # Painel de seguros (admin)
+    │   ├── cadastroVeiculo.html    
+    │   ├── cadastroUsuario.html    
+    │   └── login.html              
+    ├── css/                        # Folhas de estilo (erro, minhasLocacoes, listarSeguros...)
+    └── js/                         # Scripts JavaScript (filtros, paginação, modais...)
 ```
 
 ---
@@ -383,10 +418,20 @@ Todos os endpoints são acessados via parâmetro `?op=OPERACAO`.
 | Operação (`op`) | Método | Descrição |
 |---|---|---|
 | `LISTAR` | GET | Lista todas as locações |
+| `LISTAR_MINHAS` | GET | Lista locações do usuário autenticado |
 | `BUSCAR_POR_ID` | GET | Busca locação por ID |
 | `CADASTRAR` | POST | Cria nova locação (aplica Decorators de seguro) |
 | `ATUALIZAR` | POST | Atualiza locação existente |
 | `DELETAR` | POST | Cancela locação |
+
+### Seguros — `/ControleTipoSeguro`
+
+| Operação (`op`) | Método | Descrição |
+|---|---|---|
+| *Nenhuma* | GET | Retorna lista de todos os seguros ativos como JSON |
+| `CADASTRAR` | POST | Cria novo tipo de seguro |
+| `ATUALIZAR` | POST | Atualiza nome e precificação de seguro existente |
+| `DELETAR` | POST | Remove tipo de seguro |
 
 ---
 
@@ -415,6 +460,8 @@ O sistema utiliza **MySQL** com relacionamentos via chaves estrangeiras:
 
 - **Credenciais protegidas:** As credenciais do banco de dados **nunca** são versionadas. Use `ModeloConexao.java` como template local.
 - **Sessão de usuário:** O controle de autenticação é gerenciado via `HttpSession` nos Commands de Login/Logout.
+- **Controle de Acesso e Autorização:** O `SecurityFilter` intercepta páginas e APIs administrativas restringindo acesso apenas a usuários com perfil de `admin`.
+- **Filtro de Encoding UTF-8:** O `EncodingFilter` garante a integridade de acentuações nativas em requisições e respostas.
 - **Prepared Statements:** Todas as queries utilizam `PreparedStatement` para prevenção de **SQL Injection**.
 
 ---
