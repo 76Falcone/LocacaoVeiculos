@@ -261,12 +261,6 @@ CREATE TABLE tipo_seguro (
     valor DECIMAL(10,2) NOT NULL
 );
 
-INSERT INTO tipo_seguro (tipo, valor) VALUES 
-('Terceiros', 0.10),
-('Pane Elétrica', 50.00),
-('Vidros e Espelhos', 30.00),
-('Pneu', 20.00);
-
 CREATE TABLE locacao (
     id             INT AUTO_INCREMENT PRIMARY KEY,
     id_usuario     INT NOT NULL,
