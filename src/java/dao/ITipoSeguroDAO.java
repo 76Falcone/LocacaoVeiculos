@@ -16,4 +16,13 @@ public interface ITipoSeguroDAO {
 
     /** Busca um seguro específico pelo ID. */
     TipoSeguro buscarPorId(int id) throws ClassNotFoundException, SQLException;
+
+    /** Cadastra um novo tipo de seguro. */
+    void cadastrarTipoSeguro(TipoSeguro ts) throws ClassNotFoundException, SQLException;
+
+    /** Atualiza um tipo de seguro existente. */
+    void atualizarTipoSeguro(TipoSeguro ts) throws ClassNotFoundException, SQLException;
+
+    /** Exclui um tipo de seguro pelo ID. */
+    void deletarTipoSeguro(int id) throws ClassNotFoundException, SQLException;
 }
