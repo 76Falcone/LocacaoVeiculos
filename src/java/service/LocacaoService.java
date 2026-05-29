@@ -18,6 +18,8 @@ import model.decorator.SeguroPaneEletrica;
 import model.decorator.SeguroPneu;
 import model.decorator.SeguroTerceiros;
 import model.decorator.SeguroVidrosEspelhos;
+import model.decorator.SeguroDinamico;
+
 
 import java.time.LocalDate;
 import java.util.List;
@@ -121,7 +123,8 @@ public class LocacaoService {
                         itemLocacao = new SeguroPneu(itemLocacao, ts.getId(), ts.getValor());
                         break;
                     default:
-                        System.out.println("Tipo de seguro desconhecido: " + ts.getTipo());
+                        // Qualquer novo seguro cadastrado no banco agora é suportado dinamicamente!
+                        itemLocacao = new SeguroDinamico(itemLocacao, ts);
                         break;
                 }
             }
