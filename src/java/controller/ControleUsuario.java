@@ -54,8 +54,8 @@ public class ControleUsuario extends HttpServlet {
 
         } catch (Exception e) {
             e.printStackTrace();
-            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
-                    "Erro ao processar requisição: " + e.getMessage());
+            request.setAttribute("mensagem", e.getMessage());
+            request.getRequestDispatcher("/erro.jsp").forward(request, response);
         }
     }
 
