@@ -35,12 +35,14 @@ public class SeguroTerceiros extends SeguroDecorator {
      */
     @Override
     public double getValorSeguro() {
-        return itemDecorado.getValorTotal() * taxa;
+        double valorBase = itemDecorado.getValorTotal() - itemDecorado.getValorSeguro();
+        return itemDecorado.getValorSeguro() + (valorBase * taxa);
     }
 
     @Override
     public double getValorTotal() {
-        return itemDecorado.getValorTotal() + getValorSeguro();
+        double valorBase = itemDecorado.getValorTotal() - itemDecorado.getValorSeguro();
+        return itemDecorado.getValorTotal() + (valorBase * taxa);
     }
 
     public int getIdSeguro() {
