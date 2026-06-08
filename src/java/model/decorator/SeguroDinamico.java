@@ -36,17 +36,21 @@ public class SeguroDinamico extends SeguroDecorator {
     @Override
     public double getValorSeguro() {
         if (percentual) {
-            // Aplica percentual sobre o valor total do item decorado
-            return itemDecorado.getValorTotal() * valor;
+            double valorBase = itemDecorado.getValorTotal() - itemDecorado.getValorSeguro();
+            return itemDecorado.getValorSeguro() + (valorBase * valor);
         } else {
-            // Retorna o valor fixo cadastrado
-            return valor;
+            return itemDecorado.getValorSeguro() + valor;
         }
     }
 
     @Override
     public double getValorTotal() {
-        return itemDecorado.getValorTotal() + getValorSeguro();
+        if (percentual) {
+            double valorBase = itemDecorado.getValorTotal() - itemDecorado.getValorSeguro();
+            return itemDecorado.getValorTotal() + (valorBase * valor);
+        } else {
+            return itemDecorado.getValorTotal() + valor;
+        }
     }
 
     public int getIdSeguro() {
