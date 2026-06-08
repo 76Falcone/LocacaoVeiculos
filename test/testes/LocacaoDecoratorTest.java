@@ -110,4 +110,28 @@ public class LocacaoDecoratorTest {
         assertEquals(75.00, locacaoComSeguro.getValorSeguro(), 0.001);
         assertEquals(575.00, locacaoComSeguro.getValorTotal(), 0.001);
     }
+
+    @Test
+    public void testLocacaoComMultiplosSeguros() {
+        Veiculo veiculo = new VeiculoBuilder()
+                .comValorDiaria(100.00)
+                .build();
+
+        Locacao locacao = new LocacaoBuilder()
+                .comVeiculo(veiculo)
+                .comQtdDias(5)
+                .build();
+
+        // Combina SeguroTerceiros (10% = R$ 50) e SeguroPaneEletrica (Fixo = R$ 30)
+        ItemLocacao base = new LocacaoBase(locacao);
+        ItemLocacao comTerceiros = new SeguroTerceiros(base, 1, "Terceiros", 0.10);
+        ItemLocacao comAmbos = new SeguroPaneEletrica(comTerceiros, 2, 30.00);
+
+        // Valor total deve ser 500 (base) + 50 (Terceiros) + 30 (Pane) = 580
+        assertEquals(580.00, comAmbos.getValorTotal(), 0.001);
+        
+        // Valor do seguro acumulado deve ser 50 + 30 = 80
+        assertEquals(80.00, comAmbos.getValorSeguro(), 0.001);
+    }
 }
+
