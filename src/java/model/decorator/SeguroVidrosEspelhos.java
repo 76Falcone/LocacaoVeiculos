@@ -25,12 +25,12 @@ public class SeguroVidrosEspelhos extends SeguroDecorator {
 
     @Override
     public double getValorSeguro() {
-        return valorFixo;
+        return itemDecorado.getValorSeguro() + valorFixo;
     }
 
     @Override
     public double getValorTotal() {
-        return itemDecorado.getValorTotal() + getValorSeguro();
+        return itemDecorado.getValorTotal() + valorFixo;
     }
 
     public int getIdSeguro() {
