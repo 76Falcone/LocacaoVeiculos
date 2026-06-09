@@ -98,6 +98,12 @@ O sistema segue o padrão **MVC (Model-View-Controller)** com a camada de Comman
 └─────────────────────────────────────────────────────────┘
 ```
 
+### 📊 Diagrama de Classe Geral
+
+A estrutura de classes e pacotes do sistema, detalhando a separação de responsabilidades e fluxos entre MVC, Commands, DAOs e Modelos:
+
+![Diagrama de Classe Geral](web/images/Diagrama%20de%20Classe.png)
+
 ---
 
 ## 🎨 Design Patterns (GoF)
@@ -118,6 +124,16 @@ ItemLocacao
       ├── SeguroPneu                (Valor fixo lido do banco, ex: +R$ 20)
       └── SeguroDinamico            (Fallback dinâmico para novos seguros do banco)
 ```
+
+#### 📸 Modelagem do Decorator
+
+Para compreender melhor a estrutura de classes e a dinâmica de chamadas em tempo de execução para os seguros:
+
+##### Diagrama de Classes (Decorator)
+![Diagrama Decorator](web/images/Diagrama%20Decorator.png)
+
+##### Diagrama de Sequência (Decorator)
+![Diagrama de Sequência (Decorator)](web/images/Diagrama%20de%20Sequencia%20(Decorator).png)
 
 **Uso prático em `LocacaoService`:**
 ```java
