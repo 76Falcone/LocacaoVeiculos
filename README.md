@@ -13,9 +13,6 @@
 ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
 ![Apache Tomcat](https://img.shields.io/badge/Apache%20Tomcat-F8DC75?style=for-the-badge&logo=apachetomcat&logoColor=black)
 
-[![GitHub stars](https://img.shields.io/github/stars/76Falcone/LocacaoVeiculos?style=social)](https://github.com/76Falcone/LocacaoVeiculos/stargazers)
-[![GitHub forks](https://img.shields.io/github/forks/76Falcone/LocacaoVeiculos?style=social)](https://github.com/76Falcone/LocacaoVeiculos/network)
-
 </div>
 
 ---
